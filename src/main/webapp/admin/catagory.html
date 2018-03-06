@@ -1,0 +1,37 @@
+<div class="navbar-form" ng-controller = 'catagoryController'>
+<h2 class="title">{{'CATAGORY_MANAGE'|translate}}</h2>
+	<uib-tabset>
+      <uib-tab heading="商品分类">
+      	 <div class="search  form-inline">
+				 <div class="form-group pull-right">
+				 	&nbsp;
+					<button class="btn btn-success" ng-click="editProduct()" ng-show="getAccess(curMenu,4)"><i class="glyphicon glyphicon-pencil mr5"></i>{{"EDIT"|translate}}</button>
+				</div>
+		</div>
+		  <div ng-repeat="item in productTypes|orderBy:'seq'">
+	    	 <div class="col-xs-10 col-xs-offset-1">
+	    	 	<div class="form-group nowrap">
+	    	 		<label class="wid18"><i ng-click="item.opened=!item.opened" ng-if="item.sons.length>0" class="glyphicon" ng-class="{'glyphicon-plus':!item.opened,'glyphicon-minus':item.opened}"></i>
+	    	 		</label>
+	    	 		<span class="form-control" >{{item.name}}</span>
+	    		</div>
+	    	 </div>
+	    	 <div class="col-xs-10 col-xs-offset-2" ng-if="item.opened">
+	    	 	<div class="form-group nowrap" ng-repeat="son in item.sons|orderBy:'seq'">
+	    	 		<span class="form-control"  >{{son.name}}</span>
+	    	 		<!-- 二级级分类排序  -->
+	    		</div>
+	    	 </div>
+		 </div>
+      </uib-tab>
+    </uib-tabset>
+</div>
+
+<script type="text/ng-template" >
+	
+</script>
+
+
+
+   
+ 

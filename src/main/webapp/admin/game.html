@@ -1,0 +1,97 @@
+﻿<div class="navbar-form" ng-controller = 'gameController'>
+<h3 class="title bg-info">比赛列表 </h3>
+	<div class="search  form-inline">
+			<div class="form-group mr5">
+				<label>球队</label>
+				<input type="text" ng-model="search.teamTitle" class="form-control" placeholder="example: 国安 or 国安;申花" />
+			</div>
+			 <div class="form-group mr5">
+			    <label>赛制</label>
+		 		<select  class="form-control"  ng-model="search.teamType" ng-options="o[0] as o[1] for o in teamTypeList"  >
+  	                <option value="">--请选择--</option>
+		        </select>
+			</div>
+			<div class="form-group mr5">
+				<label>比分</label>
+				<input id="name" type="text"  ng-model="search.scores" class="form-control" placeholder="example: 1 or 1:2"/>
+			</div>
+			<div class="form-group mr5">
+		   	<label>比赛状态</label>
+			    <select  ng-model="search.gameStatus" ng-options="o[0] as o[1] for o in gameStatusList" class="form-control">
+					<option value="">--请选择--</option>
+				</select>
+			</div>	
+			<div class="form-group mr5">
+				<label>审核状态</label>
+				<select class="form-control" ng-model="search.status" ng-options="o[0] as o[1] for o in auditStatusList">
+					<option value="">--请选择--</option>
+				</select>
+			</div>	
+			<div class="form-group">
+			<label>比赛时间</label>
+			<input class="form-control wdate" id="fromDate" readOnly=true ng-model="search.fromDate" onchange="" 
+			 onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()}&quot;})"	/>
+			<label>-</label>
+			<input class="form-control wdate" id="toDate"  readOnly=true ng-model="search.toDate" onchange="" 
+			  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;})" />
+	        </div>
+			 <div class="form-group pull-right">
+				<button class="btn btn-primary" ng-click="find(1)">查询</button> 
+				<button class="btn btn-success" ng-click="showModal()" ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+			</div>
+	  </div>
+	   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				<th class="text-center">NO</th>
+				<th>比赛</th>
+				<th>地点</th>
+				<th>赛制</th>
+				<th>备注</th>
+				<th>比分</th>
+				<th style="width: 120px;">开始时间
+				    <span class="sortbtn glyphicon glyphicon-sort" ng-if="search.orderby!='beginTime asc'&&search.orderby!='beginTime desc'" ng-click="sortRet('beginTime asc')"></span>
+				         <span class="sortbtn glyphicon glyphicon-sort-by-order" ng-if="search.orderby=='beginTime asc'" ng-click="sortRet('beginTime desc')"></span>
+				         <span class="sortbtn glyphicon glyphicon-sort-by-order-alt" ng-if="search.orderby=='beginTime desc'" ng-click="sortRet('beginTime asc')"></span>
+				         </th>
+	         	<th style="width: 120px;">操作时间<span class="sortbtn glyphicon glyphicon-sort" ng-if="search.orderby!='modifyTime asc'&&search.orderby!='modifyTime desc'" ng-click="sortRet('modifyTime asc')"></span>
+	       		  <span class="sortbtn glyphicon glyphicon-sort-by-order" ng-if="search.orderby=='modifyTime asc'" ng-click="sortRet('modifyTime desc')"></span>
+	        	  <span class="sortbtn glyphicon glyphicon-sort-by-order-alt" ng-if="search.orderby=='modifyTime desc'" ng-click="sortRet('modifyTime asc')"></span>
+	       	   </th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="100" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+				<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+				<td><div uib-popover-html="item.trustedContent" popover-placement="right" popover-trigger="mouseenter">
+				{{item.cup.name}} {{item.group.name}}</div></td>
+				<td>{{item.address}}</td>
+				<td>{{item.teamType| keyToValue : teamTypeList}}</td>
+				<td>{{item.comment}}</td>
+				<td>
+						<span>{{getType(item)}} : </span>
+						<span popover-placement="top" uib-popover-html="item.scorehtml" ng-show="item.teamB.teamTitle" popover-trigger="mouseenter">
+							{{item.teamA.teamTitle}}&nbsp;
+							<span style="color:red;font-size:large;" ng-show="getType(item) == '已结束'">{{item.scoreA
+							}}&nbsp;:&nbsp;{{item.scoreB}}</span>
+							
+							&nbsp;{{item.teamB.teamTitle }}
+						</span>
+				</td>
+				<td>{{item.beginTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}<br>
+				   <span ng-if="item.playingTime">共{{item.playingTime}}分钟</span>
+				</td>
+				<td>{{item.modifyTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}<br>
+				</td>
+				<td excel="none">
+						<ng-include src="'toggle.tmpl'"></ng-include>
+					    <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+						<span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-include src="'/admin/pager.html'"></ng-include>
+</div>
+
+	

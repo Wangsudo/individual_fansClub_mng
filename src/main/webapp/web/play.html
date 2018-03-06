@@ -1,0 +1,57 @@
+<div class="main" id="play" ng-controller='playController'>
+    <div class="grid list">
+        <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList">
+        	 	<div class="search-div">
+		            <span>时间：</span>
+		                <input type="text" class="date-input"  id="fromDate" ng-model="items.fromDate"  onchange=""  
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'blue',maxDate:&quot;#F{$('#toDate').val()}&quot;})" ></input>
+						
+		            <span style="margin: 0 5px;">至</span>
+		                <input type="text" class="date-input" id="toDate" ng-model="items.toDate"  onchange="" 
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',skin:'blue',minDate:&quot;#F{$('#fromDate').val()}&quot;})" ></input>
+		            <button class="btn btn-success" ng-click="getGames()">查询</button>
+		             	<div class="find">
+		        			 <i class="find-btn" ng-click="find()"></i>
+		        		     <input type="text" placeholder="请输入球队/赛事名称" ng-model="items.snippet" ng-keyup="find($event)" >
+		        		</div>
+		        </div>
+		        <table cellpadding="0" cellspacing="0" >
+                    <thead class="title">
+                        <td>赛制</td>
+                        <td>赛事名称</td>
+                        <td>时间</td>
+                        <td><div style=" display: inline-block; margin-left: 5px;">比赛结果</div></td>
+                        <td>地点</td>
+                        <td>查看</td>
+                    </thead>
+                  <tbody >
+				<tr ng-repeat="game in items.list | filter:search">
+					<td style="height:96px;"><img class="team-num" ng-src="{{getTeamTypeIcon(game.teamType)}}"></td>
+					<td>{{game.cup.name}}{{game.group.name}}</td>
+					<td>{{game.beginTime|formatDate:"{yyyy}-{MM}-{dd} {HH}:{mm}"}}</td>
+					<td>
+						<div class="game-row">
+							<ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+							<div class="game-info">
+								<div class="score yellow">{{getScore(game)}}</div>
+                                   <div class="gray">{{getType(game)}}</div>
+							</div>
+							<ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+						</div>
+					</td>
+					<td>{{game.address}}</td>
+					<td><a ng-href="#/{{module}}/playDetail?id={{game.id}}" class="look-btn"></a></td>
+				</tr>
+				<tr></tr>
+			  </tbody>
+                </table>
+		          <div class="page-footer">
+								 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+								  ng-change="pageChanged(items.teamType)"
+								previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		        </div>
+        	 </uib-tab>
+        </uib-tabset>
+        </div>
+</div>

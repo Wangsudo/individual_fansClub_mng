@@ -1,0 +1,73 @@
+	<div class="modal-header">
+        <h3 class="modal-title">{{(adminUser.id?'EDIT':'ADD')|translate}} {{'Administrator'|translate}}</h3>
+    </div>
+    <div class="modal-body form-horizontal container-fluid">
+     <div class="col-sm-12">
+     	<form name="form" novalidate>
+     	<div class="form-group col-sm-12">
+     		<div class="thumbnail headBack col-sm-11 col-sm-offset-1 text-center" ng-mouseover="desp.hover = true" ng-mouseleave="desp.hover = false">
+	 		  <img style="height:200px" alt=""  ng-src="{{getImgUrl(adminUser.headpic,2)}}"></img>
+	 		  <div class="img-del" ng-show ="desp.hover" ng-click="del()"></div>
+		 		  <div class="caption">
+	             <p><button class="btn btn-default height34" ng-click="addAdminImg()"><i class="glyphicon glyphicon-picture "></i></button>
+	            </p>
+	          </div>
+	    	</div>
+     	</div>
+     <!-- 	<div class="form-group col-sm-12">
+			<label class="col-sm-3 control-label">{{'COUNTRY'|translate}}</label>
+			<div class="col-sm-9">
+				<input  type="text" id="account" value="{{adminUser.country.countryName}}" class="form-control" ng-disabled="true">
+			</div>
+		</div> -->
+    	<div  class="form-group col-sm-12">
+			<label class="col-sm-3 control-label">{{'ACCOUNT'|translate}}</label>
+			<div class="col-sm-9" >
+				<input  type="text" id="account" ng-model="adminUser.account" class="form-control" ng-disabled="true">
+			</div>
+		</div>
+       
+		<div class="form-group col-sm-12">
+			<label class="col-sm-3 control-label">{{'AUTHORITY'|translate}}</label>
+			<div class="col-sm-9">
+				<select class="form-control" id="role" ng-model="adminUser.role.id"  ng-options="o[0] as o[1] for o in roleList" ng-disabled="true">
+					<option value="">{{'SELECT'|translate}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<label class="col-sm-3 control-label">{{'EMAIL'|translate}}</label>
+			<div class="col-sm-9">
+				<input  type="email" id="email"  ng-model="adminUser.email" class="form-control" placeholder=""
+			 		 required uib-popover="email address!" popover-placement="top" popover-trigger="mouseenter" >
+				
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<label  class="col-sm-3 control-label">{{'TEL'|translate}}</label>
+			<div class="col-sm-9">
+				<input  type="tel" id="teleNum" name="myTelphone" ng-model="adminUser.teleNum" class="form-control"
+					placeholder=""  required ng-minlength="2" ng-maxlength="50" uib-popover="2~50 characters!" popover-placement="top" popover-trigger="mouseenter" >
+				
+			</div>
+		</div>
+		
+		<div class="form-group col-sm-12">
+			<label class="col-sm-3 control-label">{{'NICKNAME'|translate}}</label>
+			<div class="col-sm-9">
+				<input  type="text" id="name" ng-model="adminUser.name" class="form-control"placeholder=""
+			 		  ng-minlength="2" ng-maxlength="50" uib-popover="2~50 characters!" popover-placement="top" popover-trigger="mouseenter" required>
+			</div>
+		</div>
+		</form>
+     </div>
+     </div>
+    <div class="modal-footer">
+    	<button class="btn btn-success" type="button" ng-click="passWord(adminUser)">{{'EDIT'|translate}}{{'PASSWORD'|translate}}</button>
+        <button class="btn btn-primary" type="button" ng-click="saveAdmin(adminUser)">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>
+  
+	
+		
+		

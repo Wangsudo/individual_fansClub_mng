@@ -1,0 +1,53 @@
+<form name="form" novalidate>
+	<div class="modal-header">
+            <h3 class="modal-title">{{'RELEASE'|translate}} banner
+            </h3>
+    </div>
+    <div class="modal-body">
+    	<div class="form-inline subSearch">
+    	
+		   <div class="form-group mr15">
+				<label>{{'POSITION'|translate}}</label>
+				<select class="form-control" ng-model="me.position" ng-options="o[0] as o[1] for o in positionList" disabled>
+				</select>
+			</div>
+			<div class="form-group ">
+				<label class="control-label">{{'UPTIME'|translate}}</label>
+				<input class="form-control wdate" text-date onchange="" disabled=true; onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" ng-model="me.startTime"></input>
+			</div>
+<!-- 			 <div class="form-group pull-right"  style="position:relative">
+		    <button class="btn btn-primary" type="button" ng-click="showCarousel(items)">{{'PREVIEW'|translate}}</button>
+			 </div> -->
+	    </div>
+	    <div class="lightGray" style="overflow-x:auto;margin-bottom:15px;min-height:50px;">
+			<table >
+				<tr>
+					<td class="text-center" style="position:relative;padding:15px; " ng-repeat = "banner in items|orderBy:'seq'">
+						 <p ng-class="{'bg-success':banner.status==2,'bg-warning':banner.status ==1}">{{getState(banner.status,banner.startTime,banner.stopTime)|translate}}</p>
+						<img style="position:absolute;right:0;top:0" ng-src="{{!banner.off?'images/ok.png':'images/refuse.png'}}"></img>
+		  			 	<img  ng-click="toggle(banner)"  ng-src="{{getImgUrl(banner.url,1)}}" class="w90" ng-class="{pass:!banner.off,forbid:banner.off}" ></img>
+		  			 	 <p>{{banner.title}}</p>
+		  				<span class="imgMove left"><i class="glyphicon glyphicon-menu-left" ng-click="moveImg(items,banner,-1)" ></i></span>
+		                <span class="imgMove right"><i class="glyphicon glyphicon-menu-right" ng-click="moveImg(items,banner,1)"></i></span>
+					</td>
+				</tr>
+	     	</table>
+     	</div>
+	        <div class="previewSlide" id="carouselDiv" >
+			    <uib-carousel interval="myInterval" no-wrap="noWrapSlides"  >
+			      <uib-slide ng-repeat="slide in slides|orderBy:'seq'" active="slide.active" >
+			        <img ng-src="{{getImgUrl(slide.url,2)}}" style="margin:auto;">
+			        <div class="carousel-caption">
+			          <h4> {{slide.title}}</h4>
+			        </div>
+			      </uib-slide>
+			    </uib-carousel>
+			</div>
+	</div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="release(items)">{{'RELEASE'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>
+</form>
+
+   

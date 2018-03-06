@@ -1,0 +1,53 @@
+<div class="navbar-form" ng-controller = 'fieldController'>
+<h3 class="title bg-info">球场管理</h3>
+	<div class="search  form-inline">
+		<div class="form-group mr5">
+			<label>场地名称</label> <input type="text" class="form-control" ng-model="search.name"  />
+		</div>
+		<div class="form-group mr5">
+			<label>管理员</label>
+			<select class="form-control" ng-model="search.adminId" ng-options="o.id as o.account  for o in adminList">
+							<option value="">--请选择--</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label>联系人</label> <input type="text" class="form-control" ng-model="search.account" />
+		</div>
+
+		<div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)" >查询</button> 
+			<button class="btn btn-success" ng-click="showModal()"  ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				 <th excel="none"><i class="glyphicon glyphicon-picture"></i></th>
+                <th>名称</th>
+				<th>地址</th>
+				<th>联系人</th>
+				<th>电话</th>
+				<th>备注</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td class="text-center" excel="none"><img  class="wid64 hand" ng-src="{{getImgUrl(item.url,1)}}" ng-mouseover="pop(item.url)" ></td>
+			    	<td >{{item.name}}</td>
+				 	<td >{{item.address}}</td>
+				 	<td >{{item.contact}}</td>
+				 	<td >{{item.mobile}}</td>
+				 	<td ><div compile="item.content" style="width:300px;white-space: nowrap;overflow:hidden; text-overflow:ellipsis; "></div></td>
+					<td excel="none">
+						 <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4,item)"></span>
+						 <span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8,item)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

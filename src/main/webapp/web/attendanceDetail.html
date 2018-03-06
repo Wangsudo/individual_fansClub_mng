@@ -1,0 +1,67 @@
+<div id="attendanceDetail" class="body messagePage list" ng-controller="attendanceDetailController">
+    <div class="head ">
+        <div class="fl-img"></div>
+        <div class="title-big">{{message.title}}</div>
+        <div class="attendance-time">
+        	<span class="mr10">活动地点：{{message.address}} </span>
+		        活动时间：{{message.beginTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}} 
+        </div>
+        <div class="white-border1_2"></div>
+        <div class="text" compile="message.content"></div>
+        <div class="text">球队：{{message.team.teamTitle}} </div>
+        <div class="white-border1_2"></div>
+        <div class="gray" style="margin: 10px 0">
+                       发送给<span class="red">{{message.tanks.length}}</span>人 &nbsp;&nbsp;　签到<span class="green">{{getConfirms(message.tanks)}}</span>人
+        </div>
+    </div>
+    <div id="body">
+        <div class="body-title">球员签到</div>
+        <div class="white-border2_3"></div>
+        <div class="list-body grid">
+                <table class="player-table">
+                    <thead  class="title">
+                        <td style="width:140px;">头像</td>
+                        <td style="width:240px;">姓名</td>
+                        <td style="width:340px;">签到状态</td>
+                        <td style="width:200px;">操作</td>
+                    </thead>
+                    <tbody class="js-table-list">
+                    	<tr ng-repeat="item in tanks">
+                    	    <td><img class="img24" ng-src="{{getImgUrl(item.player.iconUrl)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)"></td>
+                            <td><a ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)">{{item.player.name}}</a></td>
+                            <td>
+                            	<div  ng-if="item.confirmStatus == 1">
+                            		<div class="complete-img"></div>已签到<span class="gray">({{item.confirmTime|getDate}})</span>
+                            		<div ng-if="item.auditStatus ==1" >（已通过审核）</div>
+                                    <div ng-if="item.auditStatus ==2" >（审核不通过）</div>
+                                    <div ng-if="!item.auditStatus" >（等待审核）</div>
+                            	</div>
+                            	<div  ng-if="item.confirmStatus != 1">
+                            		{{item.confirmStatus==2?"没空":"未签到"}}
+                            	</div>
+                            </td>
+                            <td >
+                            	<!-- 管理员未审核时,且未过活动时间时，球员可以签到或者撤消签到 -->
+                                 <div class="btn-group" ng-if="item.player.id==user.id && !item.auditStatus && message.beginTime > getNow()">
+								        <button class="btn btn-danger"  ng-if="item.confirmStatus!=2" ng-click="signIn(item,2)" >没空</button>
+								        <button class="btn btn-success"  ng-if="item.confirmStatus!=1" ng-click="signIn(item,1)">签到</button>
+						        </div>
+                                <!-- 球员可以签到后,过了活动时间,管理员可以审核签到情况 -->
+                                <div class="btn-group" ng-if="item.confirmStatus == 1 && !item.auditStatus && message.beginTime < getNow()">
+                                	<div ng-if="message.team.id == user.team.id && user.isCaptain==1">
+                                	    <button class="btn btn-danger"  ng-click="audit(item,2)" >拒绝</button>
+								        <button class="btn btn-success" ng-click="audit(item,1)">通过</button>
+                                	</div>
+							    </div>
+                            </td>
+                    	</tr>
+                    </tbody>
+                </table>
+                <div class="page-footer">
+								 <uib-pagination total-items="message.total" ng-model="message.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+								  ng-change="pageChanged()"
+								previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		        </div>
+        </div>
+    </div>
+</div>

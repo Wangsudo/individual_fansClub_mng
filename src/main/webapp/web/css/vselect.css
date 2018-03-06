@@ -1,0 +1,157 @@
+/* jquery select (include multiple) 
+ * ================================ */
+.vselect{
+	width:328px;
+	display:inline-block;
+	*display:inline;
+	*zoom:1;
+	border:0;
+    border-radius: 5px;
+	font-size:18px;
+	margin:0;
+	height:40px;
+	line-height:40px;
+    padding:0 6px 0 8px;
+    color:#333;
+    cursor:pointer;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;	
+	text-decoration:none;
+	vertical-align:middle;
+}
+.vselect:hover{
+    color:#333;
+}
+.min .vselect{
+    width:66px;
+}
+.vselect ul,.vselect li,
+.vselect-panel ul,.vselect-panel li{
+	padding:0;
+	margin:0;
+	list-style:none;
+}
+.vselect em{
+	font-style:normal;
+	float:left;
+	color:#ffffff;
+	white-space:nowrap;
+    font-size: 12px;
+}
+.vselect i{
+	font-style:normal;
+	float:right;
+	color:#a4a5a7;
+	font-size:12px;
+}
+.vselect:hover{
+	text-decoration:none;
+    border-color: #787878;
+}
+.vselect:hover i{
+	color:#ffffff;
+}
+.vselect:active{
+    border-color:#909090;
+}
+.vselect:active i{
+	color:#333;
+}
+.vselect-panel{
+	width:170px;
+	background:white;
+	/*border:1px solid #909090;
+	height: 200px !important;*/
+    border:1px solid #d5d5d5;
+    border-radius: 5px;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:999999;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 200px;
+}
+.vselect-shadow{
+	background:#000;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:999996;
+	opacity:0.3;
+	-webkit-opacity:0.3;
+	-moz-opacity:0.3;
+	-ms-opacity:0.3;
+	-o-opacity:0.3;
+	filter:alpha(opacity=30);
+}
+.vselect-panel li{
+	float:left;
+	width:100%;
+	height:40px;
+	overflow-y:hidden;
+    overflow-x: hidden;
+	font-size:13px;
+}
+.vselect-panel li a,.vselect-link-on{
+	height:40px;
+	line-height:40px;
+	padding:0 10px 0 10px;
+	display:block;
+	color:#454545;
+	text-decoration:none;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.vselect-panel li a:hover{
+	background:#ddd;
+	text-decoration:none;
+}
+.vselect-panel li a.vselect-link-on,
+.vselect-link-on{
+	/*background:#d25f1a;*/
+    background: #2ac63c;
+	color:#fff;
+}
+.vselect-panel li a.vselect-link-on:hover,
+.vselect-link-on:hover{
+	/*background:#e2793a;*/
+    background: #2aa633;
+	color:#fff;
+	text-decoration:none;
+}
+.vselect-panel-tab{
+	width:100%;
+	height:auto;
+	background:#f1f2f1;
+/*    line-height:28px;*/
+	border-bottom:1px solid #ababab;
+	/* don't use nowrap! */
+}
+.vselect-panel-tab em{
+	width:auto;
+	display:inline-block;
+	*display:inline;
+	*zoom:1;
+	font-size:13px;
+	font-style:normal;
+	height:28px;
+	line-height:28px;
+	padding:0 10px;
+	color:#363636;
+	cursor:pointer;
+}
+.vselect-panel-tab span.vselect-panel-tab-hover,
+.vselect-panel-tab-hover{
+	background:#dedfde;
+/*    color:#000;*/
+}
+.vselect-panel-tab span.vselect-panel-tab-on,
+.vselect-panel-tab-on{
+/*	background:#7bceff;*/
+	background:#c2d6f3;
+/*    color:#000;*/
+}

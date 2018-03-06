@@ -1,0 +1,43 @@
+<div class="navbar-form" ng-controller = 'playerExecLogController'>
+<h3 class="title bg-info">{{'EXEC_LOG'|translate}}</h3>
+	<div class="search  form-inline">
+		<div class="form-group">
+			<label>{{'ACCOUNT'|translate}}</label>
+			<input type="text" ng-model="search.account" class="form-control" />&nbsp;
+		</div>
+		<div class="form-group">
+			<label>{{'DATATIME'|translate}}</label>
+			<input class="form-control wdate" id="fromDate" name="search.fromDate" readOnly=true onchange="" 
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+			<label>-</label>
+			<input class="form-control wdate" id="toDate" name="search.toDate" readOnly=true onchange=""
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+		</div>
+				
+		
+		 <div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)">查询</button>&nbsp;
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				 <th>{{'ACCOUNT'|translate}}</th>
+				 <th>{{'CONTENT'|translate}}</th>
+                 <th>{{'DATATIME'|translate}}</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td><a ng-click="showinfo(item.admin)">{{item.admin.account}}</a></td>
+					<td>{{item.opdesc}}</td>
+					<td>{{item.optime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</td>
+				</tr>
+				<tr></tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+			<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

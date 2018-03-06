@@ -1,0 +1,166 @@
+.grid .title{
+    background: url("../img/bg_list-title_blue.png");
+    height: 40px;
+    line-height: 40px;
+}
+.grid .title span{
+    display: inline-block;
+    text-align: center;
+}
+.grid .body{
+    min-height: 400px;
+}
+.grid .tab-content{
+	padding:20px;
+}
+.grid table{
+    text-align: center;
+    width:100%;
+    margin-bottom: 10px;
+}
+.grid tr{
+    height: 40px;
+}
+.grid tr:nth-child(even){
+    background: url(../img/bg_list_banmaxian.png);
+}
+.grid td{
+    width: 70px;
+    white-space: nowrap;
+}
+
+.fabu{
+	margin-top: 5px;
+    margin-right: 10px;
+}
+
+.list{
+    background: url(../img/bg_notice.png);
+    background-size: 100%;
+}
+
+.list-title{
+    height: 54px;
+    position: relative;
+}
+ .title-child{
+    font-size: 14px;
+    margin: 10px 20px 0;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+}
+.title-child.selected{
+    border-bottom: 4px solid #c2b072;
+}
+.title-child:nth-child(2){
+    margin-left: 16px;
+}
+.list-body{
+    padding: 20px 16px;
+}
+.page-footer{
+    text-align: center;
+    clear: both;
+}
+
+.font16{
+     font-size: 16px;
+    font-weight: bold;
+}
+ .game-row{
+    width: 100%;
+    padding:5px 0;
+    margin: 0 auto;
+    text-align:center;
+    display:block;
+    white-space: nowrap;
+}
+.score {
+    font-size: 24px;
+    font-weight: bold;
+}
+.score input{
+	vertical-align: middle;
+	width:40px;
+}
+.score input:disabled{
+	border: none;
+}
+.team-logo{
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+}
+ .game-row .team-logo{
+	vertical-align: middle;
+}
+
+ .game-row > div{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+ .grid .game-row .left-team{
+	text-align:right;
+    width: 180px;
+    white-space: nowrap;
+    direction: rtl;
+}
+ .grid .game-row .right-team{
+	text-align: left;
+    width: 180px;
+}
+
+ .grid .game-row .left-team .team-name{
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+
+ .grid .game-row .right-team .team-name{
+    margin-left: 15px;
+     vertical-align: middle;
+}
+.grid .game-row .team-name{
+    display: inline-block;
+    white-space: nowrap;
+    width:100px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+  .line{
+	border-bottom: 1px solid rgba(255,255,255,0.2);
+ }
+ .rightline{
+    margin:0 0 20px 60px;
+ }
+  .line span {
+ 	position:relative;
+ 	padding-right:25px;
+ 	top: 13px;
+    left: -60px;	
+ }
+ 
+.stripe{
+	height:96px;
+	display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.userinfo {
+    top: 48px;
+    left: -10px;
+    z-index: 100000;
+    background-color: black;
+    padding: 5px 0;
+    min-width: 100px;
+}
+.userinfo p {
+    height: 25px;
+    line-height: 25px;
+    margin-left: 13px;
+    width: 100px;
+}

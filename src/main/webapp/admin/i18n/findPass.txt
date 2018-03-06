@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <title>找回密码</title>
+  <style type="text/css">
+	a:after
+	{content: " " attr(href)
+	}
+</style>
+
+ </head>
+ <body>
+  <p>亲爱的用户：</p>
+    <div style="padding-left:40px;">
+    <p>您已申请admin tabletServer密码修复服务，请点击下面的链接来重新设置密码：</p>
+    <p><a href="{0}/resetPassword/{1}?token={2}"></a></p>
+    <p>为确保您的账号安全，该链接仅24小时访问有效。如果丢失，请您前往admin tabletServer重新使用忘记密码服务。</p>
+    <p></p>
+    <p>如无法直接点击上述链接，请将以上链接复制到您的浏览器中打开。</p>
+    <p></p>
+    <p></p>
+    <p>admin tabletServer</p>
+    <p><a>http://www.admin.com</a></p>
+    <p>【注意】本邮件为系统自动发送，请不要回复。</p>
+  </div>	
+ </body>
+</html>

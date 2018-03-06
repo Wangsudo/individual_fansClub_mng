@@ -1,0 +1,30 @@
+<div class="main" id="teamInfo" ng-controller="teamInfoController">
+    <div class="list">
+    	  <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="球队档案" >
+        	 <div class="body">
+        	 	<div class="logoDiv">
+        	 	   <img  ng-src="{{getImgUrl(curTeam.coverUrl,3)}}">
+        	 	</div>
+	            <div class="line rightline">
+	                <span>球队信息</span>
+	            </div>
+	            <div class="text">
+	                <div>现任队长：{{curCaptain.name}}</div>
+                	<div ng-if="curCaptain.team.id == user.team.id||user.isCaptain==1">
+		                <div>电话：{{curCaptain.mobile}}</div>
+		                <div>qq：{{curCaptain.qq}}</div>
+		                <div>微信号：{{curCaptain.wechat}}</div>
+		             </div>
+	                <div>加入日期：{{curTeam.createTime|formatDate:"{yyyy}年{MM}月{dd}日"}}</div>
+	            </div>
+	            <div class="line rightline">
+	                <span>球队简介</span>
+	            </div>
+	            <div class="text" compile="curTeam.introduce">
+	            </div>
+        	 </div>
+		     </uib-tab>
+        </uib-tabset>
+    </div>
+</div>

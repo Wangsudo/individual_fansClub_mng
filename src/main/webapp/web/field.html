@@ -1,0 +1,39 @@
+<div class="main" id="field" ng-controller = 'fieldController'>
+    <div class="list grid">
+		  <uib-tabset  class="customTab"  justified=false type="pills">
+		      <uib-tab  heading="球场">
+				   <table cellpadding="0" cellspacing="0" >
+					<thead class="title">
+						 <td style="width:60px;">序号</td>
+		                 <td style="width:180px;">球场照片</td>
+		                 <td style="width:700px;">场地信息</td>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in items.list">
+							<td style="height:102px;"><div  ng-class="{num1:$index == 0,num2:$index==1,num3:$index == 2,num:$index>2}">{{$index+1}}</div></td>
+							<td><img class="img175" ng-src="{{getImgUrl(item.url,2)}}" ng-click="gotoPage('/'+module+'/fieldDetail?id='+item.id)"></td>
+							<td class="text-left padl20">
+							<a class="smallTitle" ng-href="#/{{module}}/fieldDetail?id={{item.id}}">{{item.name}}</a>
+							<div>地址:{{item.address}}</div>
+							<div><span class="mr10">联系人:{{item.contact}}</span> <span>电话:{{item.mobile}}</span></div>
+							</td>
+						</tr>
+						<tr></tr>
+					</tbody>
+				</table>
+		         <div class="page-footer">
+							 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+							   ng-change="pageChanged()" items-per-page="20"
+							 previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		          </div>
+            </uib-tab>
+         	<li class="pull-right">
+               	<div class="find">
+		        			 <i class="find-btn" ng-click="find()"></i>
+		        		     <input type="text" placeholder="输入球场名称" ng-model="search.snippet" ng-keyup="find($event)" >
+        		</div>
+           </li>
+	    </uib-tabset>
+	</div>
+</div>
+

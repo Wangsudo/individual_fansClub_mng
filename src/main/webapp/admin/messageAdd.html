@@ -1,0 +1,103 @@
+		<div class="modal-header">
+	           <h3 class="modal-title">{{(message.id?'EDIT':'ADD')|translate}}站内信
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+	         <form name="form" novalidate>  
+			 <div class="form-group" >
+				<label class="col-sm-2 control-label">{{'TITLE'|translate}}：</label>
+				<div  class="col-sm-4">
+					 <input type="text"  name="title" ng-model ="message.title" class="form-control" placeholder=""
+					 required maxlength="50"  >
+				</div>
+				
+				<label class="col-xs-2 control-label">球队：</label>
+				<div class="col-xs-4" uib-popover="{{form.team.$error.required?'请选择球队！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input type="text" required  ng-model="message.team" name="player" placeholder="" class="form-control" ng-class="{'waiting':loadingTeam}" 
+					uib-typeahead="o as o.teamTitle for o in getTeam($viewValue)" typeahead-min-length=0  typeahead-loading="loadingTeam" typeahead-wait-ms='300' />
+				</div>
+							
+			</div>
+		 <div class="form-group" >
+				<label class="col-sm-2 control-label">站内信类型：</label>
+				<div  class="col-sm-4">
+					<select class="form-control" ng-model="message.messageType" name='messageType' ng-options="o[0] as o[1] for o in messageTypeList"
+					required >
+						<option value="">{{'SELECT'|translate}}</option>
+					</select>
+				</div>
+				<label class="col-sm-2 control-label">备注：</label>
+				<div  class="col-sm-4">
+					 <input type="text"  name="content" ng-model ="message.comment" class="form-control" placeholder=""
+					 maxlength="50"  >
+				</div>
+			</div>
+			
+			<div class="form-group" ng-if="message.messageType==2" >
+				<label class="col-sm-2 control-label">签到地点：</label>
+				<div  class="col-sm-4">
+					 <input type="text"  name="address" ng-model ="message.address" class="form-control" placeholder=""
+					 maxlength="50"  >
+				</div>
+				<label class="col-sm-2 control-label">签到时间：</label>
+				<div class="col-xs-4" uib-popover="{{form.beginTime.$error.required?'请输入签到时间！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input class="form-control wdate" ng-model="message.beginTime" text-date readOnly=true placeholder="签到时间" onchange="" 
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+				</div>
+			</div>
+			
+			 <div class="form-group">
+				<label class="col-xs-2 control-label">内容：</label>
+				<div class="col-xs-10">
+					<textarea type="text" style="height:150px;resize:auto" class="form-control" name="content" required ng-model="message.content"   />
+				</div>
+		    </div>
+		     <table class="table table-bordered table-striped table-hover">
+                    <thead  class="title">
+                        <th style="width:140px;">头像</th>
+                        <th>姓名</th>
+                        <th ng-if="message.messageType==2">状态</th>
+                        <th ng-if="message.messageType==2">签到时间</th>
+                        <th ng-if="message.messageType==2" style="width:140px;">签到</th>
+                        <th ng-if="message.messageType==2" style="width:140px;">审核</th>
+                    </thead>
+                    <tbody>
+                    	<tr ng-repeat="item in message.tanks">
+                    	    <td><img class="img24" ng-src="{{getImgUrl(item.player.iconUrl,1)}}" ></td>
+                            <td>{{item.player.name}}</td>
+                            <td ng-if="message.messageType==2">
+                            	<div  ng-if="item.confirmStatus == 1">
+                            		已签到
+                            		<span ng-if="item.auditStatus ==1" >（已通过审核）</span>
+                                    <span ng-if="item.auditStatus ==2" >（审核不通过）</span>
+                                    <span ng-if="!item.auditStatus" >（等待审核）</span>
+                            	</div>
+                            	<div  ng-if="item.confirmStatus != 1">
+                            		{{item.confirmStatus==2?"没空":"未签到"}}
+                            	</div>
+                            </td>
+                            <td ng-if="message.messageType==2"><span class="gray">{{item.confirmTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</span></td>
+                            <td ng-if="message.messageType==2">
+                            	<!-- 管理员未审核时，球员可以签到或者撤消签到 -->
+                                 <div class="btn-group" >
+								        <button class="btn btn-danger" ng-if="item.confirmStatus!=2" ng-click="signIn(item,2)" >没空</button>
+								        <button class="btn btn-success" ng-if="item.confirmStatus!=1" ng-click="signIn(item,1)">签到</button>
+						        </div>
+                            </td>
+                            <td ng-if="message.messageType==2">
+                                <div class="btn-group">
+                                	    <button class="btn btn-danger"  ng-if="item.auditStatus!=2" ng-click="audit(item,2)" >拒绝</button>
+								        <button class="btn btn-success" ng-if="item.auditStatus!=1" ng-click="audit(item,1)">通过</button>
+							    </div>
+                            </td>
+                    	</tr>
+                    </tbody>
+                </table>
+		  </form>
+		</div>
+		
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(message)" >{{'CONFIRM'|translate}}</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+	    </div>
+  

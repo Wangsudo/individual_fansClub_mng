@@ -1,0 +1,170 @@
+<form   name="form" novalidate>
+<div class="modal-body form-horizontal container-fluid" >
+    <!-- Tab panes -->
+    <uib-tabset>
+        <uib-tab  heading="基本信息" >
+            <div class="row" style="padding-top:12px;">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">队名:</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" name="teamTitle" ng-model="team.teamTitle" required id={{team.id}}  ensure_unique='name' api='/team/checkUnique' 
+                              uib-popover="{{form.teamTitle.$error.required?'队名不可为空！':(form.teamTitle.$error.unique?'队名已被使用':'')}}" popover-placement="top" popover-trigger="mouseenter"
+                             />
+                        </div>
+                    </div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">赛制:</label>
+						<div class="col-xs-8" uib-popover="{{form.teamType.$error.required?'请选择赛制！':''}}" popover-placement="top" popover-trigger="mouseenter">
+							<select class="form-control" required ng-model="team.teamType" name="teamType" ng-options="o[0] as o[1] for o in teamTypeList"
+								<option value="">--请选择--</option>
+							</select> 
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">活动频率:</label>
+						<div class="col-xs-8" uib-popover="{{form.acRate.$error.required?'请选择活动频率！':''}}" popover-placement="top" popover-trigger="mouseenter">
+							<select class="form-control" required ng-model="team.acRate" name="acRate" ng-options="o[0] as o[1] for o in acRateList"
+								<option value="">--请选择--</option>
+							</select> 
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-4 control-label">类型:</label>
+						<div class="col-xs-8">
+							<select class="form-control" ng-model="team.kind" name="kind" ng-options="o[0] as o[1] for o in teamKindList">
+								<option value="">--请选择--</option>
+							</select> 
+						</div>
+					</div>
+					
+					
+				<div class="form-group">
+					<label class="col-xs-4 control-label">所在地:</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" ng-model="team.region"></input>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-4 control-label">建队时间：</label>
+					<div class="col-xs-8" uib-popover="{{form.registTime.$error.required?'请输入建队时间！':''}}" popover-placement="top" popover-trigger="mouseenter">
+						<input class="form-control wdate" required name="registTime" ng-model="team.registTime" readOnly=true placeholder="建队时间" onchange=""
+							onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" text-date/>
+					</div>
+				</div>
+
+			</div>
+                <div class="col-xs-6">
+	                <div class="thumbnail col-sm-11 col-sm-offset-1 text-center wheelDiv" ng-class="{missImg:!team.iconUrl}" >
+				 		  <img  alt=""  ng-src="{{getImgUrl(team.iconUrl,2)}}" id="teamIcon" image-load="wheelIcon(getImgUrl(team.iconUrl,2))" class="wheelImg" />
+					       <div class="caption">
+				             <p>
+				             <button class="btn btn-warning height34" ng-click="clearIcon(team)"><i class="glyphicon glyphicon-erase"></i></button>
+				             <button class="btn btn-default height34" ng-click="uploadIcon(team)"><i class="glyphicon glyphicon-picture "></i></button>
+				            </p>
+				          </div>
+				    </div>
+                </div>
+	             <div class="col-xs-12">
+	             	<div class="form-group">
+	             			<label class="col-xs-2 control-label">是否官方:</label>
+							<span class="col-xs-1 mt7">
+									<input type="checkbox" id="ace2" class="checkbox-8-2" type="checkbox" ng-model="team.official" 
+										ng-true-value=1 ng-false-value=2 />
+									<label  for="ace2" uib-tooltip="{{team.official==1?'官方':'非官方'}}"></label>
+							</span>
+							<label class="col-xs-2 control-label">是否解散:</label>
+							<span class="col-xs-1 mt7">
+									<input type="checkbox" id="ace4" class="checkbox-8-2" type="checkbox" ng-model="team.dismissed" 
+										ng-true-value=1 ng-false-value=2 />
+									<label  for="ace4" uib-tooltip="{{team.dismissed==1?'已解散':'未解散'}}"></label>
+							</span>
+							
+	             	</div>
+				 </div>
+			<div class="col-xs-12">
+	                <div class="thumbnail col-sm-12 text-center wheelDiv" ng-class="{missImg:!team.coverUrl}" >
+				 		  <img  alt=""  ng-src="{{getImgUrl(team.coverUrl,2)}}" id="teamCover" image-load="wheelCover(getImgUrl(team.coverUrl,2))" class="wheelImg" />
+					       <div class="caption">
+				             <p>
+				             <button class="btn btn-warning height34" ng-click="clearCover(team)"><i class="glyphicon glyphicon-erase"></i></button>
+				             <button class="btn btn-default height34" ng-click="uploadCover(team)"><i class="glyphicon glyphicon-picture "></i></button>
+				            </p>
+				          </div>
+				    </div>
+                </div>
+			<div class="col-xs-12">
+				<div class="form-group ">
+					<label class="col-xs-2 control-label">备注：</label>
+					<div class="col-xs-10">
+						<div class="ueditor" ng-model="team.introduce" ></div>
+					</div>
+				</div>
+			</div>
+		</div>
+        </uib-tab>
+        <uib-tab heading="统计信息" >
+         <!--    <div class="form-group" style="padding-top:12px">
+				<label class="col-xs-2 control-label">总约战场次:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.chanllegeTimes}}</span>
+				</div>
+				<label class="col-xs-2 control-label">总约成场次:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.acceptedTimes}}</span>
+				</div>
+		
+			</div> -->
+			<div class="form-group">
+				<label class="col-xs-2 control-label">比赛场次:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.total}}</span>
+				</div>
+		
+				<label class="col-xs-2 control-label">平:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.even}}</span>
+				</div>
+			</div>
+			<div class="form-group">
+		
+				<label class="col-xs-2 control-label">胜:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.win}}</span>
+				</div>
+				<label class="col-xs-2 control-label">负:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.lost}}</span>
+				</div>
+			</div>
+		
+			<div class="form-group">
+		    	<label class="col-xs-2 control-label">活动发布次数:</label>
+						<div class="col-xs-4 mt7">
+							<span>{{team.newsTimes}}</span>
+						</div>
+				<label class="col-xs-2 control-label">综合得分:</label>
+				<div class="col-xs-4 mt7">
+					<span>{{team.point}}</span>
+				</div>
+			</div>
+			  <div class="form-group">
+                <label class="col-xs-2 control-label">当前扣分:</label>
+                <div class="col-xs-4 mt7">
+                    <span type="number">{{team.pointMinus||0}}</span>
+                </div>
+
+                <label class="col-xs-2 control-label">再罚:</label>
+                <div class="col-xs-4">
+                    <input type="number" class="form-control" ng-model="team.pulish">
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+   </div>
+</form>
+   <div class="modal-footer">
+       <button class="btn btn-primary" type="button" ng-click="save(team)">{{'CONFIRM'|translate}}</button>
+       <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+   </div>

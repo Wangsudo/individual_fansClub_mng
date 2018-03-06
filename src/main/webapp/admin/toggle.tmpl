@@ -1,0 +1,3 @@
+    <input type="checkbox" id="ace{{$index}}" class="checkbox-8-2" type="checkbox" ng-model="item.isEnabled"
+       ng-true-value=1 ng-false-value=2 ng-change="toggleEnable(item,'#lab'+$index)" />
+     <label  for="ace{{$index}}" uib-tooltip="{{item.isEnabled==2?'已屏蔽':'正常'}}"  id="lab{{$index}}"></label>

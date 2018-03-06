@@ -1,0 +1,83 @@
+<form name="form" novalidate ng-class="{submited:form.submited}">
+<div class="createTeam" id="teamInfo" ng-controller="teamInfoEditController">
+    <div class="list">
+    	  <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="球队档案" >
+        	 <div class="body form-horizontal">
+        	     <div class="form-group">
+			           <label class="col-xs-4 control-label">球队合影：</label>
+	        	 	   <div class="thumbnail imgBack col-xs-7 text-center" style="height:200px">
+				 		  <img  alt="" style="height:100%" ng-src="{{getImgUrl(curTeam.coverUrl,2)}}" onerror="this.style.display='none'"></img>
+	 			 		  <div class="caption">
+				             <p>
+				             <button class="btn btn-warning height34" ng-click="curTeam.coverUrl = null"><i class="glyphicon glyphicon-erase"></i></button>
+				             <button class="btn btn-default height34" ng-click="uploadImage()"><i class="glyphicon glyphicon-picture"></i></button>
+				            </p>
+				          </div>
+				       </div>
+			       </div>
+        	 	<div class="text-right"></div>
+	        	    
+        	 	  <div class="form-group">
+			           <label class="col-xs-4 control-label">球队名称：</label><div class="col-xs-7 lineH32" >{{curTeam.teamTitle}}</div>
+			       </div>
+			       <div class="form-group">
+			           <label class="col-xs-4 control-label" >所属赛制：</label>
+			           <div class="col-xs-4 lineH32" >
+			           <!--     <select ng-class="{error:(clicked && !curTeam.teamType)}" ng-model="curTeam.teamType"
+								ng-options="o.key as o.value for o in teamTypeList">
+								<option value="">--请选择--</option>
+						   </select>  -->
+						   {{curTeam.teamType|keyToValue:teamTypeList}}
+			           </div>
+			           <span ng-show="clicked && !curTeam.teamType" class="error">请选择赛制！</span>
+			       </div>
+			       
+			         <div class="form-group">
+			           <label class="col-xs-4 control-label">所在地：</label>
+			           <div class="col-xs-8" >
+			           <input type="text" class="" ng-model="curTeam.region" name="region" required
+			            uib-popover="{{form.region.$error.required?'请填写所在地！':''}}" popover-placement="right" popover-trigger="mouseenter"
+			           ></input></div>
+			       </div>
+			    
+			     <div class="form-group">
+			           <label class="col-xs-4 control-label" >活动频率：</label>
+			           <div class="col-xs-8"  >
+			                <select  ng-model="curTeam.acRate" ng-options="o[0] as o[1] for o in acRateList" required name="acRate"
+				                 uib-popover="{{form.acRate.$error.required?'请选择赛制！':''}}" popover-placement="right" popover-trigger="mouseenter" >
+								<option value="">--请选择--</option>
+							</select> 
+			           </div>
+			       </div>
+			       
+			         <div class="form-group">
+			           <label class="col-xs-4 control-label" >类型：</label>
+			           <div class="col-xs-8"  >
+			                <select  ng-model="curTeam.kind" name="kind" required ng-options="o[0] as o[1] for o in teamKindList" 
+			                uib-popover="{{form.kind.$error.required?'请选择类型！':''}}" popover-placement="right" popover-trigger="mouseenter"
+			                >
+								<option value="">--请选择--</option>
+					    	</select> 
+			           </div>
+			       </div>
+			    
+			       <div class="form-group ">
+			           <label class="col-xs-4 control-label" >球队介绍：</label>
+			       	    <div class="search big-textarea col-xs-4" style="display: inline-block; width: 469px;line-height:25px;">
+					                <textarea ng-model="curTeam.introduce"></textarea>
+		                 </div>
+			       </div>
+		           <div class="form-group" style="text-align: center">
+			           <button class="btn btn-success mr10" ng-click="save(form)">完成</button>
+			           <button class="btn btn-warning" ng-click="cancel()">取消</button>
+			           <span class="error" style="width:200px;">{{modifyTeamMessage}}</span>
+			       </div>
+			       
+	            </div>
+			       
+		     </uib-tab>
+        </uib-tabset>
+    </div>
+  </div>
+ </form>

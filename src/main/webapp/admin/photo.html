@@ -1,0 +1,69 @@
+<div class="navbar-form" ng-controller = 'photoController'>
+<h3 class="title bg-info">图片列表</h3>
+	<div class="search  form-inline">
+	<div class="form-group mr5">
+		<label>球队</label>
+		<input type="text" name="search.teamTitle" ng-model="search.teamTitle" class="form-control"/>
+		</div>
+		<div class="form-group mr5">
+		<label>球员</label>
+		<input type="text" name="search.name" ng-model="search.name" class="form-control"/>
+	    </div>
+	    <div class="form-group mr5">
+		<label>上传类型</label>
+	    	<select  class="form-control" ng-model="search.type" name="search.type" ng-options="o[0] as o[1] for o in uploadTypeList" >
+ 	                <option value="">--请选择--</option>
+	        </select>
+	   </div>
+	   <div class="form-group mr5">
+		   <label>审核状态</label>
+		   <select  class="form-control"   ng-disabled="(search.type == 1)" ng-model="search.status" name="search.status" ng-options="o[0] as o[1] for o in auditStatusList"  >
+	 	                <option value="">--请选择--</option>
+		   </select>
+    	</div>
+		<div class="form-group">
+			<label>上传时间</label>
+			<input class="form-control wdate" id="fromDate" name="search.fromDate" readOnly=true onchange="" 
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+			<label>-</label>
+			<input class="form-control wdate" id="toDate" name="search.toDate" readOnly=true onchange=""
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+		</div>		    	
+		<div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)" >查询</button> 
+			<button class="btn btn-success" ng-click="showModal()"  ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				<th>球员</th>
+                <th>球队</th>
+				<th>类型</th>
+				<th>可见范围</th>
+				<th>留言</th>
+				<th>审核状态</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+				 	<td >{{item.player.name}}</td>
+			    	<td >{{item.player.team.teamTitle}}</td>
+				 	<td >{{item.type | keyToValue : uploadTypeList}}</td>
+			 		<td >{{item.viewType | keyToValue : viewTypeList}}</td>
+				 	<td >{{item.comment}}</td>
+				 	<td ><span ng-show="item.type>1">{{item.auditStatus| keyToValue : auditStatusList}}{{item.pics|getRadio}}</span></td>
+					<td excel="none">
+						<ng-include src="'toggle.tmpl'"></ng-include>
+						 <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+						 <span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

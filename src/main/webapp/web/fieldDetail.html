@@ -1,0 +1,29 @@
+<div class="main" id="fieldDetail" ng-controller="fieldDetailController">
+    <div class="list">
+    	  <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="场地详情" >
+        	 <div class="body">
+        	 	<div class="logoDiv">
+        	      <img ng-src="{{getImgUrl(field.url,3)}}">
+        	 	</div>
+	            <div class="title text-ellipsis">
+	                <span>球场信息</span>
+	                <hr class="title-line">
+	            </div>
+	            <div class="text">
+	                <div>名称：{{field.name}}</div>
+	                <div>地址：{{field.address}}</div>
+	                <div>联系人：{{field.contact}}</div>
+	                <div>电话：{{field.mobile}}</div>
+	            </div>
+	            <div class="title text-ellipsis">
+	                <span>备注</span>
+	                <hr class="title-line">
+	            </div>
+	            <div class="text" compile="field.content">
+	            </div>
+        	 </div>
+		     </uib-tab>
+        </uib-tabset>
+    </div>
+</div>

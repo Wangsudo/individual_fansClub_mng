@@ -1,0 +1,14 @@
+<div id="imgDetail" ng-controller="videoController">
+    <div id="body" class="list">
+        <div class="title">{{curVideo.title}}</div>
+        <div class=" time"><span class="mr5">{{curVideo.player.name}}  上传于：</span> <span class="gray">{{curVideo.createTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</span> </div>
+        <div class="white-border1_2"></div>
+        <div class="media">
+            <div class="text-center" id="videoContainer" compile="parseVideo(curVideo.videoDiv)"></div>
+        </div>
+        <div class="text" compile="curVideo.comment" >
+        </div>
+        <div class="good-btn" ng-click='like(curVideo)' ng-class="{active:existLike(user)}">{{likeList.length}}</div>
+    </div>
+   <ng-include src="'comments.html'"></ng-include>
+</div>

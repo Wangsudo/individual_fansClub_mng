@@ -1,0 +1,36 @@
+	<div class="modal-header">
+        <h3 class="modal-title">{{(logo.id?'EDIT':'ADD')|translate}} 队徽</h3>
+    </div>
+    <form name="form" novalidate>
+    <div class="modal-body form-horizontal container-fluid">
+    	  <div class="row">
+			     <div class="col-sm-6">
+			    	 <div  class="form-group">
+						<label class="col-sm-3 control-label">队徽名称：</label>
+						<div class="col-sm-9" uib-popover="{{form.name.$error.required?'请输入队徽名称！':''}}" popover-placement="top" popover-trigger="mouseenter" >
+							<input  type="text"  ng-model="logo.name" name="name" required class="form-control"placeholder="" />
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+		               <div class="thumbnail col-sm-11 col-sm-offset-1 text-center wheelDiv" ng-class="{missImg:!logo.url}" >
+				 		  <img  alt=""  ng-src="{{getImgUrl(logo.url,2)}}" id="logoIcon" image-load="wheel(getImgUrl(logo.url,2))"  class="wheelImg" />
+					 		  <div class="caption">
+				             <p>
+				             <button class="btn btn-warning height34" ng-click="clearImg(logo)"><i class="glyphicon glyphicon-erase"></i></button>
+				             <button class="btn btn-default height34" ng-click="uploadImage(logo)"><i class="glyphicon glyphicon-picture "></i></button>
+				            </p>
+				          </div>
+				    </div>
+		       </div>
+    	  </div>
+    </div>
+     </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save(logo)">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>
+  
+	
+		
+		

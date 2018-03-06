@@ -1,0 +1,35 @@
+<div class="navbar-form" ng-controller = 'sysconfigController'>
+<h3 class="title bg-info">系统参数</h3>
+	<div class="search  form-inline">
+		<div class="form-group mr5">
+			<label>说明</label> <input type="text"  ng-model="search.title" class="form-control" />
+		</div>
+		<div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)" >查询</button> 
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				 <th style="width:120px;">代码</th>
+				 <th style="width:120px;">说明</th>
+                 <th style="width:70px;">值</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td>{{item.code}}</td>
+					<td>{{item.comment}}</td>
+					<td>{{item.value}}</td>
+					<td excel="none">
+						 <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

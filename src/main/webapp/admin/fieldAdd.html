@@ -1,0 +1,67 @@
+	<div class="modal-header">
+        <h3 class="modal-title">{{(field.id?'EDIT':'ADD')|translate}} 球场</h3>
+    </div>
+    <form name="form" novalidate>
+    <div class="modal-body form-horizontal container-fluid">
+    	  <div class="row">
+			     <div class="col-sm-6">
+			    	 <div  class="form-group">
+						<label class="col-sm-3 control-label">场地名称：</label>
+						<div class="col-sm-9" uib-popover="{{form.name.$error.required?'请输入场地名称！':''}}" popover-placement="top" popover-trigger="mouseenter" >
+							<input  type="text"  ng-model="field.name" name="name" required class="form-control"placeholder="" />
+						</div>
+					</div>
+					 <div  class="form-group">
+					 	<label class="col-sm-3 control-label">管理员：</label>
+						<div class="col-sm-9"  uib-popover="{{form.adminId.$error.required?'请选择管理员！':''}}" popover-placement="top" popover-trigger="mouseenter">
+							<select class="form-control" required ng-model="field.adminId" name="adminId" ng-options="o.id as o.account  for o in adminList">
+							<option value="">--请选择--</option>
+							</select>
+						</div>
+					 </div>
+					 <div  class="form-group">
+						<label class="col-sm-3 control-label">地址：</label>
+						<div class="col-sm-9" uib-popover="{{form.address.$error.required?'请输入场地地址！':''}}" popover-placement="top" popover-trigger="mouseenter" >
+							<input  type="text"  ng-model="field.address" name="address"  required class="form-control"placeholder="" />
+						</div>
+					</div>
+					 <div  class="form-group">
+						<label class="col-sm-3 control-label">联系人：</label>
+						<div class="col-sm-9" uib-popover="{{form.contact.$error.required?'请输入联系人！':''}}" popover-placement="top" popover-trigger="mouseenter" >
+							<input  type="text"  ng-model="field.contact" name="contact" required class="form-control"placeholder="" />
+						</div>
+					</div>
+					 <div  class="form-group">
+						<label class="col-sm-3 control-label">电话：</label>
+						<div class="col-sm-9" uib-popover="{{form.mobile.$error.required?'请输入电话！':''}}" popover-placement="top" popover-trigger="mouseenter" >
+							<input  type="text"  ng-model="field.mobile" name="mobile" required class="form-control"placeholder="" />
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+		               <div class="thumbnail col-sm-11 col-sm-offset-1 text-center wheelDiv" ng-class="{missImg:!field.url}" >
+				 		  <img  alt=""  ng-src="{{getImgUrl(field.url,2)}}" id="fieldIcon" image-load="wheel(getImgUrl(field.url,2))"  class="wheelImg" />
+					 		  <div class="caption">
+				             <p>
+				             <button class="btn btn-warning height34" ng-click="clearImg(field)"><i class="glyphicon glyphicon-erase"></i></button>
+				             <button class="btn btn-default height34" ng-click="uploadImage(field)"><i class="glyphicon glyphicon-picture "></i></button>
+				            </p>
+				          </div>
+				    </div>
+		       </div>
+			 <div class="col-xs-12">
+					<h4 >备注：</h4>
+					<div class="ueditor" ng-model="field.content" style="width:100%"></div>
+			  </div>
+    	  </div>
+	     
+    </div>
+     </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save(field)">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>
+  
+	
+		
+		

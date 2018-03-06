@@ -1,0 +1,54 @@
+    <div class="form form-horizontal" ng-controller="findPwdController" style="padding-top:100px" >
+        <div ng-show="step ==1">
+        	<form name="form" novalidate ng-class="{submited:form.submited}">
+	            <div class="form-group">
+	                <div class="col-xs-offset-4">
+	                    <input type="text" placeholder="请输入注册手机号" ng-model="mobile" required 
+	                     ng-class="{error:(mobileErr),waiting:(mobileCheck=='ing'),ok:(mobileCheck =='ok')}" ng-blur="checkMobile()"
+	                    ><span ng-show="mobileErr" class="error">{{mobileErr}}！</span>
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <div class="col-xs-offset-4">
+	                    <input type="text" style="width:200px;" ng-model="verifyCode" placeholder="请输入短信验证码" name="verifyCode" required	>
+	                    <button class="btn btn-success" ng-disabled="btnTip!='点击获取验证码'" style="width: 140px;" ng-click="sendSmsForPassword()">{{btnTip}}</button>
+	                    <span ng-show="verifyCodeErr" class="error">{{verifyCodeErr}}！</span>
+	                </div>
+	            </div>
+	            <div class="form-group">
+	               <div class="col-xs-offset-4 mt10"  ><button class="btn btn-primary" style="width: 344px" ng-click="verify(form)">下一步</button></div>
+	            </div>
+            </form>
+        </div>
+        <div ng-show="step ==2" >
+            <div class="form-group">
+                <div class="col-xs-offset-4">
+                    <input type="password" ng-model="password" placeholder="请输入新密码" ng-blur="checkPassword()">
+                    <span ng-show="passwordErr" class="error">{{passwordErr}}！</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-4">
+                    <input type="password" ng-model="password2" placeholder="确认密码" ng-blur="checkPassword2()">
+                    <span ng-show="password2Err" class="error">{{password2Err}}！</span>
+                </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-offset-4 mt10" > 
+            	  <button class="btn btn-primary" style="width: 344px" ng-click="confirm()">完成</button>
+              </div>
+            </div>
+        </div>
+         <div ng-show="step ==3" >
+            <div class="form-group">
+                <div class="col-xs-offset-4 text-center" style="width:344px;padding:40px">
+                    <h3>修改密码成功!</h3>
+                </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-offset-4 mt10" > 
+            	  <button class="btn btn-primary" style="width: 344px" onclick="location.href='/web/main.html'">返回首页</button>
+              </div>
+            </div>
+        </div>
+    </div>

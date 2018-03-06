@@ -1,0 +1,9 @@
+ <div class="right-team" ng-if="item.fromTeam.dismissed!=1"> 
+     <img class="team-logo" ng-src="{{getImgUrl(item.fromTeam.iconUrl,2)}} " ng-click="gotoPage('/'+module+'/teamDetail?id='+item.fromTeam.id)" />
+    <div class="team-name text-ellipsis"><a  ng-click="gotoPage('/'+module+'/teamDetail?id='+item.fromTeam.id)">{{item.fromTeam.teamTitle}}</a></div> 
+</div>
+ <div class="left-team" ng-if="item.fromTeam.dismissed==1">
+    <img class="team-logo gray" uib-popover="已解散" popover-trigger="mouseenter"  popover-append-to-body="true"
+      ng-src="{{getImgUrl(item.fromTeam.iconUrl,2)}}"  />
+    <div class="team-name text-ellipsis"><a >{{item.fromTeam.teamTitle}}</a></div>
+ </div>

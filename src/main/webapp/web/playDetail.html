@@ -1,0 +1,34 @@
+<div id="playDetail" class="list" ng-controller="playDetailController">
+    <div id="body">
+        <div class="title">{{game.cup.name}}{{game.group.name}}</div>
+        <div class="gray time">{{game.beginTime|getDate}}</div>
+        <div class="white-border1_2"></div>
+        <div class="grid" >
+            <table cellpadding="0" cellspacing="0" style="margin:20px 0;border: 1px solid #888;"> 
+						<tbody>
+							<tr>
+							        <td style="width:160px;">
+							            <img class="team-num" ng-src="{{getTeamTypeIcon(game.teamType)}}">
+							        </td>
+							         <td style="width:100px;">{{game.address}}</div>
+							        <td style="width:100px;"><div class="play-type gray">{{getType(game)}}</div>
+							        </td>
+							        <td style="width:430px;height:100px;">
+							            <div class="game-row" >
+							               <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+							                <div class="game-info">
+							                    <div class="score yellow">{{getScore(game)}}</div>
+							                </div>
+							            <ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+							            </div>
+							        </td>
+							    </tr>
+						</tbody>
+					</table>
+        </div>
+					
+						
+        <div compile="game.content" style="padding-bottom:30px;font-size:14px;">
+        </div>
+    </div>
+</div>

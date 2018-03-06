@@ -1,0 +1,36 @@
+<div class="navbar-form" ng-controller = 'roleController'>
+<h3 class="title bg-info">{{'ROLE_MANAGE'|translate}}</h3>
+	<div class="search  form-inline">
+		
+		 <div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)" >{{"QUERY"|translate}}</button> 
+			<button class="btn btn-success" ng-click="showModal()"  ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>{{"ADD"|translate}}</button>
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <td class="text-center">NO</td>
+                 <td>{{"ROLE"|translate}}{{"NAME"|translate}}</td>
+                 <td>{{"CURRENT"|translate}}</td>
+                 <td>{{"SET"|translate}}</td>
+			</thead>
+			<tbody>
+				<tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">系统没有查询到相关数据！</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td>{{item.roleName}}</td>
+					<td>{{item.count}}</td>
+					<td class="text-center" id="delRole{{item.id}}">
+						<div ng-hide="item.id==1" >
+							<span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+						    <span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+						</div>
+					</td>
+				</tr>
+				<tr></tr>
+			</tbody>
+		</table>
+     <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

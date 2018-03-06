@@ -1,0 +1,112 @@
+﻿<div class="navbar-form" ng-controller = 'playerController'>
+<h3 class="title bg-info">球员列表 <button class="btn btn-sm btn-info pull-right" ng-click="showFormula()" style="margin-top:6px">荣誉与身价公式</button>
+</h3>
+		<div class="search  form-inline">
+				<div class="form-group mr5">
+					<label>姓名</label>
+					<input type="text" name="search.name" ng-model="search.name" class="form-control" />
+				</div>
+				<div class="form-group mr5">
+					<label>账号</label>
+					<input type="text" ng-model="search.account" class="form-control" />
+				</div>
+				<div class="form-group mr5">
+					<label>角色</label>
+					<select class="form-control" ng-model="search.isCaptain" name="search.isCaptain">
+							<option value="">--请选择--</option>
+							<option value=1>队长</option>
+							<option value=2>队员</option>
+					</select>
+				</div>
+				<div class="form-group mr5">
+					<label>球队</label>
+					<input type="text" name="search.teamTitle" ng-model="search.teamTitle" class="form-control" />
+				</div>
+				<div class="form-group mr5">
+					<label>审核状态</label>
+					<select class="form-control" ng-model="search.status" name="search.status" ng-options="o[0] as o[1] for o in auditStatusList track by o[0]">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>注册时间</label>
+					<input class="form-control wdate" id="fromDate"  readOnly=true onchange="" 
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+					<label>-</label>
+					<input class="form-control wdate" id="toDate"  readOnly=true onchange=""
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+				</div>
+				 <div class="form-group pull-right">
+					<button class="btn btn-primary" ng-click="find(1)">查询</button>
+					 <button class="btn btn-primary" ng-click="setCoordinate()">设置坐标</button>
+					 <button class="btn btn-success" ng-click="showModal()" ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+				</div>
+	  </div>
+	   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				 <th excel="none"><i class="glyphicon glyphicon-picture"></i></th>
+                <th>帐号</th>
+				<th>姓名</th>
+				<th>综合积分</th>
+				<th>身价</th>
+				<th>荣誉</th>
+				<th>球队</th>
+				<th>角色</th>
+				<th>擅长位置</th>
+				<th>注册时间</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="100" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td class="text-center" excel="none"><img  class="wid32 hand" ng-src="{{getImgUrl(item.iconUrl,1)}}" ng-click="showPhoto(getImgUrl(item.iconUrl,3))"></td>
+					<td>{{item.mobile}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.point}}<a class="pull-right" popover-placement="right" uib-popover-template="'playerPoint.html'" popover-trigger="mouseenter" >详情</a></td>
+						<td>{{item.value}}<a class="pull-right" popover-placement="right" uib-popover-template="'playerValue.html'" popover-trigger="mouseenter" >详情</a></td>
+						<td><a ng-click="honorModal(item)" class="hand">
+							<img ng-repeat="t in item.honors" ng-src="{{getImgUrl(t.honor.url,1)}}" class="img24" ng-title="{{t.honor.name}}" /> 
+							<span ng-hide="item.honors.length">添加荣誉</span></a>
+						</td>
+						<td>{{item.team.teamTitle}}</td>
+						<td>{{item.isCaptain==1?"队长":"队员"}}</td>
+						<td>{{item.position| keyToValue : playerPositionList}}</td>
+						<td>{{item.createTime|formatDate:'{yyyy}/{MM}/{dd}'}}</td>
+					<td excel="none">
+					    <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+					      <span href="#" class="icon access" ng-click="permissionModal(item,'/player/toggleLock','player')" ng-show="getAccess(curMenu,4)"
+						   popover-placement="left" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="mouseenter"> </span>
+							<span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span>
+						<button uib-tooltip="重置密码" class="btn btn-danger" ng-click="resetPassword(item)"><i class="glyphicon glyphicon-erase" ></i></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-include src="'/admin/pager.html'"></ng-include>
+		
+		<script type="text/ng-template" id="playerPoint.html">
+	<table ng-init="getActive(item)" class="tipTable"><caption class="text-center">综合积分:{{item.point}}</caption>
+		<tr><td class="text-center" style="width:80px;">类别</td><td class="text-center" style="width:150px;">值</td><td class="text-center">分值</td></tr>
+		<tr><td>参赛次数</td><td>{{item.win}}+{{item.even}}+{{item.lost}}={{item.win+item.even+item.lost}}</td><td>{{weight.player_total_game}}</td></tr>
+		<tr><td>活动签到</td><td>{{active.attendTimes||0}}</td><td>{{weight.player_active}}</td></tr>
+		<tr><td>胜利次数</td><td>{{item.win}}</td><td>{{weight.player_win_rate}}</td></tr>
+		<tr><td>被赞次数</td><td>{{item.likeNum}}</td><td>{{weight.player_like}}</td></tr>
+		<tr><td>被罚分数</td><td></td><td>-{{item.pointMinus}}</td></tr>
+	</table>
+      </script>
+      
+     		<script type="text/ng-template" id="playerValue.html">
+	<table class="tipTable"><caption class="text-center">球员身价:{{item.value}}</caption>
+		<tr><td class="text-center" style="width:80px;">类别</td><td class="text-center" style="width:150px;">值</td><td class="text-center">分值</td></tr>
+		<tr><td>参赛次数</td><td>{{item.win}}+{{item.even}}+{{item.lost}}={{item.win+item.even+item.lost}}</td><td>{{weight.total}}</td></tr>
+		<tr><td>胜利次数</td><td>{{item.win}}</td><td>{{weight.win}}</td></tr>
+		<tr><td>平局次数</td><td>{{item.even}}</td><td>{{weight.even}}</td></tr>
+		<tr><td>失败次数</td><td>{{item.lost}}</td><td>{{weight.lost}}</td></tr>
+		<tr><td>注册即得</td><td></td><td>+{{weight.beginer}}</td></tr>
+	</table>
+      </script>
+</div>
+
+	

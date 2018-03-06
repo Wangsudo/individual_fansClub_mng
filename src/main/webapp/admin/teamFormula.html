@@ -1,0 +1,30 @@
+	 <form name="form" novalidate>  
+		<div class="modal-header">
+	           <h3 class="modal-title">球队荣誉公式
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+		    	<div class="form-inline" style="font-size:18px">
+					        综合积分=参赛次数&times;<input type="number" name="team_total_game" required ng-model="weight.team_total_game" class="form-control" style="width:90px"/>+
+						               活动发布&times;<input type="number" name="team_active" required  ng-model="weight.team_active" class="form-control" style="width:90px"/>+
+					                       每胜一场&times;<input type="number"  name="team_win_rate" required ng-model="weight.team_win_rate" class="form-control" style="width:90px"/>+
+						               点赞数&times;<input type="number"  name="team_like" required ng-model="weight.team_like" class="form-control" style="width:90px"/>
+						</div>
+						<b ng-show="formularError" class="red"><imgsrc="/images/alarm.png"></img>{{formularError}}</b>
+						<h4>提示:</h4>
+				  <ul>
+					<li> 球队价值：球员的总身价之和</li>	
+					<li>约战被对手投诉放鸽子一次，减总分50分（需要后台人工操作），这个不需要程序员做任何事情，只需要管理员可以修改该球队综合评价的分值即可。</li>
+					<li>综合评价结果是一个数值，但这个数值能用奖牌来表示，每一个奖牌代表一个数值区间，这个数值小数点后保留1位。</li>	
+					<li>1奖牌：1-100分</li>	
+					<li>2奖牌：101-300分</li>	
+					<li>3奖牌：301-600分</li>	
+					<li>4奖牌：601-900分</li>	
+					<li>5奖牌：901-1200分</li>	
+				</ul>
+		</div>
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(form)" >确定</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+	    </div>
+  </form>

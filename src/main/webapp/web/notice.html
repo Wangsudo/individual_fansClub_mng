@@ -1,0 +1,250 @@
+<div id="notice" class="list grid" ng-controller="noticeController">
+	<uib-tabset class="customTab" justified=false type="pills"> 
+	   <uib-tab  ng-repeat="items in itemsList" active = "items.active" ng-click="items.unReadNum = 0">
+	       <uib-tab-heading>
+                {{items.name}}<div class="news-num" ng-show="items.unReadNum>0">{{items.unReadNum}}</div>
+          </uib-tab-heading>
+		<table cellpadding="0" cellspacing="0" class="player-table" ng-if="items.name =='球队招人'">
+			   <thead class="title">
+			   		<td>球员</td>
+	                <td>内容</td>
+	                <td>时间</td>
+	                <td>操作</td>
+	            </thead>
+	            <tbody>
+	            	<tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+						系统没有查询到相关数据！
+					</td></tr>
+	                <tr ng-repeat="item in items.list">
+	                	<td class="text-left padl20"><img ng-src="{{getImgUrl(item.player.iconUrl,1)}}" class="img24 mr10" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)"/>
+	                	    <a ng-href="#/notice/playerDetail?id={{item.player.id}}">{{item.player.name}}</a></td>
+	                    <td>{{item.content||'邀请加入球队'}}</td>
+	                    <td>{{item.opTime|getDate}}</td>
+	                    <td>
+	                    <div ng-if="!item.confirmStatus">等待球员回复</div>
+	                    <div ng-if="item.confirmStatus">
+	                        <span ng-if="item.confirmStatus" >{{item.confirmStatus==1?'已入队':'已放弃入队'}}</span>
+	                    </div>
+	                    </td>
+	                </tr>
+			   </tbody>
+		</table>
+		<table cellpadding="0" cellspacing="0" class="player-table" ng-if="items.name =='入队申请'">
+			   <thead class="title">
+			   		<td>球员</td>
+	                <td>内容</td>
+	                <td>时间</td>
+	                <td>操作</td>
+	            </thead>
+	            <tbody>
+	            	<tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+						系统没有查询到相关数据！
+					</td></tr>
+	                <tr ng-repeat="item in items.list">
+	                	<td class="text-left padl20"><img ng-src="{{getImgUrl(item.apply.player.iconUrl,1)}}" class="img24 mr10" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.apply.player.id)"/>
+	                	    <a ng-href="#/notice/playerDetail?id={{item.apply.player.id}}">{{item.apply.player.name}}</a></td>
+	                    <td>{{item.apply.title||'邀请加入球队'}}</td>
+	                    <td>{{item.createTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</td>
+	                    <td>
+	                    <div ng-if="item.confirmStatus==2">球员放弃加入</div>
+	                    <div ng-if="item.confirmStatus!=2">
+		                    <a ng-href="#/notice/playerDetail?id={{item.apply.player.id}}" ng-if="!item.auditStatus"><div class="btn-s green">去处理</div></a>
+		                    <span ng-if="item.auditStatus&&!item.confirmStatus">{{item.auditStatus==1?'已邀请入队，待球员确认':'已拒绝'}}</span>
+	                        <span ng-if="item.auditStatus==1&&item.confirmStatus" >{{item.confirmStatus==1?'已入队':'已放弃入队'}}</span>
+	                    </div>
+	                    </td>
+	                </tr>
+			   </tbody>
+		</table>
+		<table cellpadding="0" cellspacing="0" class="player-table" ng-if="items.name =='我的申请'">
+			   <thead class="title">
+                       <td>球队</td>
+                       <td>内容</td>
+                       <td>时间</td>
+                       <td>操作</td>
+                 </thead>
+                 <tbody >
+                 <tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+				系统没有查询到相关数据！
+			</td></tr>
+                 <tr ng-repeat="item in items.list">
+                     <td class="text-left padl20">
+                        <a ng-href="#/{{module}}/teamDetail?id={{item.team.id}}">
+                          <img ng-src="{{getImgUrl(item.team.iconUrl,1)}}" class="img24 mr10"/>{{item.team.teamTitle}}
+                        </a>
+                     </td>
+                     <td>{{item.auditStatus==1?'欢迎您加入球队':(item.auditStatus==2?'抱歉！已拒绝':'待处理')}}</td>
+                     <td>{{item.createTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</td>
+                     <td>
+						 <div ng-if="item.apply.isOpen == 1">
+							 <div class="btn-group" ng-if="!item.confirmStatus">
+								 <button class="btn btn-danger"   ng-click="confirmApply(items.list,item,2)" ng-if = "item.auditStatus!=2">放弃</button>
+								 <button class="btn btn-success" ng-click="confirmApply(items.list,item,1)"  ng-if = "item.auditStatus==1">加入</button>
+							 </div>
+							 <div>
+								 <span ng-if="item.confirmStatus==1&& item.auditStatus==1">已加入</span>
+								 <span ng-if="item.confirmStatus==2">已放弃</span>
+							 </div>
+						 </div>
+						 <div ng-if="item.apply.isOpen == 2">
+							 <span >已过期</span>
+						 </div>
+
+                     </td>
+                  </tr>
+                 </tbody>
+		</table>
+		       <table cellpadding="0" cellspacing="0" ng-if="items.name =='邀我入队'">
+                   <thead class="title">
+                       <td>球队</td>
+                       <td>内容</td>
+                       <td>时间</td>
+                       <td>操作</td>
+                   </thead>
+                   <tbody >
+                   <tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+						系统没有查询到相关数据！
+					</td></tr>
+                   <tr ng-repeat="item in items.list">
+                       <td class="text-left padl20"><img ng-src="{{getImgUrl(item.team.iconUrl,1)}}" class="img24 mr10"/>
+                       <a ng-href="#/{{module}}/teamDetail?id={{item.team.id}}">{{item.team.teamTitle}}</a>
+                       </td>
+                       <td>欢迎您加入球队</td>
+                       <td>{{item.opTime|getDate}}</td>
+                       <td>
+                         	<div class="btn-group" ng-if="!item.confirmStatus">
+						        <button class="btn btn-danger"   ng-click="confirmRecruit(items.list,item,2)">放弃</button>
+						        <button class="btn btn-success"  ng-click="confirmRecruit(items.list,item,1)">加入</button>
+						    </div>
+                        	<div>
+	                       		<span ng-if="item.confirmStatus==1">已加入</span>
+                       			<span ng-if="item.confirmStatus==2">已放弃</span>
+	                       	</div>
+                       </td>
+                    </tr>
+                   </tbody>
+               </table>
+               
+               <table cellpadding="0" cellspacing="0" ng-if="items.name =='球员变动'">
+                   <thead class="title">
+                       <td>球员</td>
+                       <td>加入/退出球队</td>
+                       <td>日期</td>
+                   </thead>
+                   <tbody >
+                   <tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+						系统没有查询到相关数据！
+					</td></tr>
+                   <tr ng-repeat="item in items.list">
+                       <td class="text-left padl20"><img ng-src="{{getImgUrl(item.player.iconUrl,1)}}" class="img24 mr10"/>
+                       <a ng-href="#/{{module}}/playerDetail?id={{item.player.id}}">{{item.player.name}}</a>
+                       </td>
+                       <td>{{item.fromTeam?('退出'+item.fromTeam.teamTitle):''}}>{{item.toTeam?('加入'+item.toTeam.teamTitle):''}}</td>
+                       <td>{{(item.fromTeam.id == user.team.id?item.fromTime:item.toTime)|formatDate:"{yyyy}-{MM}-{dd}"}}</td>
+                    </tr>
+                   </tbody>
+               </table>
+               
+               <table cellpadding="0" cellspacing="0" ng-if="items.name =='约战'">
+			              <thead class="title">
+			                <td>来自</td>
+			                <td>内容</td>
+			                <td>查看</td>
+			                <td style="width:90px;">操作</td>
+			           </thead>
+			           <tbody >
+			           <tr ng-if="!items.list||items.total == 0"><td colspan="10" class="text-center">
+							系统没有查询到相关数据！
+				    	</td></tr>
+                   <tr ng-repeat="game in items.list">
+	                    <td>{{game.teamA.id==user.team.id?(game.teamB?('你的球队向'+game.teamB.teamTitle+'发起了约战'):"你的球队正在发起约战"):game.teamA.teamTitle+'向你的球队发起了约战'}}</td>
+	                    <td>
+	                        <div class="game-row">
+					            <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+					            <div class="game-info">
+					                <div class="gray text-ellipsis">{{game.address}}</div>
+					                <div class="gray">{{game.beginTime|formatDate:"{yyyy}-{MM}-{dd}"}}</div>
+					                <div class="gray">{{game.beginTime|formatDate:"{HH}:{mm}"}}</div>
+					            </div>
+				                <ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+					          </div>
+	                    </td>
+	                    <td><a ng-href="#{{module}}/dareDetail?id={{game.id}}"><div class="look-btn"></div></a></td>
+	                    <td> 
+	                    	<div ng-if="user.isCaptain == 1 && game.teamB.id==user.team.id&&!game.teamBOperation">
+		                        <div class="btn-group" ng-if="!item.confirmStatus">
+							        <button class="btn btn-success"  ng-click="respondDare(game,1)">应战</button>
+							        <button class="btn btn-danger"   ng-click="respondDare(game,2)">拒绝</button>
+							    </div>
+	                        </div>
+		                     <span ng-if="game.teamB.id == user.team.id && user.isCaptain!=1 && !game.teamBOperation">等待队长决策</span>
+	                        {{getGameConfirmation(game)}}
+	                    </td>
+                    </tr>
+                   </tbody>
+                 </table>
+                   <table cellpadding="0" cellspacing="0" ng-if="items.name =='站内信'">
+			              <thead class="title">
+			              	<td></td>
+			                <td>内容</td>
+			                <td>时间</td>
+			                <td>查看</td>
+			           </thead>
+                      <tbody>
+                      <tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+						系统没有查询到相关数据！
+					   </td></tr>
+							  <tr ng-repeat="item in items.list" >
+							        <td style="height:96px;">
+							                <div class="icon email-img"></div>
+							                </td>
+							         <td>
+							         <div>
+								            <div class="email-title">{{item.message.title}}</div>
+								            <div class="email-text text-ellipsis gray" compile="item.message.content">
+								            </div>
+							            </div>
+							        </td>
+							        <td >
+							            <div class="time gray">发布时间：{{item.message.opTime|formatDate:"{MM}/{dd} {HH}:{mm}"}}</div>
+							        </td>
+							        <td><a ng-href="#/{{module}}/bulletinDetail?id={{item.message.id}}" class="look-btn"></a></td>
+							    </tr>							
+			            </tbody>
+			      </table>   
+			      <table cellpadding="0" cellspacing="0" ng-if="items.name =='签到'">
+			              <thead class="title">
+			              	<td ></td>
+			                <td>内容</td>
+			                <td>状态</td>
+			                <td>查看</td>
+			           </thead>
+                      <tbody>
+                          <tr ng-if="items.total == 0"><td colspan="10" class="text-center">
+ 								系统没有查询到相关数据！
+				          </td></tr>
+						  <tr ng-repeat="item in items.list" >
+						        <td style="height:96px;"><div class="qiandao-img"></div></td>
+						        <td style="width: 440px;text-align: left;padding-left:20px;" >
+						            <div class="inline">{{item.message.title}}</div> <div class="attendance-time inline gray">{{item.message.beginTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</div>
+						            <div class="attendance-text" style="width:650px;overflow: hidden " compile="item.message.content">
+						            </div>
+						        </td>
+						         <td style="width: 125px">
+							       <span ng-if="item.confirmStatus">{{!item.confirmStatus?"待签到":""}}{{item.confirmStatus == 2?'没空':'已签到'}}</span>
+						        </td>
+						        
+						         <td><a ng-href="#/{{module}}/attendanceDetail?id={{item.message.id}}" class="look-btn"></a></td>
+						    </tr>						
+			            </tbody>
+		        </table>
+			            
+		<div class="page-footer">
+			<uib-pagination total-items="items.total" ng-model="items.curPage" class="pagination-sm" max-size="10" boundary-links="true" items-per-page = 10
+				ng-change="pageChanged(user,items.name)" previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text="尾页"></uib-pagination>
+		</div>
+		</uib-tab>
+		</uib-tabset>
+</div>
+
+

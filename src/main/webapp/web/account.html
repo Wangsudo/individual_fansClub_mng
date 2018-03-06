@@ -1,0 +1,488 @@
+<div class="main" id="account" ng-controller="accountController">
+    <div class="account">
+        <uib-tabset  class="customTab" justified=false type="pills">
+	         <uib-tab  heading="我的名片" ng-if="user&&user.isCaptain!=1" ng-click="logg(user)">
+	         	<div class="body">
+				         	<img class="user-img" ng-src="{{getImgUrl(user.iconUrl,2)}}">
+			            <div class="info inline">
+			                <div class="name">{{user.name}}</div>
+			                <div >赛制：<img ng-src="{{getTeamTypeIcon(user.team.teamType)}}" /></div>
+			                 <div class="info-text">诚信度：{{user.attendTimes/(user.attendTimes+user.cheatTimes)|toPercent}}</div>
+			                <div class="info-text"><span>活动频率：{{user.acRate| keyToValue : acRateList}}</span>   </div>
+			                <div class="info-text">出勤率：{{user.attendTimes/user.allActivites|toPercent}}</div>
+			                 <div class="info-text">
+			              	   <span class="mr10">类型：{{user.kind|keyToValue:playerKindList}}</span>         
+			                    <span>身价：{{user.value| currency : '￥'}}</span>        
+			                </div>
+			                <div class="star-div" >
+			                    <span class="star-text mr10">球员级别：
+				                    <img class="grade_icon" src="/web/img/grade_crown.png" ng-repeat="i in user.grade.crowns">
+				                    <img class="grade_icon" src="/web/img/grade_shield.png" ng-repeat="i in user.grade.shields">
+				                    <img class="grade_icon" src="/web/img/grade_star.png" ng-repeat="i in user.grade.stars">
+			                    </span>
+			                    <span>综合积分：{{user.point}}</span>
+			                </div>
+			                
+			                <div class="info-text">年龄：{{user.birth|getAge}}</div>
+			                <div class="info-text">昵称：{{user.nickname}}</div>
+			                <div class="info-text">擅长位置：{{user.position| keyToValue : playerPositionList}}</div>
+			                <div ng-if="user.team.id">所在球队：<img class="img24 mr10" ng-src="{{getImgUrl(user.team.iconUrl,1)}}" 
+			                ng-click="gotoPage('/'+module+'/teamDetail?id='+user.team.id)" >
+			                <a ng-href="#/{{module}}/teamDetail?id={{user.team.id}}" class="mr10">{{user.team.teamTitle}}</a>
+				                   <a ng-if="user.isCaptain!=1" ng-click="quitTeam(user)">退出球队</a>
+			                </div>
+							<div ng-if="!user.team.id">
+									<span ng-if="!user.team.id&&tank">
+									所在球队：
+									<img class="img24 mr10" ng-src="{{getImgUrl(tank.team.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+tank.team.id)" >
+									{{tank.team.teamTitle}}
+									<a class="ml10" ng-href="#/{{module}}/notice?type=入队申请">{{tank.auditStatus==1?'审核通过,请确认':(tank.auditStatus==2?'未通过球队审核':'加入球队审核中...')}}</a>
+									</span>
+							</div>
+							<div class="btnGroup" ng-if="user.auditStatus == 1" >
+								<button ng-if="!user.team.id" class="btn big-btn btn-success" ng-click="canRegTeam(user.id)">创建球队</button>
+							</div>
+			            </div>
+			            <div style="margin-top:55px;">
+			            	<div class="info-text">
+								<span class="star-text mr10">比赛次数：{{user.total||0}}</span>
+								<span class="star-text">胜率：<span class="red">{{(user.win/user.total)|toPercent}}</span></span>
+							</div>
+				            <div class="record-div">
+				                <span>胜：</span>
+				                <div class="bg inline"><div class="s" ng-style="getWidth(user.win,user)"></div></div>
+				                <span class="red">{{user.win?user.win:0}}</span>
+				            </div>
+				            <div class="record-div">
+				                <span>平：</span>
+				                <div class="bg inline"><div class="p" ng-style="getWidth(user.even,user)"></div></div>
+				                <span class="blue">{{user.even?user.even:0}}</span>
+				            </div>
+				            <div class="record-div">
+				                <span>负：</span>
+				                <div class="bg inline"><div class="f" ng-style="getWidth(user.lost,user)"></div></div>
+				                <span class="green">{{user.lost?user.lost:0}}</span>
+				            </div>
+			            </div>
+	         	</div>
+	         </uib-tab>
+	          <uib-tab  heading="个人档案" ng-if="user&&user.isCaptain!=1">
+	          	<div class="body" style="margin-top:-20px">
+	          		<div class="title text-ellipsis" style="margin-top: 0">
+					<span>基本信息</span><hr class="title-line"/>
+				    </div>
+					<div class="text">
+						<div>姓名：{{user.name}}</div>
+						 <div class="mt5">
+							荣誉：<img ng-repeat="t in user.honors" ng-src="{{getImgUrl(t.honor.url,1)}}" class="img24 mr10" title="{{t.honor.name}}" /> 
+						</div>
+						<div>昵称：{{user.nickname}}</div>
+		                <div>性别：{{user.gender|keyToValue:genderList}}</div>
+		                <div >身高：{{user.height?user.height+'cm':'未知'}}</div>
+		                <div >体重：{{user.weight?user.weight+'kg':'未知'}}</div>
+		                <div>场上号码：{{user.uniformNumber}}</div>
+				        <div>电话：{{user.mobile}}</div>
+				        <div>qq：{{user.qq}}</div>
+				        <div>微信号：{{user.wechat}}</div>
+					</div>
+					<div class="title text-ellipsis">
+							<span>所在球队</span><hr class="title-line"/>
+					</div>
+					<div ng-if="user.team.id">
+						<img class="img24 mr10" ng-src="{{getImgUrl(user.team.iconUrl,1)}}" 
+			                ng-click="gotoPage('/'+module+'/teamDetail?id='+user.team.id)" >{{user.team.teamTitle}}
+					</div>
+				<div class="title text-ellipsis">
+					<span>草根征途</span><hr class="title-line"/>
+				</div>
+				<div class="text">
+					<div ng-repeat="rec in history|limitTo:3">
+	            		<div>{{rec.beginTime|getDate}} ~ {{rec.endTime|getDate}}<span class="ml10">{{rec.teamTitle}}</span></div>
+	            	</div>
+				</div>
+			     	<a class="more" style="float: right;" ng-href="#/{{module}}/playerInfo?id={{user.id}}">更多&gt;</a>
+	        	</div>
+	         </uib-tab>
+		      <uib-tab  heading="我的球队" ng-if="user&&user.isCaptain ==1">
+		      		<div class="body js-account-menu-list">
+				        <img class="user-img" ng-src="{{getImgUrl(user.team.iconUrl,2)}}">
+							    <div class="info inline">
+							        <div class="name">{{user.team.teamTitle}}</div>
+							        <div >赛制：<img ng-src="{{getTeamTypeIcon(user.team.teamType)}}" /></div>
+							        <div class="mt5">
+										<span class="star-text">信誉度：</span>{{(user.team.total-user.team.wrongNum)/user.team.total|toPercent}}
+									</div>
+									 <div class="info-text">
+			                			<span>活动频率：{{user.team.acRate| keyToValue : acRateList}}</span>
+			                		</div>
+									 <div class="mt5">
+					                	<span class="mr10">类型：{{user.team.kind|keyToValue:teamKindList}}</span>  
+					                	<span>球队价值：{{user.team.value||0}}</span>
+					                </div>	
+						        	<div class="mt5" >
+					                    <span class="star-text mr10">球队级别：</span>
+					                     <span >
+						                    <img class="grade_icon" src="/web/img/grade_crown.png" ng-repeat="i in user.team.grade.crowns">
+						                    <img class="grade_icon" src="/web/img/grade_shield.png" ng-repeat="i in user.team.grade.shields">
+						                    <img class="grade_icon" src="/web/img/grade_medal.png" ng-repeat="i in user.team.grade.stars">
+					                    </span>
+					                     <span class="star-text ">综合积分：{{user.team.point}}</span>	
+					                </div>
+							        	<div class="mt5">
+											<span class="star-text mr10">比赛次数：{{user.team.total||0}}</span>
+											<span class="star-text">胜率：{{(user.team.win/user.team.total)|toPercent}}</span>
+										</div>
+							        <div class="record-div">
+							            <span>胜：</span>
+							            <div class="bg inline"><div class="s" ng-style="getWidth(user.team.win,user.team)"></div></div>
+							            <span class="red">{{user.team.win?user.team.win:0}}</span>
+							        </div>
+							        <div class="record-div">
+							            <span>平：</span>
+							            <div class="bg inline"><div class="p" ng-style="getWidth(user.team.even,user.team)"></div></div>
+							            <span class="blue">{{user.team.even?user.team.even:0}}</span>
+							        </div>
+							        <div class="record-div">
+							            <span>负：</span>
+							            <div class="bg inline"><div class="f" ng-style="getWidth(user.team.lost,user.team)"></div></div>
+							            <span class="green">{{user.team.lost?user.team.lost:0}}</span>
+							        </div>
+						           <div class="btnGroup" ng-if="player.id!=user.id">
+					                <!-- 约战按钮-->
+	                                <a ng-click="dare()" ng-show="players"><div class="add-play-btn"></div></a>
+								   </div>
+							    </div>
+							  
+							    <div class="member">
+							        <div class="title">球队成员({{players.length}})</div>
+							        <div class="box" ng-repeat="player in players|limitTo:6">
+							            <a href="#/{{module}}/playerDetail?id={{player.id}}">
+							              <img class="member-img" ng-src="{{getImgUrl(player.iconUrl,2)}}">
+							            </a>
+							            <div class="member-name">{{player.name}}</div>
+							        </div>
+							        <div class="box">
+							            <a class="member-img-more" ng-href="#/{{module}}/myPlayer?id={{user.team.id}}">更多&gt;&gt;</a>
+							        </div>
+							    </div>
+				        </div>
+		   	  </uib-tab>
+		   	   <uib-tab  heading="球队档案" ng-if="user&&user.isCaptain==1">
+		   	  	 <div class="body">
+		   	  	 	    <img  ng-src="{{getImgUrl(user.team.iconUrl)}}" style="height:110px;">
+	   	  	 	        <button class="btn btn-sm btn-success absr20" ng-click="gotoPage('/'+module+'/teamInfoEdit?id='+user.team.id)"> 编辑</button>
+					    <div class="title text-ellipsis">
+					        <span>球队信息</span><hr class="title-line"/>
+					    </div>
+					    <div class="text">
+					    	  <div class="mt5">
+								荣誉：<img ng-repeat="t in user.team.honors" ng-src="{{getImgUrl(t.honor.url,1)}}" class="img24 mr10" title="{{t.honor.name}}" /> 
+							</div>
+					        <div>现任队长：{{user.name}}</div>
+					        <div>电话：{{user.mobile}}</div>
+					        <div>qq：{{user.qq}}</div>
+					        <div>微信号：{{user.wechat}}</div>
+					        <div>加入日期：{{user.team.createTime|formatDate:"{yyyy}年{MM}月{dd}日"}}</div>
+					    </div>
+					    <div class="title text-ellipsis">
+					        <span>球队简介</span><hr class="title-line"/>
+					    </div>
+					    <div class="text">
+					        <span >{{user.team.introduce|limitTo:190}}...<a class="more" ng-href="#/{{module}}/teamInfo?id={{user.team.id}}">更多&gt;</a></span>
+					    </div>
+		   	  	 </div>
+		   	  </uib-tab>
+		</uib-tabset>
+    </div>
+    <div class="play">
+   		<uib-tabset  class="customTab" justified=false type="pills" >
+   			<uib-tab heading="我的比赛">
+   				<div class="stripe line"  ng-repeat="game in futureGames">
+   				 <div class="game-row">
+					<ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+					  <div class="game-info">
+		                <div class="gray text-ellipsis">{{game.address}}</div>
+		                <div class="gray">{{game.beginTime|formatDate:"{yyyy}-{MM}-{dd}"}}</div>
+		                <div class="gray">{{game.beginTime|formatDate:"{HH}:{mm}"}}</div>
+		           	 </div>
+					<ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+					</div>
+		        </div>
+   			</uib-tab>
+   			<li class="pull-right"><a class="more" ng-href="#/{{module}}/myPlay?id={{user.team.id}}">更多&gt;&nbsp;&nbsp;</a></li>
+   		</uib-tabset>
+    </div>
+    <div style="float: none"></div>
+    
+    <div class="list grid">
+    	<uib-tabset  class="customTab"  justified=false type="pills">
+    	  <li class="big"><div>我的发布</div></li>
+    	    <uib-tab heading="全部" select="user.tab='比分'" active = "user.allTabActive" >
+    	    	<table cellpadding="0" cellspacing="0" class="player-table">
+    	    		<tbody >
+						    <tr ng-repeat="game in scoreList.list|limitTo:2" >
+							        <td>
+							            <div class="icon vs-img"></div>
+							        </td>
+							        <td>
+							   <div class=" pull-left"><span class="gray vm">本队发布  </span>
+								   <span class="score white vm" style="line-height: 58px;">{{getMyScore(game,user)}}</span></div>
+								<div class="game-row">
+							       <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+									  <div class="game-info">
+										 <div class="score yellow">{{getScore(game)}}</div>
+									 </div>
+									<ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+								</div>	
+							        </td>
+							        <td >
+							            <div class="time gray">发布时间：{{game.modifyTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+							        </td>
+						        	<td><a ng-href="#/{{module}}/playDetail?id={{game.id}}" class="look-btn"></a></td>
+							  </tr>
+							 <tr ng-repeat="item in photoList.list|limitTo:2"  class="account_p-table">
+							 	<td><div class="icon pic-img"></div></td>
+							        <td>
+							            <div class="img-div">
+							         		   <!-- |filter:{status:1} -->
+							                <img ng-repeat="photo in item.photos|limitTo:5" ng-click="gotoPage('/'+module+'/img?id='+item.id)" ng-src="{{getImgUrl(photo.url,1)}}">
+							            </div>
+							        </td>
+						        <td >
+						            <div class="time gray">发布时间：{{item.createTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+						        </td>
+						        <td><a class="look-btn"  ng-href="#/{{module}}/img?id={{item.id}}"></a></td>
+						    </tr>
+								 <tr  ng-repeat="item in videoList.list|limitTo:2"  class="account_p-table">
+								       <td><div class="icon video-img"></div></td>
+								        <td>
+								            <div class="img-div">
+								                <div class="video-box">
+								                    <img ng-src="{{item.screenshot}}">
+								                    <a class="fl-star" ng-href="#/{{module}}/video?id={{item.id}}"></a>
+								                </div>
+								            </div>
+								        </td>
+								        <td>
+								            <div class="time gray">发布时间：{{item.createTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+								        </td>
+								        <td><a class="look-btn"  ng-href="#/{{module}}/video?id={{item.id}}"></a></td>
+								    </tr>		
+						    <tr ng-repeat="item in signInList.list|limitTo:2"  ng-if="user.isCaptain==1">
+						      <td><div class="icon checkIn-img"></div></td>
+						        <td style="width: 440px;text-align: left;padding-left:20px;" >
+						            <div class="inline">{{item.title}}</div> <div class="attendance-time inline gray">{{item.beginTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</div>
+						            <div class="attendance-text" style="width:440px;overflow: hidden " compile="item.content">
+						            </div>
+						            <div class="gray">
+						                发送给<span class="red">{{item.tanks.length}}</span>人 &nbsp;&nbsp;　签到<span class="green">{{item.tanks|getConfirms}}</span>人
+						            </div>
+						        </td>
+						        <td> <div class="time gray">发布时间：{{item.opTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div></td>
+						        <td style="width: 125px">
+						            <a ng-href="#/{{module}}/attendanceDetail?id={{item.id}}" class="look-btn"></a>
+						        </td>
+						    </tr>								
+							  <tr ng-repeat="item in messageList.list|limitTo:2"  ng-if="user.isCaptain==1">
+							        <td>
+							            <div class="icon email-img"></div>
+							        </td>
+							        <td>
+							            <div class="email-title">{{item.title}}</div>
+							            <div class="email-text text-ellipsis gray" compile="item.content">
+							            </div>
+							        </td>
+							        <td >
+							            <div class="time gray">发布时间：{{item.opTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</div>
+							        </td>
+							        <td><a ng-href="#/{{module}}/bulletinDetail?id={{item.id}}" class="look-btn"></a></td>
+							    </tr>							
+							  <tr ng-repeat="item in recruitList.list|limitTo:2"   ng-if="user.isCaptain==1" >
+						        <td>
+						            <div class="icon find-img"></div>
+						        </td>
+						        <td>
+						        	<div class="email-title">{{item.title}}</div>
+						            <div class="email-text text-ellipsis" compile="item.content" ng-if="item.isPublic==1"></div>
+						            <div class="email-text" ng-if="item.isPublic==2" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)">
+						            	<img class="img24 mr10" ng-src="{{getImgUrl(item.player.iconUrl,1)}}" />{{item.player.name}}
+						            </div>
+						        </td>
+						        <td >
+						            <div class="time gray">发布时间：{{item.opTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</div>
+						        </td>
+						        <td><a ng-if="item.isPublic==1" ng-href="#/{{module}}/findDetail?id={{item.id}}"><div class="look-btn"></div></a></td>
+						    </tr>	
+					             <tr  ng-repeat="item in applyList.list|limitTo:2" >
+		                        <td>
+		                            <div class="icon find-img"></div>
+		                            </td>
+		                            <td>
+		                            <span class="inline">
+		                                <div class="find-title">{{item.title}}</div>
+		                                <div class="find-text text-ellipsis gray" compile="item.content">
+		                                </div>
+		                            </span>
+		                        </td>
+		                        <td class="nowrap">
+		                             <div class="time gray">发布时间：{{item.createTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</div>
+		                        </td>
+		                        <td><a ng-href="#/{{module}}/applyDetail?id={{item.id}}"><div class="look-btn" ></div></a></td>
+		                    </tr>
+		                    </tbody>
+                   	</table>
+    	    </uib-tab>
+    	    <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList" active = "items.active" select="user.tab=items.name">
+    	    	      <table cellpadding="0" cellspacing="0" class="player-table">
+							<tbody ng-if="items.name =='比分'">
+								   <tr ng-repeat="game in items.list">
+								        <td>
+											<div class="checkbox" ng-class="{selected:game.checked,notVisible:cantDel(game)}"
+												 ng-click="game.checked =!game.checked"></div>
+											<span >{{$index + 1+10*(items.curPage-1)}}</span></td>
+								        <td>
+								            <div class="icon vs-img"></div>
+								        </td>
+								        <td>
+							   <div class="pull-left" >
+								   <span class="gray vm">本队发布  </span>
+								   <span class="score white vm" style="line-height: 58px;">{{getMyScore(game,user)}}</span>
+							   </div>
+											<div class="game-row">
+										       <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+												 <div class="game-info">
+													<div class="score yellow">{{getScore(game)}}</div>
+												 </div>
+												<ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+											</div>	
+								        </td>
+								        <td >
+								            <div class="time gray">发布时间：{{game.modifyTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+								        </td>
+								   </tr>
+							</tbody>
+							<tbody  ng-if="items.name =='图片'" class="account_p-table">
+							 <tr ng-repeat="item in items.list">
+						        <td><div class="checkbox"  ng-class="{selected:item.checked}" ng-click="item.checked =!item.checked" ></div><span >{{$index + 1+10*(items.curPage-1)}}</span></td>
+							        <td style="width:440px;">
+							            <div class="img-div">
+							         		   <!-- |filter:{status:1} -->
+							                <img ng-repeat="photo in item.pics|limitTo:5" ng-click="gotoPage('/'+module+'/img?id='+item.id)" ng-src="{{getImgUrl(photo.url,1)}}">
+							            </div>
+							        </td>
+						        <td >
+						            <div class="time gray">发布时间：{{item.createTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+						        </td>
+						        <td><a class="look-btn"  ng-href="#/{{module}}/img?id={{item.id}}"></a></td>
+						    </tr>
+			              </tbody>
+			             <tbody ng-if="items.name =='视频'" class="account_p-table">
+								 <tr  ng-repeat="item in items.list" >
+								    <td><div class="checkbox"  ng-class="{selected:item.checked}" ng-click="item.checked =!item.checked" ></div><span >{{$index + 1+10*(items.curPage-1)}}</span></td>
+								        <td  style="width:440px;">
+								            <div class="img-div">
+								                <div class="video-box">
+								                    <img ng-src="{{item.screenshot}}">
+								                    <a class="fl-star" ng-href="#/{{module}}/video?id={{item.id}}"></a>
+								                </div>
+								            </div>
+								        </td>
+								        <td>
+								            <div class="time gray">发布时间：{{item.createTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+								        </td>
+								        <td><a class="look-btn"  ng-href="#/{{module}}/video?id={{item.id}}"></a></td>
+								    </tr>		
+			            </tbody>
+			            <tbody ng-if="items.name =='签到信'">
+						    <tr ng-repeat="item in items.list" >
+								<td>
+									<div class="qiandao-img"></div>
+									<div class="checkbox" ng-class="{selected:item.checked,'notVisible':item.beginTime<getNow()}" ng-click="item.checked =!item.checked"></div>
+									<span>{{$index + 1+10*(items.curPage-1)}}</span></td>
+								<td style="width: 440px;text-align: left;padding-left:20px;" >
+						            <div class="inline">{{item.title}}</div> <div class="attendance-time inline gray">{{item.beginTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</div>
+						            <div class="attendance-text" style="width:440px;overflow: hidden " compile="item.content">
+						            </div>
+						            <div class="gray">
+						                发送给<span class="red">{{item.tanks.length}}</span>人 &nbsp;&nbsp;　签到<span class="green">{{item.tanks|getConfirms}}</span>人
+						            </div>
+						        </td>
+					            <td>
+								            <div class="time gray">发布时间：{{item.opTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+						        </td>
+						        <td >
+						            <a   class="look-btn" ng-href="#/{{module}}/attendanceDetail?id={{item.id}}" ></a>
+						        </td>
+						    </tr>								
+			            </tbody>
+			             <tbody  ng-if="items.name =='站内信'">
+							  <tr ng-repeat="item in items.list" >
+							        <td><div class="checkbox"  ng-class="{selected:item.checked}" ng-click="item.checked =!item.checked" ></div><span >{{$index + 1+10*(items.curPage-1)}}</span></td>
+							        <td>
+							            <div class="icon email-img"></div>
+							        </td>
+							        <td>
+							            <div class="email-title">{{item.title}}</div>
+							            <div class="email-text text-ellipsis gray" compile="item.content">
+							            </div>
+							        </td>
+							        <td >
+							            <div class="time gray">发布时间：{{item.opTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</div>
+							        </td>
+							        <td><a ng-href="#/{{module}}/bulletinDetail?id={{item.id}}" class="look-btn"></a></td>
+							    </tr>							
+			            </tbody>
+			             <tbody  ng-if="items.name =='招人'">
+							  <tr ng-repeat="item in items.list" >
+						        <td><div class="checkbox"  ng-class="{selected:item.checked}" ng-click="item.checked =!item.checked" ></div><span >{{$index + 1+10*(items.curPage-1)}}</span></td>
+						        <td>
+						            <div class="icon find-img"></div>
+						        </td>
+						        <td>
+						            <div class="email-title">{{item.title}}</div>
+						            <div class="email-text text-ellipsis" ng-if="item.isPublic==1" compile="item.content"> </div>
+						             <div class="email-text" ng-if="item.isPublic==2"  ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)" >
+						            	<img class="img24 mr10" ng-src="{{getImgUrl(item.player.iconUrl,1)}}" />{{item.player.name}}
+						            </div>
+						        </td>
+						        <td >
+						            <div class="time gray">发布时间：{{item.opTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</div>
+						        </td>
+						        <td><a ng-if="item.isPublic==1" ng-href="#/{{module}}/findDetail?id={{item.id}}"><div class="look-btn"></div></a></td>
+						    </tr>	
+			            </tbody>
+					             <tbody  ng-if="items.name =='找队'">
+				             <tr  ng-repeat="item in items.list" >
+		                        <td><div class="checkbox"   ng-class="{selected:item.checked}" ng-click="item.checked =!item.checked" ></div><span >{{$index + 1+10*(items.curPage-1)}}</span></td>
+		                        <td>
+		                            <span class="icon find-img inline" ></span>
+	                            </td>
+	                            <td>
+		                            <span class="inline">
+		                                <div class="find-title">{{item.title}}</div>
+		                                <div class="find-text text-ellipsis gray" compile="item.content">
+		                                </div>
+		                            </span>
+		                        </td>
+		                        <td class="nowrap">
+		                             <div class="time gray">发布时间：{{item.applyTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</div>
+		                        </td>
+		                        <td><a ng-href="#/{{module}}/applyDetail?id={{item.id}}"><div class="look-btn" ></div></a></td>
+		                    </tr>
+                     </tbody>
+						</table>
+						 <div class="list-btn"  ng-hide="items.name =='比分' && user.isCaptain!=1">
+				            <button class="btn btn-primary" ng-click="checkAll(items)" ng-show="items.list.length>0">全选</button>
+				            <button class="btn btn-danger" ng-click="del(items)" ng-show="items.list.length>0">删除</button>
+				         </div>
+				          <div class="page-footer">
+								 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+								  ng-change="pageChanged(user,items.type)"
+								previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+					        </div>
+    	   </uib-tab>
+    	   <li class="pull-right "><button class="btn btn-sm btn-success fabu" ng-click="release()">发布</button></li>
+    	</uib-tabset>
+    </div>
+</div>
+

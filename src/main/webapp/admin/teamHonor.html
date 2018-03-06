@@ -1,0 +1,31 @@
+<!-- 荣誉公式  -->
+	<div id="formulaModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="width:80%">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4>荣誉公式</h4>
+				</div>
+				<div class="modal-body container">
+					<div class="form-inline" style="font-size:18px">
+				      综合积分=参赛总场次&times;<input type="text" ng-class="{error:(formularError)}" ng-model="EleWeight.total_game_weight" class="form-control" style="width:60px"/>+
+				                       球员等级&times;<input type="text" ng-class="{error:(formularError)}" ng-model="EleWeight.player_grade_weight" class="form-control" style="width:60px"/>+
+					               活跃指数&times;<input type="text" ng-class="{error:(formularError)}"  ng-model="EleWeight.active_index_weight" class="form-control" style="width:60px"/>+
+					               胜率&times;<input type="text" ng-class="{error:(formularError)}" ng-model="EleWeight.win_rate_weight" class="form-control" style="width:60px"/>
+					</div>
+					<h4>提示:</h4>
+					<ul>
+						<li>参赛总场次:次数表示（成功上报比分后的次数）</li>
+						<li>球员等级:次数表示（成功上报比分后的次数）</li>	
+						<li>活跃指数:（关联活动签到）活动信息签到次数和存在天数的比率，用百分比表示。</li>	
+						<li>球员身价:注册即10万身价、约战完成后增加500元、胜外加300，平外加200、负外加100</li>							
+					</ul>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+					<button class="btn btn-primary" ng-click="saveFormula()">提交</button>
+					<button class="btn btn-default" data-dismiss="modal">取消</button>
+					<span ng-show="formularError||message" class="error"><imgsrc="/images/alarm.png"></img>{{formularError}}{{message}}</span>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,48 @@
+<!-- 修改权限信息  -->
+	<div id="accessModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">x</button>
+					<h4>修改权限</h4>
+				</div>
+				<div class="modal-body container" id="playerInfo">
+					<form class="form-horizontal" id="accessForm">
+						<div class="form-group">
+							<label class="col-xs-2 control-label">球员:</label>
+							<div class="col-xs-4">
+								<span class="form-control">{{curPlayer.name}}</span>
+							</div>
+						</div>
+						<div class="form-group" ng-repeat-start="item in curAccess">
+							<label class="col-xs-2 control-label">{{item.name}}:</label>
+							<div class="col-xs-2 ">
+								<div class="form-control">
+									<input type="checkbox" id="ace{{$index}}" class="checkbox-8-2" type="checkbox" ng-model="item.isLock" ng-Checked="!item.isLock"
+										ng-true-value=0 ng-false-value={{item.key}} ng-change="checkToDate(item)" /><label for="ace{{$index}}"></label>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<input type="text" class="form-control" ng-model="item.fromDate" readonly="readonly" placeholder="起始日期" onchange="" 
+									onclick="$.feng = $(event.target);WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$.feng.parent().next().find('input').val()}&quot;})">
+							</div>
+							<div class="col-xs-4">
+								<input type="text" class="form-control" ng-model="item.toDate" readonly="readonly" placeholder="截止时期" onchange="" 
+									onclick="$.feng = $(event.target); WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$.feng.parent().prev().find('input').val()}&quot;})">
+							</div>
+						</div>
+						<div class="form-group" ng-repeat-end>
+							<div class="col-xs-offset-2 col-xs-10">
+								<input type="text" class="form-control" placeholder="加锁或解锁原因" ng-model="item.reason">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer" style="text-align:center">
+					<button class="btn btn-primary" ng-click="toggleLock()">提交</button>
+					<button class="btn btn-default" data-dismiss="modal">取消</button>
+					<span ng-show="message" class="error"><img src="/images/alarm.png"></img>{{message}}</span>
+				</div>
+			</div>
+		</div>
+	</div>

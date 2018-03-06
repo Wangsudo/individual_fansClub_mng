@@ -1,0 +1,33 @@
+		<div class="modal-header">
+	           <h3 class="modal-title">{{(item.id?'EDIT':'ADD')|translate}}系统参数
+	           </h3>
+	    </div>
+		<div class="modal-body container-fluid form-horizontal">
+			<div class="form-group">
+					<label class="col-sm-2 control-label">说明</label>
+					<div class="col-sm-10 mt7">
+						<span>{{item.comment}}</span>
+					</div>
+				</div>
+			 <form name="form" novalidate>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">代码</label>
+					<div class="col-sm-10 mt7">
+						{{item.code}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">值</label>
+					<div class="col-sm-8">
+						<input type="text" name='value' ng-model="item.value" class="form-control" placeholder="" required maxlength="50">
+					</div>
+					<button class="btn btn-default" type="button" ng-click="item.value= item.defaultValue" >默认值</button>
+				</div>
+				
+			</form>
+		</div>
+		<div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(item)" >确定</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+	    </div>
+  

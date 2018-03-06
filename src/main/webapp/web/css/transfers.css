@@ -1,0 +1,52 @@
+#transfers .customTab >.nav li:nth-child(1){
+	margin-left: 20px;
+}
+
+
+#transfers .list {
+    min-height: 500px;
+}
+#transfers table{
+	margin:0 auto;
+}
+#transfers .title {
+    background: url("../img/bg_list-title_blue.png");
+    height: 40px;
+    line-height: 40px;
+}
+#transfers table tbody td{
+	height: 96px;
+}
+  
+
+#transfers .grid tr:nth-child(even){
+    background: transparent;
+}
+#transfers .grid tr:nth-child(odd){
+    background: url(../img/bg_list_banmaxian.png);
+}
+#transfers .grid .num{
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: top;
+}
+#transfers .grid .icon{
+    width: 48px;
+    height: 48px;
+    margin: 0 20px 0 75px;
+}
+#transfers .grid .vs-img{
+    background: url(../img/icon_usercenter_team_vs.png) no-repeat;
+    background-size: 48px 48px;
+}
+
+
+#transfers .vip{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left:10px;
+}
+
+

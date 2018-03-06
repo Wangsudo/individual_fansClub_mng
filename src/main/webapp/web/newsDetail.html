@@ -1,0 +1,12 @@
+<div id="newsDetail" ng-controller="newsDetailController">
+    <div class="body list" style="padding-bottom: 60px">
+        <div class="title">{{curNews.title}}</div>
+        <div class="gray time">{{curNews.distributeTime}}</div>
+        <div class="white-border1_2"></div>
+
+        <div class="futext" style="padding-top: 30px" compile="curNews.content">
+	        
+        </div>
+    </div>
+      <ng-include src="'comments.html'"></ng-include>
+</div>

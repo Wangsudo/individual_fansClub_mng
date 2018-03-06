@@ -1,0 +1,38 @@
+	 <form name="form" novalidate>  
+		<div class="modal-header">
+	           <h3 class="modal-title">球员荣誉公式
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+		    	<div class="form-inline" style="font-size:18px">
+					        综合积分=参赛次数&times;<input type="number" name="player_total_game" required ng-model="weight.player_total_game" class="form-control" style="width:90px"/>+
+						               活动签到&times;<input type="number" name="player_active" required  ng-model="weight.player_active" class="form-control" style="width:90px"/>+
+					                       每胜一场&times;<input type="number"  name="player_win_rate" required ng-model="weight.player_win_rate" class="form-control" style="width:90px"/>+
+						               点赞数&times;<input type="number"  name="player_like" required ng-model="weight.player_like" class="form-control" style="width:90px"/>
+						</div>
+						
+				<div class="form-inline mt5" style="font-size:18px">
+		    		球员身价=<input type="number" name="beginer" required ng-model="weight.beginer" class="form-control" style="width:90px"/>+
+					       		 参赛次数&times;<input type="number" name="total" required ng-model="weight.total" class="form-control" style="width:90px"/>+
+					       		 胜&times;<input type="number" name="win" required  ng-model="weight.win" class="form-control" style="width:90px"/>+
+			                       平&times;<input type="number"  name="even" required ng-model="weight.even" class="form-control" style="width:90px"/>+
+				               负&times;<input type="number"  name="lost" required ng-model="weight.lost" class="form-control" style="width:90px"/>
+				</div>
+						<b ng-show="formularError" class="red"><imgsrc="/images/alarm.png"></img>{{formularError}}</b>
+						<h4>提示:</h4>
+				  <ul>
+					<li>签到却没有参加活动，被队长否决一次，管理员可以罚分,记入总分</li>
+					<li>球员身价: 注册即得10000身价，球队约战并完成比分发布加500，胜另加300，平另加200，负另加100</li>
+					<li>综合评价结果是一个数值，但这个数值能用星星来表示，每一个星星代表一个数值区间，这个数值小数点后保留1位。</li>	
+					<li>1星：1-100分</li>	
+					<li>2星：101-300分</li>	
+					<li>3星：301-600分</li>	
+					<li>4星：601-900分</li>	
+					<li>5星：901-1200分</li>	
+				</ul>
+		</div>
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(form)" >确定</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+	    </div>
+  </form>

@@ -1,0 +1,112 @@
+﻿<div class="navbar-form" ng-controller = 'teamController'>
+<h3 class="title bg-info">球队列表 <button class="btn btn-sm btn-info pull-right" ng-click="showFormula()" style="margin-top:6px">荣誉公式</button></h3>
+	<div class="search  form-inline">
+		<div class="search  form-inline">
+				<div class="form-group mr5">
+					<label>球队</label>
+					<input type="text" ng-model="search.teamTitle" class="form-control" />
+				</div>
+				 <div class="form-group mr5">
+					   <label>球队类型</label>
+					   <select  class="form-control"  ng-model="search.teamType" ng-options="o[0] as o[1] for o in teamTypeList track by o[0]"  >
+	 	  	                <option value="">--请选择--</option>
+					   </select>
+				 </div>
+				  <div class="form-group mr5">
+					   <label>是否官方</label>
+					   <select  class="form-control"  ng-model="search.official" ng-options="o[0] as o[1] for o in yesnoList track by o[0]"  >
+	 	  	                <option value="">--请选择--</option>
+					   </select>
+				 </div>
+				  <div class="form-group mr5">
+					   <label>是否解散</label>
+					   <select  class="form-control"  ng-model="search.isDismissed" ng-options="o[0] as o[1] for o in yesnoList track by o[0]"  >
+	 	  	                <option value="">--请选择--</option>
+					   </select>
+				 </div>
+				
+				<div class="form-group">
+					<label>建队时间</label>
+					<input class="form-control wdate" id="fromDate" name="search.fromDate" readOnly=true onchange="" 
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+					<label>-</label>
+					<input class="form-control wdate" id="toDate" name="search.toDate" readOnly=true onchange=""
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+				</div>
+				 <div class="form-group pull-right">
+					<button class="btn btn-primary" ng-click="find(1)">查询</button> 
+					<button class="btn btn-success" ng-click="showModal()" ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+				</div>
+			</div>
+	  </div>
+	   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				<th class="text-center">No</th>
+				<th style="width:100px;" excel="none">队徽</th>
+				<th style="width:100px;" excel="none">合影</th>
+				<th style="width:80px;">球队</th>
+				<th>综合积分</th>
+				<th>球队价值</th>
+				<th>荣誉</th>
+				<th>介绍</th>
+				<th>队长</th>
+				<th>球员数</th>
+				<!-- <th>约成场次/约战场次</th> -->
+				<th>赛制</th>
+				<th>活动频率</th>
+				<th>类型</th>
+				<th>所在地</th>
+				<th>注册时间</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="100" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+				     <td class="text-center" excel="none" style="position:relative">
+				     	<img class="wid32 hand" ng-class="{grayscale:item.dismissed==1}" ng-mouseover="pop(item.iconUrl)" ng-src="{{getImgUrl(item.iconUrl,1)}}" ></img>
+				     	<div class="grayTag" ng-if="item.dismissed==1">已解散</div>
+				     	<img class="top_right" ng-if="item.official==1" src="/images/official_small.png"/>
+				     </td>
+					 <td class="text-center" excel="none"><img class="wid32 hand" ng-mouseover="pop(item.coverUrl)" ng-src="{{getImgUrl(item.coverUrl,1)}}"></img></td>
+					<td>{{item.teamTitle}}</td>
+					<td>{{item.point}}<a class="pull-right" popover-placement="right" uib-popover-template="'teamPoint.html'" popover-trigger="mouseenter" >详情</a></td>
+					<td>{{item.value}}</td>
+				<td><a ng-click="honorModal(item)" class="hand">
+					<img ng-repeat="t in item.honors" ng-src="{{getImgUrl(t.honor.url,1)}}" class="img24" ng-title="{{t.honor.name}}" /> 
+					<span ng-hide="item.honors.length">添加荣誉</span></a></td>
+				<td class="text-left"><a ng-click="openTip(item.introduce)" class="hand" ><div compile_text="item.introduce||''"
+							style="width:150px;white-space: nowrap;overflow:hidden; text-overflow:ellipsis; "></div></a></td>
+				<td>{{item.map.captainName}}</td>
+				<td class="text-center">{{item.playerNum}}</td>
+				<!-- <td class="text-center">&nbsp;{{item.map.acceptNum}}/{{item.map.challengeNum}}&nbsp;</td> -->
+				<td>{{item.teamType| keyToValue : teamTypeList}}</td>
+				<td>{{item.acRate| keyToValue : acRateList}}</td>
+				<td>{{item.kind|keyToValue : teamKindList}}</td>
+				<td>{{item.region}}</td>
+				<td>{{item.registTime|formatDate:'{yyyy}/{MM}/{dd}'}}</td>
+				    <td excel="none">
+					    <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+					      <span href="#" class="icon access" ng-click="permissionModal(item,'/team/toggleLock')" ng-show="getAccess(curMenu,4)"
+							popover-placement="left" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="mouseenter" > </span>
+							<span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-include src="'/admin/pager.html'"></ng-include>
+      
+      	<script type="text/ng-template" id="teamPoint.html">
+	<table class="tipTable"><caption class="text-center">综合积分:{{item.point}}</caption>
+		<tr><td class="text-center" style="width:80px;">类别</td><td class="text-center" style="width:150px;">值</td><td class="text-center">分值</td></tr>
+		<tr><td>参赛次数</td><td>{{item.win||0}}+{{item.even||0}}+{{item.lost||0}}={{item.total}}</td><td>{{weight.team_total_game}}</td></tr>
+		<tr><td>发布活动</td><td>{{item.newsTimes||0}}</td><td>{{weight.team_active}}</td></tr>
+		<tr><td>胜利次数</td><td>{{item.win||0}}</td><td>{{weight.team_win_rate}}</td></tr>
+		<tr><td>被赞次数</td><td>{{item.likeNum||0}}</td><td>{{weight.team_like}}</td></tr>
+		<tr><td>被罚分数</td><td></td><td>-{{item.pointMinus}}</td></tr>
+	</table>
+      </script>
+      
+</div>
+
+	

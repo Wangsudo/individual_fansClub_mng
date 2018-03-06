@@ -1,0 +1,79 @@
+<form name="form" novalidate ng-class="{submited:form.submited}">
+<div class="form form-horizontal">
+        <div class="form-group">
+            <label class="col-xs-4 control-label">登陆账号：</label>
+                <input type="text" ng-model="player.mobile" name="mobile" placeholder="请输入手机号" required 
+                ng-pattern="/^(1)\d{10}$/"  ensure_unique='mobile' api='/app/player/checkUnique' 
+                ng-class="{error:form.mobile.error}"
+			    uib-popover="{{form.mobile.$error.required?'手机号不可为空！':(form.mobile.$error.pattern?'手机号格式错误！':(form.mobile.$error.unique?'手机号码已被注册,请登录':''))}}" popover-placement="right" popover-trigger="mouseenter"                />
+      			<span class="error" ng-show="form.mobile.$error.unique===true && !form.mobile.auditStatus">
+      				 此手机号已注册，正在审核中!
+      			</span>
+        </div>
+        <div class="form-group">
+                <div class="col-xs-offset-4">
+                    <input type="text" style="width:200px;" ng-model="player.verifyCode" name="verifyCode" required placeholder="请输入短信验证码">
+                    <button class="btn btn-success" ng-disabled="registerSms!='点击获取验证码'" style="width: 140px;" ng-click="sendSmsForPassword(form)">{{registerSms}}</button>
+                    <span ng-show="verifyCodeErr" class="error">{{verifyCodeErr}}！</span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-4 control-label">密码：</label>
+                <input type="password" ng-model="player.password" name="password" placeholder="6-20个字符" required ng-pattern="/^[\w!,@#$%^&*?_~]{6,20}$/"
+ 				uib-popover="{{form.password.$error.required?'请输入密码!':(form.password.$error.pattern?'请输入6-20个字符!':'')}}" popover-placement="right" popover-trigger="mouseenter">
+        </div>
+        <div class="form-group">
+            <label class="col-xs-4 control-label">密码确认：</label>
+                <input type="password" ng-model="player.password2" name="password2" required placeholder="两次输入的密码需要一致" ng-class="{error:(player.password2 && player.password!=player.password2)}"
+			uib-popover="{{form.password2.$error.required?'请再输一次密码!':(player.password!=player.password2?'密码不一致！':'')}}" popover-placement="right" popover-trigger="mouseenter">
+        </div>
+        
+        <div class="form-group">
+            <label class="col-xs-4 control-label">姓名：</label>
+                <input type="text" ng-model="player.name" placeholder="请填写真实姓名" name="name" required ng-pattern="/^[^\s]+$/"
+                uib-popover="{{form.name.$error.required?'请输入正确姓名!':''}}" popover-placement="right" popover-trigger="mouseenter">
+        </div>
+       <!--  <div class="form-group">
+            <label class="col-xs-4 control-label">昵称：</label>
+                <input type="text" ng-model="player.nickname" placeholder="昵称" >
+        </div> -->
+        <div class="form-group">
+            <label class="col-xs-4 control-label">证件：</label>
+                <select id="idType" style="width: 80px">
+                    <option style="color:#000">身份证</option>
+                </select>
+                <input type="text" style="width:262px;" ng-model="player.idno" placeholder="请填写证件号码" name = "idno"  
+                required  ensure_unique='idno' api='/app/player/checkUnique'
+                uib-popover="{{form.idno.$error.required?'身份证号不可为空！':(form.idno.$error.pattern?'身份证号格式错误！':(form.idno.$error.unique?'身份证号已被使用':''))}}" popover-placement="right" popover-trigger="mouseenter"
+                >
+        </div>
+        <div class="form-group">
+            <label class="col-xs-4 control-label">我的照片：</label>
+            <button class="btn btn-sm btn-primary" ng-click="uploadImage()">浏览</button>
+            <img ng-src="{{getImgUrl(player.iconUrl,2)}}" style="width:120px;height:120px" ng-class="{error:(form.submited && !player.iconUrl)}"
+                 uib-popover="{{!player.iconUrl?'请上传头像！':''}}" popover-placement="right" popover-trigger="mouseenter"  />
+        </div>
+      
+        <div class="info text-center">
+            * 以上均为必填项，通过审核后，我们会在第一时间通知您，也请尽快完善您的个人信息。
+        </div>
+        <button class="btn btn-success submit-btn"  ng-click="add(form)">同意以下协议并注册</button>
+
+        <a class="green protocol" ng-click="isCollapsed = !isCollapsed">《草根足球服务协议》</a>
+      	  <div uib-collapse="!isCollapsed">
+	        <div class="title" style = "font-size: 20px; font-weight: bold;  text-align: center;">《草根足球服务协议》</div>
+	        <div class="body" style="font-size:14px;margin:30px;">
+			<p>草根足球平台是一些足球爱好者在自愿、诚信的基础上自筹资金完成制作服务平台。目的是为了在一定范围内营造健康、文明、和谐的足球环境，使足球爱好者能够更好的感受足球带给我们的快乐。</p>
+			<p>宗旨：团结、诚信、合作、共赢。</p>
+			<p>理念：争当星星之火、勇于海纳百川。</p>
+			<p>目标：打造属于我们的足球世界、用自己的方式表达快乐。</p>
+			<p>规定：球员必须遵守中华人民共和国宪法、法律、法规和国家政策，遵守社会道德风尚。球员实行实名制认证及自主管理，通过共同参与和公信力体系打造来真实、客观的反映球员和球队的实力和诚信度等，同时自觉抵制不文明的足球行为和现象，倡导和营造和谐的足球环境。
+			</p>
+			<p>足球运动是一项具有风险性的运动，建议球员自行购买人生意外保险，在参与足球活动中自觉增强安全意识、注意自我保护，我们对球员在参与活动中发生的意外事件不承担任何法律和经济责任。
+			</p>
+			<p>请球员认真阅读并理解协议的内容，自觉遵守，并在此基础上真实准确的填写信息，便于我们更好的提供服务。如果因违反协议或填写不真实信息所造成的任何损失，均由球员个人承担。
+			</p>
+	        </div>
+	    </div>
+    </div>
+    </form>

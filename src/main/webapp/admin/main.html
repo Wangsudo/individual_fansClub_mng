@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="admin.mainframe" id="mainFrame">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="icon" href="favicon.ico"/>
+<title>grassroots football server</title>
+	<link href="vendor/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body ng-controller="mainController" ng-cloak >
+  <!--头部begin-->
+  <div class="header clearfix">
+    <div class="logo">
+        <!--<img class="mt5" src="images/logo.png"></img>-->
+        <a ng-href="/admin/main.html" style="text-decoration: none;">
+            <strong style="margin-top: 40px">球&nbsp;迷&nbsp;巢</strong>
+        </a>
+    </div>
+   <div class="btn-group pull-right mr6" uib-dropdown auto-close="always" >
+		   <span uib-dropdown-toggle><i class="glyphicon glyphicon-user mr5"></i>{{admin.account}}</span>
+	       <div uib-dropdown-menu role="menu" class=" text-nowrap admin-info">
+		      	<p ng-click="showinfo(admin)"><i class="glyphicon glyphicon-user mr5"></i><span >{{'USERINFO'|translate}}</span></p>
+	     	<!-- 	<p ng-click="changeLocale()"><i class="glyphicon glyphicon-font mr5"></i><span >中文/En</span></p> -->
+	     		<p ng-click="logout()"><i class="glyphicon glyphicon-log-out mr5"></i><span >{{'LOGOUT'|translate}}</span></p>
+			</div>
+	</div>
+  </div><!--头部end-->
+  <!--菜单begin-->
+  <div class="navMenu clearfix">
+	<div ng-repeat="menu in menus" ng-if="menu.power!=-1 && getAccess(menu,1)">
+		<div class="menu-head" ng-click="clickModule(menu)" ng-class="{active:menu.active}"><span class="menu_dot">•</span>{{menu.name| translate}}
+			<div class="menu_arrow" ng-show="menu.active"></div>
+		</div>
+	    <div uib-collapse="!menu.isCollapsed" class="menu-body">
+			   <a ng-if="item.power!=-1" ng-repeat="item in menu.items" ng-click="clickItem(item)" ng-if="getAccess(item,1)" ng-class="{active:item.active}">{{item.name| translate}}
+			   <span ng-if="item.page=='player' && item.unAuditNo > 0" class="icon1616 redDot" 
+			    uib-popover="{{item.unAuditNo>0?'有'+item.unAuditNo+'球员未审核!':''}}" popover-placement="top" popover-trigger="mouseenter" >{{item.unAuditNo}}</span>
+			    <div class="menu_arrow" ng-show="item.active"></div>
+			   </a>
+			 
+		</div>
+	</div>
+  </div><!--菜单end-->
+<div ng-view class="view_body"></div>
+<img ng-show="mouseOn" id="popImg"  ng-mouseleave="mouseOn = false" style="box-shadow: #646464 0 0 10px;cursor:pointer;position:absolute;" ng-click="showPhoto(getImgUrl(curPicUrl,3))" ng-src="{{getImgUrl(curPicUrl,1)}}">
+	<div class="photoDiv" ng-if="curPic.on">
+	  <img src="/admin/images/refuse.png" class="hand" style="top:0;right:0;position:absolute" ng-click="curPic.on = false">
+	  <img  class="photo" ng-src="{{curPic.url}}" image-load="wheel(curPic.url)" >
+	</div>
+  <div type="text/ng-template" id="myPopoverTemplate.html">
+      <table ng-init="access=getPermission(item,item.account)" class="tipTable"><caption class="text-center">权限信息</caption>
+          <tr ng-repeat="acc in access">
+              <td class='text-left'>{{acc.name}}</td>
+              <td class='text-right'>
+                  <input type='checkbox' id='{{item.id+"_"+$index}}' class='checkbox-8-2' type='checkbox' ng-model="acc.v"
+													ng-true-value=1 ng-false-value=2 />
+                  <label for='{{item.id+"_"+$index}}'></label>
+              </td>
+          </tr>
+      </table>
+  </div>
+
+<script type="text/javascript" src="vendor/sugar.min.js"></script>
+<script type="text/javascript" src="vendor/jquery.min.js"></script>
+<script type="text/javascript" src="vendor/exportExcel.js"  charset='gb2312'></script>
+<script type="text/javascript" src="vendor/IDNOvalidator.js"></script>
+<script type="text/javascript" src="/vendor/layer/layer.js"></script>
+<script type="text/javascript" src="/vendor/datepicker/WdatePicker.js"></script>
+<script type="text/javascript" src="vendor/ajaxfileupload.js"></script>
+
+<script type="text/javascript" src="/vendor/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/vendor/ueditor/ueditor.all.min.js"></script>
+<!-- <script type="text/javascript" src="http://ueditor.baidu.com/ueditor/ueditor.all.js"></script> -->
+
+<script type="text/javascript" src="vendor/angular1.4.9/angular.min.js"></script>
+<script type="text/javascript" src="vendor/angular1.4.9/angular-route.min.js"></script>
+<script type="text/javascript" src="vendor/angular1.4.9/angular-cookies.min.js"></script>
+<script type="text/javascript" src="vendor/angular1.4.9/angular-animate.min.js"></script>
+<script type="text/javascript" src="vendor/angular1.4.9/ui-bootstrap-tpls-1.1.2.min.js"></script>
+<script type="text/javascript" src="vendor/angular1.4.9/angular-translate.min.js"></script>
+<script type="text/javascript" src="vendor/angular1.4.9/angular-translate-loader-static-files.min.js"></script>
+<script type="text/javascript" src="/vendor/angular-ueditor.js"></script>
+<script type="text/javascript" src="vendor/plugin/wheelzoom-feng.js"></script>
+<script type="text/javascript" src="js/filter.js" ></script>
+<script type="text/javascript" src="js/dataService.js" ></script>
+<script type="text/javascript" src="js/mainController.js"></script>
+<script type="text/javascript" src="js/adminController.js"></script>
+<script type="text/javascript" src="js/teamController.js"></script>
+<script type="text/javascript" src="js/playerController.js"></script>
+<script type="text/javascript" src="js/cupController.js"></script>
+<script type="text/javascript" src="js/roleController.js"></script>
+<script type="text/javascript" src="js/catagoryController.js"></script>
+<script type="text/javascript" src="js/adminExecLogController.js"></script>
+<script type="text/javascript" src="js/userLoginLogController.js"></script>
+<script type="text/javascript" src="js/transferController.js"></script>
+<script type="text/javascript" src="js/gameController.js"></script>
+<script type="text/javascript" src="js/fieldController.js"></script>
+<script type="text/javascript" src="js/honorController.js"></script>
+<script type="text/javascript" src="js/logoController.js"></script>
+<script type="text/javascript" src="js/photoController.js"></script>
+<script type="text/javascript" src="js/videoController.js"></script>
+<script type="text/javascript" src="js/adsController.js"></script>
+<script type="text/javascript" src="js/newsController.js"></script>
+<script type="text/javascript" src="js/messageController.js"></script>
+<script type="text/javascript" src="js/recruitController.js"></script>
+<script type="text/javascript" src="js/applyController.js"></script>
+<script type="text/javascript" src="js/sysconfigController.js"></script>
+<script type="text/javascript" src="js/copyModalController.js"></script>
+
+</body>
+</html>

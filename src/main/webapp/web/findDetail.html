@@ -1,0 +1,9 @@
+<div id="findDetail" ng-controller="findDetailController">
+    <div class="body list">
+        <h3 class="title">{{item.title}}</h3>
+        <div class=" time"><span class="mr5">{{item.team.teamTitle}}  发布于：</span> <span class="gray">{{item.opTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</span> </div>
+        <div class="white-border1_2"></div>
+        <p class="text" compile="item.content"></p>
+    </div>
+    <ng-include src="'comments.html'"></ng-include>
+</div>

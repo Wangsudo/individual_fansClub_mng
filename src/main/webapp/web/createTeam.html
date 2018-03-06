@@ -1,0 +1,75 @@
+<div  class="list" ng-controller="createTeamController" >
+	<uib-tabset  class="customTab"  justified=false type="pills">
+		    <uib-tab  heading="创造新球队">
+		    	<div class="body form-horizontal">
+		    	   <form name="form" novalidate ng-class="{submited:form.submited}">
+				       <div class="form-group">
+				           <label class="col-xs-4 control-label">球队名称：</label>
+				           <div class="col-xs-7">
+								<input type="text" placeholder="请填写球队名称" ng-model="curTeam.teamTitle" name="teamTitle" required  ensure_unique='name' api='/app/team/checkUnique' 
+								uib-popover="{{form.teamTitle.$error.required?'队名不可为空！':(form.teamTitle.$error.unique?'队名已被使用':'')}}" popover-placement="right" popover-trigger="mouseenter"
+								/>
+						</div>
+				       </div>
+				        <div class="form-group">
+				           <label class="col-xs-4 control-label">所属赛制：</label>
+				           <div class="col-xs-7" >
+				               <select  ng-model="curTeam.teamType" ng-options="o[0] as o[1] for o in teamTypeList" required name="teamType"
+				               uib-popover="{{form.teamType.$error.required?'请选择赛制！':''}}" popover-placement="right" popover-trigger="mouseenter"
+				               >
+								<option value="">--请选择--</option>
+							</select> 
+				           </div>
+				       </div>
+				            <div class="form-group">
+				           <label class="col-xs-4 control-label">活动频率：</label>
+				           <div class="col-xs-7" >
+				               <select  ng-model="curTeam.acRate" ng-options="o[0] as o[1] for o in acRateList" required name="acRate"
+				                 uib-popover="{{form.acRate.$error.required?'请选择赛制！':''}}" popover-placement="right" popover-trigger="mouseenter" >
+								<option value="">--请选择--</option>
+							</select> 
+				           </div>
+				       </div>
+				       
+				        <div class="form-group">
+				           <label class="col-xs-4 control-label">我的队徽：</label>
+				           <div class="col-xs-7">
+				           <button class="btn btn-sm btn-primary" ng-click="uploadImage()">浏览</button>
+                               <img ng-src="{{getImgUrl(curTeam.iconUrl,2)}}" style="width:120px;height:120px" ng-class="{error:(form.$dirty && !curTeam.iconUrl)}"
+                                uib-popover="{{!curTeam.iconUrl?'请上传队徽！':''}}" popover-placement="right" popover-trigger="mouseenter"  />
+			     		   </div>
+			     		</div>
+			     		 <div class="form-group">
+			     		 	<label class="col-xs-4 control-label">默认队徽：</label>
+			     		 	<div class="col-xs-7">
+			     		    	<img ng-repeat="item in logos" class="mr10 hand" ng-src="{{getImgUrl(item.url,1)}}" ng-click="curTeam.iconUrl = item.url"></img>
+			     		 	</div>
+			     		 </div>
+				      
+				      
+				       <div class="form-group" style="text-align: center">
+				           <button class="btn btn-success mr10" ng-click="add(form)">完成</button>
+				           <button class="btn btn-warning" ng-click="cancel()">取消</button>
+				       </div>
+			       </form>
+		       </div>
+       </uib-tab>
+       <uib-tab heading="解散过球队" ng-if="items.list">
+       		<div class="img-list">
+		            <div class="team-box" ng-repeat="team in items.list" >
+				        <img class="head" ng-src="{{getImgUrl(team.iconUrl,2)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+team.id)"/>
+				        <div class="mt16">
+				            <img class="team-num" ng-src="{{getTeamTypeIcon(team.teamType)}}"  />
+				            <a class="name" ng-href="#/{{module}}/teamDetail?id={{team.id}}">{{team.teamTitle}}</a>
+				        </div>
+				        <div class="dismissed" >已解散</div>
+		           </div>
+	                <div class="page-footer">
+						 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+						   ng-change="pageChanged(items.name)" items-per-page="20"
+						 previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+	                </div>
+	        </div>
+       </uib-tab>
+     </uib-tabset>
+</div>

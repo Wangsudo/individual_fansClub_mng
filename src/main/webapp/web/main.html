@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html ng-app="football">
+<head lang="en">
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- <META http-equiv="Cache-Control" CONTENT="no-cache,no-store, must-revalidate"> -->
+    <META http-equiv="pragma" content="no-cache">
+    <META http-equiv="expires" content="0">
+    <!-- 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+     -->
+    <title></title>
+    
+    <!--[if lte IE 9]>
+	<script src="vender\bootstrap\js\html5shiv.min.js"></script>
+	<script src="vender/bootstrap/js/respond.min.js"></script>
+	<![endif]-->
+	
+    <!-- <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/jquery-jcrop/0.9.12/css/jquery.Jcrop.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" type="text/css" href="/web/vender/bootstrap-3.3.5/css/bootstrap.css" />
+    <link href='/vendor/umeditor/themes/default/css/umeditor.min.css' rel="stylesheet" type="text/css">
+     <link rel="stylesheet" type="text/css" href="/web/vender/jcrop/jquery.Jcrop.min.css" />
+     
+    <link href="css/common.css?t=20151212" rel="stylesheet" type="text/css">
+    <link href="css/grid.css" rel="stylesheet" type="text/css">
+
+    <link href="css/header.css?t=20151212" rel="stylesheet" type="text/css">
+     <link href="css/index.css?t=20151212" rel="stylesheet" type="text/css">
+     
+    <link href="css/square.css" rel="stylesheet" type="text/css">
+    <link href="css/play.css" rel="stylesheet" type="text/css">
+    <link href="css/transfers.css" rel="stylesheet" type="text/css">
+    <link href="css/team.css" rel="stylesheet" type="text/css">
+     <link href="css/player.css" rel="stylesheet" type="text/css">
+    <link href="css/account.css" rel="stylesheet" type="text/css">
+  <!--[if lte IE 8]>
+   <script>
+  		document.createElement('ng-include');
+  		document.createElement('carousel');
+  		document.createElement('slide');
+        document.createElement('uib-tabset');
+        document.createElement('tab');
+    </script>
+  <![endif]-->
+  <style>
+       ng-include {
+          display: block;
+          border: none;
+        }
+  </style>
+</head>
+<body data-teamid="index" ng-controller="webController" ng-cloak>
+
+<div class="header" style="margin-top: -40px;">
+    <div class="wrap header-main">
+        <div class="msg" style="padding: 45px 2px 0 0;">
+        	<a ng-click="showPhoto()" style="text-decoration: none"><img class="img24" src="./img/scaner_icon.png" >关注></a><br>
+            <span>客服电话：158-5187-5842</span><br>
+        </div>
+        
+        <div class="logo-img" style="font-size: 40px;padding: 53px 0 0 20px;">
+        	<a ng-href="/web/main.html" style="text-decoration: none;">
+                <strong style="margin-top: 40px">球&nbsp;迷&nbsp;巢</strong>
+            </a>
+        </div>
+    </div>
+    <div class="nav index">
+        <div class="wrap">
+            <ul class="nav-menu clearfix">
+                <li ng-class="{curpage:module=='chief'}" ng-click="module='chief'">
+                    <a href="#chief" class="noLine" >首页</a>
+                    <div class="nav-line"></div>
+                </li>
+                <li ng-class="{curpage:module=='square'}" ng-click="module='square'">
+                    <a class="noLine" href="#square?tab=0" >广场</a>
+                    <div class="nav-line"></div>
+                </li>
+                <li ng-class="{curpage:module=='play'}" ng-click="module='play'">
+                    <a class="noLine" href="#play" >赛事</a>
+                    <div class="nav-line"></div>
+                </li>
+                 <li ng-class="{curpage:module=='field'}" ng-click="module='field'">
+                    <a class="noLine" href="#field" >球场</a>
+                    <div class="nav-line"></div>
+                </li>
+                <li ng-class="{curpage:module=='transfers'}" ng-click="module='transfers'">
+                    <a class="noLine" href="#transfers" >球员转会</a>
+                    <div class="nav-line"></div>
+                </li>
+                <li ng-class="{curpage:module=='team'}" ng-click="module='team'">
+                    <a class="noLine" href="#team" >球队</a>
+                    <div class="nav-line"></div>
+                </li>
+                <li ng-class="{curpage:module=='player'}" ng-click="module='player'">
+                    <a class="noLine" href="#player" >球员</a>
+                    <div class="nav-line"></div>
+                </li>
+                <li ng-class="{curpage:module=='account'}" ng-click="module='account'" ng-show="user.id">
+                    <a class="noLine" href="#account" >用户中心</a>
+                     <div class="nav-line"></div>
+                </li>
+                 <li ng-class="{curpage:module=='release'}" ng-click="module='release'" ng-show="user.id">
+                    <a class="noLine" href="#release" >发布</a>
+                </li>
+            </ul>
+            <div class="login-info " ng-show="!user.id">
+                <a class="login" href="javascript:;" ng-click="showLoginModal()">登录</a>
+                <a class="reg" href="register.html">注册</a>
+            </div>
+            <div class="login-info isLogin" ng-show="user.id">
+                <img ng-src="{{getImgUrl(user.iconUrl,1)}}">
+                 <div class="btn-group " uib-dropdown auto-close="always">
+				   <div type="button" class="username dropdown-toggle hand" uib-dropdown-toggle  >
+				      {{user.name}} <span class="caret"></span>
+				   </div>
+				    <div class="dropdown-menu userinfo" uib-dropdown-menu role="menu">
+				       <p><a href="#myInfo"><i class="glyphicon glyphicon-user mr10"></i><span >个人资料</span></a></p>
+	     	         <div class="divider"></div>
+	     		      <!--    <p ><a  ng-href="{{user.isCaptain?'#account?type=4':'#notice?tab=签到'}}">
+	     		       <span ><i class="glyphicon glyphicon-edit mr10"></i>签到信</span></a></p>
+	     		         <div class="divider"></div> -->
+	     		         <p><a ng-click="logout()"><i class="glyphicon glyphicon-log-out mr10"></i>退出</a></p>
+	     		</div>
+				</div>
+                <div class="news" ng-click="gotoPage('/notice')">
+                    <div class="news-img" ng-class="{curpage:module=='notice'}"></div>
+                    <div class="news-num" ng-show="getTotalUnread()>0">{{getTotalUnread()}}</div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+<div class="main-content">
+    <div class="content clearfix">
+       	<div class="head-text wrap">
+    	    <span ng-show="subpage.zz">当前位置：<a ng-href="{{subpage.hash}}">{{subpage.moduleName}}</a>&gt;{{subpage.name}}</span>
+    	     <a ng-show="subpage.name" onclick="history.go(-1)">&gt;返回</a>
+    	</div>
+          <div ng-view class="wrap"></div>
+		
+    </div>
+</div>
+<div class="flooder gray">
+    <div class="white-border1_2"></div>
+    <div class="flooder-text">
+        <!--<span>邮箱：footballonline@163.com</span>-->
+       <!-- <span>地址：上海市黄兴路217号A座409-411室</span>
+        <span>联系电话：021-65390122</span>-->
+    </div>
+    <div class="flooder-text">
+        <span>邮箱：footballonline@163.com</span><span>草根足球版权所有Copyright© 2014-2016 All right reserved</span>
+    </div>
+</div>
+
+<div id="photoModal" style="display:none;white-space: nowrap;text-align: center;">
+	<img style="max-width:300px;max-height:300px;margin-right:30px;" src="./img/qrcode_qq.jpg" />
+	   <img style="max-width:300px;max-height:300px;" src="./img/qrcode_wechat.jpg" />
+</div>
+  
+	<div class="back waiting"></div>
+	<div class="request-progress waiting">Sending Request...</div>
+	<!--  <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	  <script src="//cdn.bootcss.com/sugar/1.4.1/sugar.min.js"></script>
+	  <script src="//cdn.bootcss.com/jquery-jcrop/0.9.12/js/jquery.Jcrop.min.js"></script>-->
+	  
+     <script type="text/javascript" src="vender/sugar.min.js"></script>
+	<script type="text/javascript" src="vender/jquery-1.11.0.min.js"></script> 
+	<script type="text/javascript" src="vender/jcrop/jquery.Jcrop.min.js"></script>
+	<script type="text/javascript" src="vender/store.min.js"></script>
+	<script type="text/javascript" src="/vendor/layer/layer.js"></script>
+	<script type="text/javascript" src="/vendor/datepicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="vender/plugin/ajaxfileupload.js"></script>
+	<!-- <script type="text/javascript" src="vender/bootstrap/js/bootstrap.min.js"></script>  -->
+	
+<!--	<script type="text/javascript" src="/vendor/angular1.4.9/angular.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular-route.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular-animate.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="/vendor/angular1.4.9/ui-bootstrap-tpls-1.1.2.min.js"></script>-->
+
+    <script src="//cdn.bootcss.com/angular.js/1.4.9/angular.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.4.9/angular-route.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.4.9/angular-animate.min.js"></script>
+    <script src="//cdn.bootcss.com/angular.js/1.4.9/angular-cookies.min.js"></script>
+    <script src="//cdn.bootcss.com/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.js"></script>
+
+	<script type="text/javascript" src="/vendor/umeditor/template.min.js"></script>
+	<script type="text/javascript" src="/vendor/umeditor/umeditor.min.js"></script>
+	<script type="text/javascript" src="/vendor/umeditor/umeditor.config.js"></script>
+	<script type="text/javascript" src="/vendor/umeditor/meta.umeditor.js"></script>
+	
+ <!--<script type="text/javascript" src="vender/angular/angular.min.js"></script> 
+	<script type="text/javascript" src="vender/angular/angular-cookies.min.js"></script>
+	<script type="text/javascript" src="vender/angular/angular-route.min.js"></script> 
+	<script type="text/javascript" src="vender/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script>-->
+    
+	<script type="text/javascript" src="js/dataService.js"></script>
+	<script type="text/javascript" src="js/filter.js"></script>
+	<script type="text/javascript" src="js/directive.js"></script>
+	<script type="text/javascript" src="js/webController.js"></script>
+	<script type="text/javascript" src="js/chiefController.js"></script>
+	<script type="text/javascript" src="js/noticeController.js"></script>
+	<script type="text/javascript" src="js/squareController.js"></script>
+	<script type="text/javascript" src="js/playController.js"></script>
+	<script type="text/javascript" src="js/transfersController.js"></script>
+	<script type="text/javascript" src="js/teamController.js"></script>
+	<script type="text/javascript" src="js/playerController.js"></script>
+	<script type="text/javascript" src="js/accountController.js"></script>
+	<script type="text/javascript" src="js/releaseController.js"></script>
+	<script type="text/javascript" src="js/playerDetailController.js"></script>
+	<script type="text/javascript" src="js/teamDetailController.js"></script>
+	<script type="text/javascript" src="js/dareController.js"></script>
+	<script type="text/javascript" src="js/fieldController.js"></script>
+	<script type="text/javascript" src="js/loginController.js"></script>
+	<script src="js/tool.js"></script>
+</body>
+</html>

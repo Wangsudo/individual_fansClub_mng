@@ -1,0 +1,29 @@
+	<div class="modal-header">
+        <h3 class="modal-title">修改权限:{{obj.entity.name||obj.entity.teamTitle}}</h3>
+    </div>
+    <form name="form" novalidate>
+    <div class="modal-body form-horizontal container-fluid">
+			<div class="form-group" ng-repeat="item in access">
+				<label class="col-xs-2 control-label">{{item.name}}:</label>
+				<div class="col-xs-1 mt7">
+					<input type="checkbox" id="ace{{$index}}" class="checkbox-8-2" type="checkbox" ng-model="item.v" 
+						ng-true-value=1 ng-false-value=2 ng-change="checkToDate(item)" /><label for="ace{{$index}}"></label>
+				</div>
+				<div class="col-xs-2">
+					<input type="text" class="form-control wdate" style="width:100%" ng-model="item.toDate" placeholder="截止时期" onchange=""
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d'})">
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control" placeholder="加锁或解锁原因" ng-model="item.reason">
+				</div>
+			</div>
+    </div>
+     </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save(form)">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>
+  
+	
+		
+		

@@ -1,0 +1,51 @@
+
+<div id="dareDetail" ng-controller="dareDetailController">
+    <div class="body list" >
+	    <div style="padding:20px 20px; border: 1px solid #888;">
+	        <div class="row">
+	            <span class="left-div">主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;队：</span>
+	            <span class="right-div"><img class="team-img img24 mr10" ng-src="{{getImgUrl(game.teamA.iconUrl,1)}}">{{game.teamA.teamTitle}}
+	            </span>
+	        </div>
+	         <div class="row">
+	            <span class="left-div">客&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;队：</span>
+	            <span class="right-div" ng-if="game.teamB"><img class="team-img img24 mr10" ng-src="{{getImgUrl(game.teamB.iconUrl,1)}}">{{game.teamB.teamTitle}}
+	            </span>
+	        </div>
+	        <div class="row">
+	            <span class="left-div">赛&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;制：</span>
+	            <img ng-src={{getTeamTypeIcon(game.teamA.teamType)}}></img>
+	        </div>
+	        <div class="row">
+	            <span class="left-div">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点：</span>
+	            <span class="right-div">{{game.address}}</span>
+	        </div>
+	        <div class="row">
+	            <span class="left-div">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：</span>
+	            <span class="right-div">{{game.beginTime|getDate}}</span>
+	        </div>
+	        <div class="row">
+	            <span class="left-div">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间：</span>
+	            <span class="right-div">{{game.beginTime|getTime}}</span>
+	        </div>
+	        <div class="row">
+	            <span class="left-div">备注信息：</span>
+	            <div style="line-height: 22px;" compile="game.content">
+	            </div>
+	        </div>
+        </div>
+        <div style="text-align:center;" >
+	      	<div ng-if="game.teamB.id==user.team.id && user.isCaptain ==1 && !game.teamBOperation">
+	             <button class="btn btn-success" ng-click="respondDare(game,1)">应战</button>
+	             <button class="btn btn-danger"  ng-click="respondDare(game,2)">拒绝</button>
+		    </div>
+		    <div ng-if="!game.teamB && game.teamA.id!= user.team.id && game.teamType == user.team.teamType && user.isCaptain ==1">
+	             <button class="btn btn-success" ng-click="respondDare(game,1,user.team)">应战</button>
+		    </div>
+	       <span>{{getGameConfirmation(game)}}</span>
+	    </div>
+    </div>
+    
+    
+     <ng-include src="'comments.html'"></ng-include>
+</div>

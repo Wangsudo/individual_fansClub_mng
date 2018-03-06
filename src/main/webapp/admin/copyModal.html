@@ -1,0 +1,29 @@
+	<div class="modal-header">
+            <h3 class="modal-title">添加球队</h3>
+    </div>
+    <div class="modal-body container-fluid">
+    	<div class="col-sm-5">
+    		<label>待选区</label>
+    		<div class="contentDiv copy-select" >
+    			<ol class="pointer">
+    				<li ng-repeat="item in leftList"  ng-click="moveRight(item)">{{item.teamTitle}}</li>
+    			</ol>
+    		</div>
+    	</div>
+    	<div class="col-sm-2" style="padding-top: 137px;height: 400px;">
+			<button type="button" class="btn btn-default  btn-block" ng-click="moveAllRight()"><i class="glyphicon glyphicon-forward"></i></button>
+    		<button type="button" class="btn btn-default  btn-block" ng-click="moveAllLeft()"><i class="glyphicon glyphicon-backward"></i></button>
+    	</div>
+    	<div class="col-sm-5">
+    		<label>已选区</label>
+    		<div class="contentDiv copy-select" >
+    			<ol class="pointer">
+    				<li ng-repeat="item in rightList"  ng-click="moveLeft(item)">{{item.teamTitle}}</li>
+    			</ol>
+    		</div>
+    	</div>
+	 </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>

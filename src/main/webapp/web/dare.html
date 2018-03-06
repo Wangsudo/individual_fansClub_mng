@@ -1,0 +1,64 @@
+<div class="dare list" ng-controller="dareController">
+    	<uib-tabset  class="customTab"  justified=false type="pills">
+		    <uib-tab  heading="约战" >
+		     <form name="form" novalidate ng-class="{submited:form.submited}">
+		      <div class="body form-horizontal">
+		        <div class="form-group">
+                    <label class="col-xs-4 control-label">赛事名称：</label>
+                    <!-- ng-change="!hideB?(curGame.teamB = null):''" -->
+                    <select  ng-model="curGame.cup.id" required  ng-options="o.id as o.name for o in cups" >
+                        <option value="">--请选择--</option>
+                    </select>
+                </div>
+		    	<div class="form-group">
+                    <label class="col-xs-4 control-label">地点：</label>
+                         	<input  ng-model="curGame.address" name="address" type="text" placeholder="" required  ng-class="{'waiting':loadingLocations}"  
+					   uib-typeahead="o as o for o in getLocation($viewValue)" typeahead-min-length='0'  typeahead-loading="loadingLocations" typeahead-wait-ms='300' 
+					   uib-popover="{{form.address.$error.required?'请输入比赛地点！':''}}" popover-placement="right" popover-trigger="mouseenter" >
+						   </input>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-4 control-label">时间：</label>
+                        <input class="wdate" type="text" ng-model="curGame.beginTime" placeholder="开始时间" onchange="" required name="beginTime" text-date
+									onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-%d'})"  
+						  uib-popover="{{form.beginTime.$error.required?'请输入开始时间！':''}}" popover-placement="right" popover-trigger="mouseenter"
+									/>
+                </div>
+                <div class="form-group" ng-if="!hideB">
+                    <label  class="col-xs-4 control-label">权限选择：</label>
+                    <div class="lineH32">
+	                    <div class="myRadio" ng-class="{selected:curGame.isPublic==1}" ng-click="curGame.isPublic=1"></div>
+	                     <span class="radio-text">发布到广场</span>
+	                    <div class="myRadio" ng-class="{selected:curGame.isPublic==2}" ng-click="curGame.isPublic=2"></div>
+	                    <span class="radio-text">发布到球队</span>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="curGame.isPublic==2">
+                    <label  class="col-xs-4 control-label">对手：</label>
+                    <span ng-if="!hideB">
+                    <!-- 
+	                   <input  ng-model="curGame.teamB"  type="text" placeholder="" name="teamB" required  ng-class="{'waiting':loadingTeamB}"  
+					typeahead="o as o.teamTitle for o in getTeam($viewValue,user.team.teamType,user.team.id,curGame.cup.id)" typeahead-min-length=0 typeahead-editable=false  typeahead-loading="loadingTeamB" typeahead-wait-ms='300'
+					 uib-popover="{{form.teamB.$error.required?'请选择参赛队伍B！':''}}" popover-placement="right" popover-trigger="mouseenter" 		   />
+							 -->		   
+					   <select  ng-model="curGame.teamB" ng-options="o as o.teamTitle+' - '+user.team.teamType+'人制 - '+o.playerNum+'人' disable when o.playerNum < user.team.teamType for o in teamBList" >
+                         <option value="">--请选择--</option>
+                       </select>		 
+				     </span>
+				     <span ng-if="hideB" style="line-height:34px;">{{curGame.teamB.teamTitle}}</span>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-4 control-label">备注信息：</label>
+                    <div class="col-xs-8 col-xs-offset-2 search  big-textarea">
+                        <textarea ng-model="curGame.content"></textarea>
+                    </div>
+                </div>
+                <div class="form-group" style="text-align: center">
+                    <button class="btn btn-success" ng-click="save(form)">发布</button>
+                </div>
+                  </div>
+                  </form>
+		    </uib-tab>
+	    </uib-tabset>
+      
+</div>

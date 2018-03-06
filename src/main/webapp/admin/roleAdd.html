@@ -1,0 +1,52 @@
+		<div class="modal-body form-horizontal">
+		   <form name="form" novalidate>
+			<div  class="form-group col-sm-12">
+				<label class="col-sm-2 control-label">{{'NAME'|translate}}</label>
+				<div class="col-sm-4">
+					<input  type="text" id="account" ng-model="role.roleName" class="form-control"placeholder="" 
+                     required ng-minlength="2" ng-maxlength="20" uib-popover="2~20 characters!" popover-placement="top" popover-trigger="mouseenter" >
+
+				</div>
+			</div>
+			</form>
+			<table class="table table-bordered table-striped table-hover" id="roleAddTable">
+				 <thead ><td colspan="2">{{'MENU'|translate}}</td>
+                 <td >{{'QUERY'|translate}}</td>
+                 <td >{{'ADD'|translate}}</td>
+                 <td >{{'EDIT'|translate}}</td>
+                 <td >{{'DELETE'|translate}}</td>
+                 <td >{{'RELEASE'|translate}}</td>
+                 <td >{{'SELECT_ALL'|translate}}</td>
+                 </thead>
+			<tbody  >
+			 <tr ng-repeat-start="menu in curMenus" ng-if="menu.items.length == 0 && menu.power!=-1">
+			 	<td ><b>{{menu.name|translate}}</b></td>
+				 <td></td>
+                 <td ><i class="glyphicon" ng-click="toggleAccess(menu,1)"  ng-style="getPower(menu,1)"  ng-class="getCheckClass(menu.access,1)"></i></td>
+                 <td ><i class="glyphicon" ng-click="toggleAccess(menu,2)" ng-style="getPower(menu,2)" ng-class="getCheckClass(menu.access,2)"  ></i></td>
+                 <td ><i class="glyphicon"  ng-click="toggleAccess(menu,4)" ng-style="getPower(menu,4)" ng-class="getCheckClass(menu.access,4)"  > </i></td>
+                 <td ><i class="glyphicon"  ng-click="toggleAccess(menu,8)" ng-style="getPower(menu,8)" ng-class="getCheckClass(menu.access,8)" > </i></td>
+                 <td ><i class="glyphicon" ng-click="toggleAccess(menu,16)"  ng-style="getPower(menu,16)" ng-class="getCheckClass(menu.access,16)" > </i></td>
+                 <td >
+                 <i class="glyphicon glyphicon-th"  ng-click="checkAll(menu)" ng-style="getPower(menu,31)"   > </i>
+                 </td>
+             </tr>
+				<tr ng-repeat-end ng-repeat="item in menu.items" ng-if="item.power!=-1">
+					<td rowspan="{{getSubmenuLength(menu.items)}}" ng-if="$index == 0"><b>{{menu.name|translate}}</b></td>
+					 <td>{{item.name|translate}}</td>
+	                 <td ><i class="glyphicon"  ng-click="toggleAccess(item,1)" ng-style="getPower(item,1)" ng-class="getCheckClass(item.access,1)"></i></td>
+	                 <td ><i class="glyphicon" ng-click="toggleAccess(item,2)" ng-style="getPower(item,2)"  ng-class="getCheckClass(item.access,2)"  ></i></td>
+	                 <td ><i class="glyphicon" ng-click="toggleAccess(item,4)" ng-style="getPower(item,4)"  ng-class="getCheckClass(item.access,4)"  > </i></td>
+	                 <td ><i class="glyphicon" ng-click="toggleAccess(item,8)" ng-style="getPower(item,8)" ng-class="getCheckClass(item.access,8)" > </i></td>
+	                 <td ><i class="glyphicon" ng-click="toggleAccess(item,16)" ng-style="getPower(item,16)"  ng-class="getCheckClass(item.access,16)" > </i></td>
+	                 <td >
+	                    <i class="glyphicon glyphicon-th"  ng-click="checkAll(item)" ng-style="getPower(item,31)"   > </i>
+	                 </td>
+                 </tr>
+			</tbody>
+		</table>
+		</div>
+		<div class="modal-footer" >
+		    <button class="btn btn-primary" ng-click="save(role)" id="saveAdmin">{{'CONFIRM'|translate}}</button>
+			<button class="btn btn-warning"ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    	</div>

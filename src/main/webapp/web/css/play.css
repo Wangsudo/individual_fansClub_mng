@@ -1,0 +1,89 @@
+#play .customTab >.nav li:nth-child(1){
+	margin-left: 20px;
+}
+
+.search-div {
+	position:relative;
+    height: 45px;
+    line-height: 40px;
+    margin-left: 20px;
+    font-size: 14px;
+}
+.search-div input.date-input:hover {
+    background: url(../img/icon_calendar_hover.png) 104px no-repeat;
+}
+.search-div input.date-input {
+	display: inline-block;
+    width: 128px;
+    height: 30px;
+    line-height: 25px;
+    background: url(../img/icon_calendar_normal.png) 104px no-repeat;
+}
+
+#play .btn-s{
+	margin-left:5px;
+}
+
+#play .list {
+    min-height: 500px;
+}
+
+#play .title td:nth-child(1){
+    width: 96px;
+}
+#play .title td:nth-child(2){
+    width: 140px;
+}
+#play .title td:nth-child(3){
+    width: 100px;
+    text-align: center;
+}
+#play .title td:nth-child(4){
+    width: 193px;
+}
+#play .title td:nth-child(5){
+    width: 68px;
+    text-align: center;
+}
+#play table{
+	margin:0 auto;
+}
+#play .title {
+    background: url("../img/bg_list-title_blue.png");
+    height: 40px;
+    line-height: 40px;
+}
+
+#play tbody tr:nth-child(even){
+    background: transparent;
+}
+#play tbody tr:nth-child(odd){
+    background: url(../img/bg_list_banmaxian.png);
+}
+#play .num{
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: top;
+}
+
+#play .look-btn {
+    width: 28px;
+    height: 28px;
+    background: url(../img/icon_arrow_normal.png)  no-repeat;
+    background-size: 28px 28px;
+}
+#play .look-btn:hover {
+    background: url(../img/icon_arrow_hover.png)  no-repeat;
+    background-size: 28px 28px;
+}
+
+#myPlay .customTab >.nav li.pull-right{
+ 	padding:10px 20px;
+}
+#myPlay .game-row{
+	width:503px;
+}
+#myPlay .game-info .score{
+	width:73px;
+}

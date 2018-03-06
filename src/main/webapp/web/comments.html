@@ -1,0 +1,37 @@
+<div class="list mt10">
+    <div class="body">
+        <div class="clearfix">
+            <div class="col-xs-2 text-right">
+                <img ng-src="{{getImgUrl(user.iconUrl,1)}}"/>
+            </div>
+
+            <div class="col-xs-10">
+                <textarea type="text/html" ng-model='bean.comment' style="margin:auto;height:150px;" meta-umeditor='config' meta-umeditor-placeholder='评论...'></textarea>
+                <button class="btn  btn-sm btn-default pull-right" style = "margin-top:10px;" ng-click = "addComment(bean)" > 提交评论 </button>
+            </div>
+        </div>
+        <div class= "title" > 评论（共{{items.total}}条）</div>
+        <div class= "white-border2_3" > </div>
+        <div ng-repeat = "item in items.list">
+            <div class= "col-xs-2 text-right" >
+                <img ng-src = "{{getImgUrl(item.player.iconUrl,1)}}" ng-click = "gotoPage('/'+module+'/playerDetail?id='+item.player.id)" >
+            </div>
+            <div class = "col-xs-10" >
+                <div>
+                    <a ng-href = "#/{{module}}/playerDetail?id={{item.player.id}}" class= "mr10" >{{ item.player.name }}</a >
+                    <span class= "gray" >{{item.opTime | date:'yyyy-MM-dd hh:mm:ss'}}</span>
+                </div>
+                <div compile = "item.comment" >
+                </div>
+            </div>
+            <div class= "col-xs-12 white-border1_2" > </div>
+        </div>
+        <div class= "page-footer" >
+            <uib-pagination total-items = "items.total" ng-model = "items.curPage" class= "pagination-sm"
+                max-size = "10" boundary-links = "true" ng-change = "pageChanged()"
+                items-per-page = "10" previous-text = "&lt;上一页"
+                next-text = "下一页&gt;" first-text = "首页" last-text = "尾页" >
+            </uib-pagination>
+        </div>
+    </div>
+</div>

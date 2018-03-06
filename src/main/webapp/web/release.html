@@ -1,0 +1,259 @@
+<div id="release" class="list form-horizontal" ng-controller="releaseController">
+    <uib-tabset  class="customTab"  justified=false type="pills">
+		    <uib-tab  heading="比分" ng-if="user.isCaptain==1" active ="tabs['比分']">
+					<div class="list-body grid">
+						        <table cellpadding="0" cellspacing="0">
+						            <thead class="title">
+						                <td  >时间</td>
+						                <td >挑战方</td>
+						                <td  style="width:200px;">挑战方上传比分</td>
+						                <td>比赛结果</td>
+						                <td  style="width:200px;">应战方上传比分</td>
+						                 <td>应战方</td>
+						            </thead>
+						            <tr ng-repeat="game in games">
+						                <td style="height:80px;">{{game.beginTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</td>
+						                <td>
+						                     <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+						                </td>
+						                <td >
+				                            	 <div class="score">
+				                            		 <span ng-show="!game.inputA">{{game.scoreA1==undefined?"--":game.scoreA1}}:{{game.scoreB1==undefined?"--":game.scoreB1}}</span>
+					                            	<span ng-show="game.inputA" style="width:80px;postition:absolute">
+					                            	  <input type="text" class="" ng-model="game._scoreA1" >
+					                            	   :
+								                      <input type="text" class="" ng-model="game._scoreB1">
+								                       <button class="btn btn-success" ng-click="confirmScoreA(game,user)" ng-show="game.inputA">确认</button>
+					                            	</span>
+								                </div>
+					                       <button class="btn btn-primary btn-sm"  ng-if="game.teamA.id == user.team.id" ng-click="inputScoreA(game)">{{game.inputA?'取消':'录入比分'}}</button>
+						                </td>
+						                <td>    
+						                    <div class="game-info">
+						                           <div class="score green" ng-class="{red:game.color=='red',yellow:game.color=='yellow'}">{{getScore(game)}}</div>
+						                            <div class="gray">{{getType(game)}}</div>
+						                    </div>
+						                 </td>
+						                <td>
+						                       <div class="score">
+				                            		 <span ng-show="!game.inputB">{{game.scoreA2==undefined?"--":game.scoreA2}}:{{game.scoreB2==undefined?"--":game.scoreB2}}</span>
+					                            	<span ng-show="game.inputB" style="width:80px;postition:absolute">
+					                            	  <input type="text" class="" ng-model="game._scoreA2" >
+					                            	   :
+								                      <input type="text" class="" ng-model="game._scoreB2">
+								                       <button class="btn btn-success" ng-click="confirmScoreB(game,user)" ng-show="game.inputB">确认</button>
+					                            	</span>
+								                </div>
+					                           <button class="btn btn-primary btn-sm"  ng-if="game.teamB.id == user.team.id" ng-click="inputScoreB(game)">{{game.inputB?'取消':'录入比分'}}</button>
+						                </td>
+						                <td>
+						         			     <ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+						                </td>                     
+						            </tr>
+						            </tbody>
+						        </table>
+				                          
+						    </div>
+       	    </uib-tab>
+       	    <uib-tab  heading="图片" active ="tabs['图片']">
+					<div class="list-body grid img-page">
+						<form name="form" novalidate >
+					        <div class="form-group">
+					            <label class="col-xs-4 control-label">上传图片：</label>
+					            <div class="col-xs-7" >
+					                <div class="img"  ng-repeat="photo in curGroup.pics">
+					                    <img  ng-src="{{getImgUrl(photo.url,1)}}" >
+					                    <div class="img-del" ng-click="delItem(curGroup.pics,photo)"></div>
+					                </div>
+					                <div class="add-img" ng-if="curGroup.pics.length<9" ng-click="uploadImage()"></div>
+					            </div>
+					        </div>
+					   <!--      <div class="form-group">
+					            <label class="col-xs-4 control-label">图片标题：</label>
+					                <input type="text" placeholder="请输入标题" ng-model="curGroup.title" >
+					        </div> -->
+					        <div class="form-group">
+					            <label class="col-xs-4 control-label">图片描述：</label>
+					            <div class="search big-textarea" style="display: inline-block; width: 469px;">
+					                <textarea ng-model="curGroup.comment" required></textarea>
+					            </div>
+					        </div>
+					        <div class="form-group" >
+					            <label class="col-xs-4 control-label">权限选择：</label>
+					            <div class="lineH32">
+						             <div class="myRadio"   ng-class="{selected:curGroup.viewType==1}" ng-click="curGroup.viewType=1" ></div>
+						            <span class="radio-text">发布到广场</span>
+						            <div class="myRadio"  ng-class="{selected:curGroup.viewType==2}" ng-click="curGroup.viewType=2"></div>
+						            <span class="radio-text">发布到队内</span>
+					            </div>
+					        </div>
+					        <div class="form-group" style="text-align: center">
+					            <button class="btn btn-success" ng-click="savePhoto(form)">发布</button>
+					        </div>
+					   </form>
+		        </div>
+       	    </uib-tab>
+       	    <uib-tab  heading="视频"  active ="tabs['视频']">
+				<div class="list-body grid">
+						   <div class="img-page">
+						   <form name="form" novalidate>
+					        <div class="form-group">
+					            <label class="col-xs-4 control-label">视频标题：</label>
+					                <input type="text" placeholder="请输入标题"  ng-model="curVideo.title"   style="width: 469px;">
+					        </div>
+					         <div class="form-group">
+					            <label class="col-xs-4 control-label">视频URL：</label>
+					               <input type="text" placeholder="优酷视频链接" required ng-model="curVideo.videoDiv" style="width: 469px;">
+					        </div>
+					        <div class="form-group">
+					            <label class="col-xs-4 control-label">视频描述：</label>
+					            <div class="search big-textarea" style="display: inline-block; width: 469px;">
+					                <textarea ng-model="curVideo.comment"></textarea>
+					            </div>
+					        </div>
+					        <div class="form-group">
+					            <label class="col-xs-4 control-label">权限选择：</label>
+					            <div class="lineH32">
+					            	   <div class="myRadio"   ng-class="{selected:curVideo.viewType==1}" ng-click="curVideo.viewType=1" ></div>
+							            <span class="radio-text">发布到广场</span>
+							            <div class="myRadio"  ng-class="{selected:curVideo.viewType==2}" ng-click="curVideo.viewType=2"></div>
+							            <span class="radio-text">发布到队内</span>
+					            </div>
+					        </div>
+					        <div class="form-group" style="text-align: center">
+					            <button class="btn btn-success" ng-click="addVideo(form)">发布</button>
+					        </div>
+					          </form>
+					    </div>
+		        </div>
+       	    </uib-tab>
+       	     <uib-tab  heading="找队" ng-if="user.isCaptain!=1"  active ="tabs['找队']" >
+				 	<form name="form" novalidate class="list-body" ng-class="{submited:form.submited}">
+				         <div class="form-group">
+				            <label class="col-xs-4 control-label">标题：</label> <input type="text" placeholder="请输入标题"  required ng-model="apply.title" >
+				        </div>
+				        <div class="form-group">
+				                <label class="col-xs-4 control-label">意向赛制：</label> 
+								<select  ng-model="apply.dreamType" ng-options="o[0] as o[1] for o in teamTypeList">
+										<option value="">--请选择--</option>
+								</select> 
+				        </div>
+				        
+				        <div class="form-group">
+				            <label class="col-xs-4 control-label">自我推荐信：</label>
+				             <div class="search" style="display: inline-block; width: 469px;">
+				      		    <textarea ng-model="apply.content" required></textarea>
+				             </div>
+				        </div>
+				        <div class="form-group">
+				        	 <label class="col-xs-4 control-label"></label>
+				            <div class="checkbox" ng-class="{selected:apply.isPublic==1}" ng-click="apply.isPublic==1?(apply.isPublic=2):(apply.isPublic=1)" ></div>
+				              <span class="radio-text" >发布至广场</span>
+				        </div>
+				 
+				        <div class="form-group text-center">
+				            <button class="btn btn-success" ng-click="saveApply(form)">发布</button>
+				        </div>
+				        <div class="grid" >
+				            <table cellpadding="0" cellspacing="0">
+				            	<caption style="color:white">已申请球队</caption>
+				                <thead class="title">
+				                    <td>球队名称</td>
+				                    <td>赛制</td>
+				                    <td>综合积分</td>
+				                </thead>
+				                <tbody>
+					                <tr ng-repeat="item in apply.tanks">
+					                    <td><img ng-src="{{getImgUrl(item.team.iconUrl,1)}}" class="img24 mr10"/>{{item.team.teamTitle}}</td>
+					                    <td>{{item.team.teamType| keyToValue : teamTypeList}}</td>
+					                    <td>{{item.team.point}}</td>
+					                </tr>
+				                </tbody>
+				            </table>
+				        </div>
+				       </form>
+       	    </uib-tab>
+       	    <uib-tab  heading="站内信" ng-if="user.isCaptain ==1" select="showMembers()"  active ="tabs['站内信']">
+				<div class="list-body grid">
+					 <form class="form" name="form" novalidate ng-class="{submited:form.submited}">
+				        <div class="form-group">
+				            <label class="col-xs-4 control-label">标题：</label> 
+				            <input type="text" placeholder="请输入标题"   ng-model="curMessage.title"  required name="title"
+				             uib-popover="{{form.title.$error.required?'请输入标题!':''}}" popover-placement="right" popover-trigger="mouseenter" />
+				        </div>
+						 <div class="form-group">
+							 <label class="col-xs-4 control-label">站内信类型：</label>
+							 <div class="lineH32">
+								 <div class="checkbox" ng-class="{selected:curMessage.messageType==2}" ng-click="curMessage.messageType=(curMessage.messageType==1?2:1)"></div>
+								 <span class="radio-text"> 需要签到</span>
+							 </div>
+						 </div>
+				        <div class="form-group" ng-if="curMessage.messageType==2">
+				            <label class="col-xs-4 control-label">详细地址：</label> 
+				            <input type="text" placeholder="请输入地址"  ng-model="curMessage.address" required name="address"
+				             uib-popover="{{form.address.$error.required?'请输入地址!':''}}" popover-placement="right" popover-trigger="mouseenter" />
+				        </div>
+				        <div class="form-group" ng-if="curMessage.messageType==2">
+				            <label class="col-xs-4 control-label">活动时间：</label> <input type="text"  onchange="" required name="beginTime" text-date
+			                         onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-%d'})" ng-model="curMessage.beginTime" class="wdate"
+			                         uib-popover="{{form.beginTime.$error.required?'请输入活动时间!':''}}" popover-placement="right" popover-trigger="mouseenter" />
+				        </div>
+				        <div class="form-group">
+				            <label class="col-xs-4 control-label">详细信息：</label>
+				            <div class="search big-textarea" style="display: inline-block; width: 469px;" uib-popover="{{form.content.$error.required?'请输入详细信息!':''}}" popover-placement="right" popover-trigger="mouseenter">
+				                <textarea    ng-model="curMessage.content"  required name="content"  />
+				            </div>
+				        </div>
+
+				            <table cellpadding="0" cellspacing="0">
+				                <thead class="title">
+				                    <td><div class="checkbox" ng-class="{selected:curMessage.checkAll}" ng-click="checkAll(teamMembers,curMessage)"></div></td>
+				                    <td>球衣</td>
+				                    <td>姓名</td>
+				                    <td>位置</td>
+				                    <td>年龄</td>
+				                    <td>综合积分</td>
+				                </thead>
+				                <tbody>
+				                <tr ng-repeat="item in teamMembers">
+				                    <td><div class="checkbox" ng-class="{selected:item.checked}" ng-click="item.checked =!item.checked" ></div></td>
+				                    <td>{{item.uniformNumber}}</td>
+				                    <td>{{item.name}}</td>
+				                    <td>{{item.position| keyToValue : playerPositionList}}</td>
+				                    <td>{{item.birth|getAge}}</td>
+				                    <td>{{item.point}}</td>
+				                </tr>
+				                </tbody>
+				            </table>
+				        <div class="form-group text-center">
+				            <button class="btn btn-success" ng-click="addMessage(form)">发布</button><span class="error">{{messageError}}</span>
+				        </div>
+				     </form>
+		        </div>
+       	    </uib-tab>
+       	    <uib-tab  heading="招人" ng-if="user.isCaptain==1" active ="tabs['招人']">
+				<div class="list-body grid">
+					 <form class="form" name="form" novalidate ng-class="{submited:form.submited}">
+				    	<div class="form-group">
+				            <label class="col-xs-4 control-label" >标题：</label> 
+				            <input type="text" placeholder="请输入标题"  ng-model="recruit.title" required name="title"
+				            uib-popover="{{form.title.$error.required?'请输入标题!':''}}" popover-placement="right" popover-trigger="mouseenter"/>
+				        </div>
+				        <div class="form-group">
+				            <label class="col-xs-4 control-label">招兵买马：</label>
+				            <div class="search big-textarea" style="display: inline-block; width: 469px;"
+				                uib-popover="{{form.content.$error.required?'请输入详细信息!':''}}" popover-placement="right" popover-trigger="mouseenter">
+				                <textarea ng-model="recruit.content" required name="content" ></textarea>
+				            </div>
+				        </div>
+				
+				        <div class="form-group" style="text-align: center">
+				            <button class="btn btn-success" ng-click="releaseRecruit(form)">发布</button>
+				        </div>
+				    </form>
+		        </div>
+       	    </uib-tab>
+       	   
+	</uib-tabset>
+</div>
+

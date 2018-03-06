@@ -1,0 +1,123 @@
+<div class="main" id="square" ng-controller="squareController">
+        <uib-tabset class="squareTab" type="pills" vertical="true">
+       	 <uib-tab heading="{{itemstab.name}}" ng-repeat="itemstab in itemstabList" active="itemstab.active" ng-click="gotoPage('/square?tab='+$index)">
+       	 	<div class="list right w815  grid" >
+		        <uib-tabset  class="customTab"  justified=false type="pills" >
+			        <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemstab.list" >
+								<table cellpadding="0" cellspacing="0" ng-if="itemstab.name =='动态'">
+									<thead class="title">
+										<td  style="width:633px" >标题</td>
+										<td style="width:189px;">时间</td>
+									</thead>
+									<tbody>
+									     <tr ng-repeat="item in items.list">
+									        <td ><a ng-href="#/square/newsDetail?tab=5&id={{item.id}}"><div class="text-ellipsis" >{{item.title}} </div></a></td>
+									        <td  class="gray">{{item.startTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</td>
+									    </tr>
+										<tr></tr>
+									</tbody>
+								</table>
+								
+								<table cellpadding="0" cellspacing="0" ng-if="itemstab.name =='招人'">
+									<thead class="title">
+										<td>队徽</td>
+										<td>队名</td>
+										<td>内容</td>
+										<td>时间</td>
+									</thead>
+									<tbody>
+									     <tr ng-repeat="item in items.list">
+									     	 <td><img class="img24" ng-src="{{getImgUrl(item.team.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+item.team.id)"/></td>
+			                                 <td><a ng-href="#/{{module}}/teamDetail?id={{item.team.id}}">{{item.team.teamTitle}}</a></td>
+			                                 <td><a ng-href="#/{{module}}/findDetail?id={{item.id}}"><div class="text-ellipsis" compile="item.content"> </div></a></td>
+									         <td class="gray">{{item.opTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</td>
+									    </tr>
+										<tr></tr>
+									</tbody>
+								</table>
+								
+								<table cellpadding="0" cellspacing="0" ng-if="itemstab.name =='找队'">
+									<thead class="title">
+										<td>头像</td>
+										<td>姓名</td>
+										<td>意向赛制</td>
+										<td>内容</td>
+										<td style="width:140px">时间</td>
+									</thead>
+									<tbody>
+									     <tr ng-repeat="item in items.list">
+									     	 <td><img class="img24" ng-src="{{getImgUrl(item.player.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)"/></td>
+			                                 <td><a ng-href="#/{{module}}/playerDetail?id={{item.player.id}}">{{item.player.name}}</a></td>
+			                                 <td><img ng-src="{{getTeamTypeIcon(item.dreamType)}}"></td>
+			                                 <td><a ng-href="#/{{module}}/applyDetail?id={{item.id}}"><div class="text-ellipsis" style="width:400px;" compile="item.content"> </div></a></td>
+									         <td class="gray">{{item.applyTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</td>
+									    </tr>
+										<tr></tr>
+									</tbody>
+								</table>
+								
+								<table cellpadding="0" cellspacing="0" ng-if="itemstab.name =='约战'">
+									<thead class="title">
+										<td style="width:100px">赛制</td>
+										<td  style="width:400px">比赛</td>
+										<td  style="width:73px">状态</td>
+										<td style="width:100px">查看</td>
+										<td style="width:100px">操作</td>
+									</thead>
+									<tbody>
+									     <tr ng-repeat="game in items.list">
+									         <td><img ng-src="{{getTeamTypeIcon(game.teamType)}}"></td>
+									     	 <td>
+													<div class="game-row">
+														<ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+										                <div class="game-info">
+										                    <div class="text-ellipsis">{{game.address}}</div>
+										                    <div >{{game.date|formatDate:"{yyyy}-{MM}-{dd}"}}</div>
+										                    <div >{{game.time}}</div>
+										                </div>
+										               <ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+										            </div>
+											</td>
+											 <td>{{getType(game)}}</td>
+			                                 <td><a ng-href="#/{{module}}/dareDetail?tab=4&id={{game.id}}"><div class="look-btn"></div></a></td>
+       										 <td><div class="yes-btn green" ng-if="user&& user.team && user.team.id&&user.isCaptain==1 && user.team.id != game.teamA.id && !game.teamB && pastTime(game.beginTime)" ng-click="acceptDare(game)">应战</div>
+											 </td>
+									    </tr>
+										<tr></tr>
+									</tbody>
+								</table>
+								    <div class="list-box" ng-repeat="item in items.list" ng-if="itemstab.name =='图片'">
+								        <a ng-href="#/{{module}}/img?tab=1&id={{item.id}}">
+								            <img ng-src="{{getImgUrl(item.cover.url,2)}}">
+								        </a>
+										<div class="list-box-text">&nbsp;{{item.comment}}</div>
+								        <div class="eye-img">{{item.viewTimes||0}}</div>
+								        <div class="good-img">{{item.likes|splitLikes}}</div>
+								    </div>
+								    
+								   <div class="list-box" ng-repeat="item in items.list" ng-if="itemstab.name =='视频'">
+								        <img ng-src="{{item.screenshot}}">
+								        <div class="list-box-text">{{item.title}}</div>
+								        <div class="good-img">{{item.likes|splitLikes}}&nbsp;</div>
+								        <div class="comment-img">{{item.commentCount}}&nbsp;</div>
+								        <a class="fl-bg" ng-href="#/{{module}}/video?tab=0&id={{item.id}}"></a>
+								    </div>
+								
+		                    <div class="page-footer">
+								 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+								  ng-change="pageChanged(itemstab.name,items.teamType)"
+								previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+					        </div>
+		        	</uib-tab>
+		        	<li class="pull-right">
+		        		<div class="find">
+		        			 <i class="find-btn" ng-click="find(itemstab.name)"></i>
+		        		     <input type="text"  ng-model="itemstab.snippet" ng-keyup="find(itemstab.name,$event)" >
+		        		</div>
+		            </li>
+		        </uib-tabset>
+		    </div>
+       	 </uib-tab>
+        </uib-tabset>
+</div>
+

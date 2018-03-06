@@ -1,0 +1,64 @@
+<div class="main" id="team" ng-controller='teamController'>
+    <div class="list">
+        <uib-tabset  class="customTab"  justified=false type="pills">
+		    <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList ">
+		    	<div class="img-list" ng-if="large">
+		            <div class="team-box" ng-repeat="team in items.list" >
+				        <img class="head" ng-src="{{getImgUrl(team.iconUrl,2)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+team.id)" />
+				        <div class="mt16">
+				            <img class="team-num" ng-src="{{getTeamTypeIcon(team.teamType)}}"  />
+				            <a class="name" ng-href="#/{{module}}/teamDetail?id={{team.id}}">{{team.teamTitle}}</a>
+				        </div>
+				        <div class="dismissed" ng-if="team.dismissed ==1">已解散</div>
+				        <img class="top_right" ng-if="team.official==1" src="/images/official_small.png"/>
+				        <div class="good" ng-if="team.dismissed !=1" ng-click="saveTeamLike(team)" ng-disabled="existTeamLike(team)">{{team.likeNum}}</div>
+				     </div>
+				</div>
+				<div class="team-body grid" ng-if="!large">
+						<table cellpadding="0" cellspacing="0" >
+							<thead class="title">
+							<td style="width:60px">名次</td>
+							<td>队徽</td>
+							<td style="width:100px">队名</td>
+							<td>赛制</td>
+							<td>队员数</td>
+							<td>所在地</td>
+							<td>类型</td>
+							<td>人气指数</td>
+							<td>较上周</td>
+							</thead>
+							<tbody >
+							<tr ng-repeat="team in items.list">
+								<td style="width:60px"><div style="width:60px;" ng-class="{num1:$index == 0,num2:$index==1,num3:$index == 2,num:$index>2}">{{$index+1}}</div></td>
+								<td><img class="img24" ng-src="{{getImgUrl(team.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+team.id)"></td>
+								<td style="width:100px"><a ng-href="#/{{module}}/teamDetail?id={{team.id}}">{{team.teamTitle}}</a></td>
+								<td>{{team.teamType}}</td>
+								<td>{{team.playerNum}}</td>
+								<td>{{team.region}}</td>
+								<td>{{team.kind|keyToValue : teamKindList}}</td>
+								<td>{{team.likeNumLastWeek}}</td>
+								<td><img ng-if="upOrDown(team.likeNumLastWeek-team.likeNumWeekBefLast)" ng-src="{{upOrDown(team.likeNumLastWeek-team.likeNumWeekBefLast)}}">{{team.likeNumLastWeek-team.likeNumWeekBefLast}}</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+
+                <div class="page-footer">
+					 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+					   ng-change="pageChanged(items.teamType)" items-per-page="20"
+					 previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+                </div>
+       	  </uib-tab>
+         	<li class="pull-right">
+				<button class="btn btn-sm btn-primary pull-right" style="margin-top: 5px" ng-click="large=!large"><i class="glyphicon " ng-class="{'glyphicon-th-large':large,'glyphicon-th-list':!large}"></i></button>
+				<div class="find">
+        			 <i class="find-btn" ng-click="find()"></i>
+        		     <input type="text" placeholder="请输入球队名称" ng-model="search.snippet" ng-keyup="find($event)" >
+        	   </div>
+           </li>
+		</uib-tabset>
+    </div>
+</div>
+

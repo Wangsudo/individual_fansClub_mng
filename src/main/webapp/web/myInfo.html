@@ -1,0 +1,102 @@
+<div class="main list" id="myInfo" ng-controller="myInfoController">
+    <form class="form" name="form" novalidate>
+        <div class="row">
+            <!--<button class="btn btn-sm btn-success" ng-click="uploadImage()" style="margin-right: 25px;">更换头像</button>-->
+            <label>我的头像：</label>
+            <img style="max-width:120px;max-height:120px;" ng-src="{{getImgUrl(player.iconUrl,2)}}">
+        </div>
+        <div class="row">
+            <label>姓名：</label>
+            <span>{{player.name}}</span>
+        </div>
+        <div class="row">
+            <label>昵称：</label>
+                <input type="text" ng-model="player.nickname" placeholder="请填写你的昵称">
+        </div>
+        <div class="row">
+            <label >密码：</label>
+            <input type="password" ng-model="player.password" name="password" placeholder="6-20个字符" required ng-pattern="/^[\w!,@#$%^&*?_~]{6,20}$/"
+                   uib-popover="{{form.password.$error.required?'请输入密码!':(form.password.$error.pattern?'请输入6-20个字符!':'')}}" popover-placement="right" popover-trigger="mouseenter">
+        </div>
+        <div class="row">
+            <label>性别：</label>
+            <span>{{player.gender|keyToValue:genderList}}</span>
+        </div>
+        <div class="row">
+            <label>出生日期：</label>
+            <span>{{player.birth|formatDate:"{yyyy}-{MM}-{dd}"}}</span>
+        </div>
+        <div class="row">
+            <label>身高（cm）：</label>
+                <input type="number" ng-model="player.height" name="height" placeholder="请填写真实身高" between='{"lt":230,"gt":100}' 
+                    uib-popover="{{form.height.$error.between?'身高在100cm至230cm之间！':''}}" popover-placement="right" popover-trigger="mouseenter"/>
+        </div>
+        <div class="row">
+            <label>体重（kg）：</label>
+                <input type="number" ng-model="player.weight" name="weight" placeholder="请填写真实体重"name="weight" between='{"lt":150,"gt":50}' 
+				uib-popover="{{form.weight.$error.between?'体重在50kg至150kg之间！':''}}" popover-placement="right" popover-trigger="mouseenter"/>
+        </div>
+        <div class="row">
+            <label>场上号码：</label>
+                <input type="number" ng-model="player.uniformNumber" name="uniformNumber" placeholder="请填写数字" name="uniformNumber" between='{"lt":99,"gt":1}' 
+			 uib-popover="{{form.uniformNumber.$error.between?'球衣号码在1至99之间！':''}}" popover-placement="right" popover-trigger="mouseenter"/>
+        </div>
+        <div class="row">
+            <label>擅长位置：</label>
+                  <select  ng-model="player.position"
+						ng-options="o[0] as o[1] for o in playerPositionList">
+						<option value="">--请选择--</option>
+				</select> 
+        </div>
+        <div class="row">
+            <label >活动频率：</label>
+            <select ng-model="player.acRate" name="acRate" ng-options="o[0] as o[1] for o in acRateList">
+                <option value="">--请选择--</option>
+            </select>
+        </div>
+        <div class="row">
+            <label>加入时间：</label>
+            <span>{{player.createTime|formatDate:"{yyyy}-{MM}-{dd}"}}</span>
+        </div>
+        <div class="row">
+            <label>状态：</label>
+                <select  ng-model="player.playerStatus"
+									ng-options="o[0] as o[1] for o in playerStatusList">
+									<option value="">--请选择--</option>
+					</select> 
+        </div>
+        <div class="row">
+            <label>居住地区：</label>
+                <input type="text" ng-model="player.address">
+        </div>
+        <div class="row">
+            <label>QQ：</label>
+                <input type="text" ng-model="player.qq">
+        </div>
+         <div class="row">
+            <label>微信：</label>
+                <input type="text" ng-model="player.wechat">
+        </div>
+        <div class="row" >
+            <label>电子邮箱：</label>
+            <span>{{player.email}}</span>
+        </div>
+        <div class="row">
+            <label>手机号：</label>
+            <span>{{player.mobile}}</span>
+        </div>
+        <div class="row">
+            <label>个人主页：</label>
+                <span>HTTP://</span><input type="text" ng-model="player.personalPage">
+        </div>
+        <div class="row">
+            <label>踢球风格：</label>
+               <div class="search big-textarea" style="display: inline-block; width: 469px;">
+	                <textarea ng-model="player.introduce" class="ng-pristine ng-valid"></textarea>
+            </div>
+        </div>
+        <div class="row" style="text-align: center">
+            <button class="btn btn-primary" ng-click="update(form)">完成</button>
+        </div>
+    </form>
+</div>

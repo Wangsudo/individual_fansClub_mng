@@ -1,0 +1,48 @@
+<div class="navbar-form" ng-controller = 'transferController'>
+<h3 class="title bg-info">转会记录查询</h3>
+	<div class="search  form-inline">
+		<div class="form-group mr5">
+			<label>球员姓名</label>
+			<input type="text" ng-model="search.name" class="form-control" />
+		</div>
+		<div class="form-group mr5">
+			<label>球队</label>
+			<input type="text" ng-model="search.teamTitle" class="form-control" />
+		</div>
+		
+		<div class="form-group">
+			<label>转会时间</label>
+			<input class="form-control wdate" id="fromDate" name="search.fromDate" readOnly=true onchange="" 
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+			<label>-</label>
+			<input class="form-control wdate" id="toDate" name="search.toDate" readOnly=true onchange=""
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+		</div>
+		 <div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)">查询</button>&nbsp;
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+                 <th class="text-center">No</th>
+				 <th>姓名</th>
+				 <th>原球队</th>
+				 <th>现球队</th>
+				 <th>转入时间</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td>{{item.player.name}}</td>
+					<td>{{item.fromTeam.teamTitle}}</td>
+					<td>{{item.toTeam.teamTitle}}</td>
+					<td>{{item.toTime|formatDate:'{yyyy}/{MM}/{dd}'}}</td>
+				</tr>
+				<tr></tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

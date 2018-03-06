@@ -1,0 +1,88 @@
+	<div class="modal-header">
+        <h3 class="modal-title">{{(cup.id?'EDIT':'ADD')|translate}} 赛事</h3>
+    </div>
+    <form name="form" novalidate>
+    <div class="modal-body form-horizontal container-fluid">
+    	  <div class="row">
+			     <div class="col-sm-6">
+			    	 <div  class="form-group">
+						<label class="col-sm-3 control-label">赛事名称：</label>
+						<div class="col-sm-9" uib-popover="{{form.name.$error.required?'请输入赛事名称！':''}}" popover-placement="top" popover-trigger="mouseenter" >
+							<input  type="text"  ng-model="cup.name" name="name" required class="form-control"placeholder="" />
+						</div>
+					</div>
+					<div  class="form-group">
+							<label class="col-sm-3 control-label">是否公开：</label>
+							<span class="col-sm-9 mt7">
+									<input type="checkbox" id="ace2" class="checkbox-8-2" type="checkbox" ng-model="cup.isPublic" 
+										ng-true-value=1 ng-false-value=2 />
+									<label  for="ace2" uib-tooltip="{{cup.isPublic==1?'公开':'不公开'}}"></label>
+							</span>
+					</div>
+				</div>
+				<div class="col-xs-6">
+		               <div class="thumbnail col-sm-11 col-sm-offset-1 text-center wheelDiv" ng-class="{missImg:!cup.iconUrl}" >
+				 		  <img  alt=""  ng-src="{{getImgUrl(cup.iconUrl,2)}}" id="cupIcon" image-load="wheel(getImgUrl(cup.iconUrl,2))"  class="wheelImg" />
+					 		  <div class="caption">
+				             <p>
+				             <button class="btn btn-warning height34" ng-click="clearImg(cup)"><i class="glyphicon glyphicon-erase"></i></button>
+				             <button class="btn btn-default height34" ng-click="uploadImage(cup)"><i class="glyphicon glyphicon-picture "></i></button>
+				            </p>
+				          </div>
+				    </div>
+		       </div>
+		       </div>
+	  <uib-tabset>
+        <uib-tab  ng-repeat="phase in cup.phases" >
+        	 <uib-tab-heading ng-mouseover="phase.hover = true" ng-mouseleave="phase.hover = false">
+			        <div class="btn-group" style="vertical-align: baseline;left:-8px;" uib-dropdown auto-close="outsideClick" is-open="phase.isOpen">
+			 		      <a href="javaScript:void(0)"><i class="glyphicon glyphicon-pencil" ng-class="{invisible:!phase.hover}" uib-dropdown-toggle ></i></a>
+					      <div uib-dropdown-menu role="menu" class="form-inline text-nowrap contentDiv" >
+					      	<input type="text" class="form-control"  style="min-width:120px;" ng-init="phase.nameCopy = phase.name" ng-model="phase.nameCopy" ng-class="{error:phase.error}" ></input>
+							<button class="btn btn-primary" ng-click="editPhase(phase)">确定</button>
+					      </div>
+				   </div>
+				     <span class="mr5">{{phase.name}}</span>
+			       <a href="javaScript:void(0)" class="top_right"><i class="glyphicon glyphicon-remove mr5" ng-class="{invisible:!phase.hover}" ng-click="delItem(cup.phases,phase)"></i></a>
+		     </uib-tab-heading>
+				<div class="well" style="min-height:300px;">
+					<div class="col-xs-2">
+						<div class="form-group nowrap" ng-repeat="group in phase.groups">
+							<input class="form-control inline" ng-model="group.name" required></input>
+							<button ng-click="delItem(phase.groups,group)" class="btn  btn-default">
+								<i class="glyphicon glyphicon-minus"></i>
+							</button>
+						</div>
+						<div class="text-right">
+							<button class="btn  btn-primary" ng-click="addGroup(phase)">
+								<i class="glyphicon glyphicon-plus"></i>添加小组
+							</button>
+						</div>
+					</div>
+		
+				</div>
+		</uib-tab>
+         <div class="btn-group" uib-dropdown auto-close="outsideClick" is-open="dropdown.isOpen">
+		      <button id="single-button" class="btn btn-primary" uib-dropdown-toggle >
+		          <i class="glyphicon glyphicon-plus"></i>比赛阶段<span class="caret"></span>
+		      </button>
+		      <div uib-dropdown-menu role="menu" class="form-inline text-nowrap contentDiv" >
+		      	<input type="text"  class="form-control" style="min-width:120px;" ng-model="dropdown.name" ng-class="{error:dropdown.error}"></input>
+				<button class="btn btn-primary" ng-click="addPhase(cup.phases,dropdown)">确定</button>
+		      </div>
+		  </div>
+       </uib-tabset>
+		 <div class="row">
+			 <div class="col-xs-12">
+					<h4 >备注：</h4>
+					<div class="ueditor" ng-model="cup.content" style="width:100%"></div>
+			  </div>
+    	  </div>
+	     
+    </div>
+     </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save(cup)">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>
+		

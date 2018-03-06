@@ -1,0 +1,56 @@
+<div class="navbar-form" ng-controller = 'applyController'>
+<h3 class="title bg-info">球员找队列表</h3>
+	<div class="search  form-inline">
+		<div class="form-group mr5">
+			<label>球员</label><input type="text" ng-model="search.name" class="form-control" />
+		</div>
+		<div class="form-group mr5">
+			<label>标题</label> <input type="text"  ng-model="search.title" class="form-control" />
+		</div>	
+		<div class="form-group">
+			<label>发布时间</label>
+			<input class="form-control wdate" id="fromDate"  readOnly=true onchange="" 
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+			<label>-</label>
+			<input class="form-control wdate" id="toDate"  readOnly=true onchange=""
+				onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+		</div>
+				
+		<div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)" >查询</button> 
+			<button class="btn btn-success" ng-click="showModal()"  ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				 <th>球员</th>
+				<th>标题</th>
+				 <th>是否广场</th>
+                 <th>意向赛制</th>
+                 <th>意向球队个数</th>
+                 <th>申请时间</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td>{{item.player.name}}[{{item.player.team.teamTitle}}]</td>
+					<td > <a ng-click="openTip(item.content)">{{item.title}}</a></td>
+			    	<td >{{item.isPublic| keyToValue : yesnoList}}</td>
+					<td>{{item.dreamType|keyToValue : teamTypeList}}</td>
+					<td>{{item.tanks.length}}</td>
+					<td>{{item.applyTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</td>
+					<td excel="none">
+						<ng-include src="'toggle.tmpl'"></ng-include>
+						 <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+						 <span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

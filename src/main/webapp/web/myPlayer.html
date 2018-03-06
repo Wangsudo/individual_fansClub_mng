@@ -1,0 +1,39 @@
+<div class="main" ng-controller = 'myPlayerController'>
+    <div class="list grid">
+    	  <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="我的球队">
+        	 	 <table cellpadding="0" cellspacing="0">
+                    <thead class="title">
+                            <td>序号</td>
+                            <td>头像</td>
+                            <td>球衣</td>
+                            <td>姓名</td>
+                            <td>擅长位置</td>
+                            <td>年龄</td>
+                            <td>所在地</td>
+                            <td>综合积分</td>
+                            <td>类型</td>
+                            <td style="width:101px">人气指数</td>
+                            <td>查看</td>
+                    </thead>
+                    <tbody >
+                        <tr ng-repeat="item in players">
+                            <td style="height: 60px;"><span>{{$index + 1}}</span></td>
+                            <td><img  class="img24" ng-src="{{getImgUrl(item.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.id)"></td>
+                            <td>{{item.uniformNumber}}</td>
+                            <td><a ng-href="#/{{module}}/playerDetail?id={{item.id}}">{{item.name}}</a></td>
+                            <td>{{item.position| keyToValue : playerPositionList}}</td>
+                            <td>{{item.birth|getAge}}</td>
+                            <td>{{item.address}}</td>
+                            <td>{{item.point}}</td>
+                            <td>{{item.isCaptain==1?"队长":"队员"}}</td>
+                            <td>{{item.likeNum}}</td>
+                            <td><a class="look-btn" ng-href="#/{{module}}/playerDetail?id={{item.id}}"></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+		     </uib-tab>
+		     <button ng-if="user.isCaptain ==1" class="pull-right btn btn-danger btn-sm fabu" ng-click="dismissTeam(user)">解散球队</button>
+        </uib-tabset>
+    </div>
+</div>

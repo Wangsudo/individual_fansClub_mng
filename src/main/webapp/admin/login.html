@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="admin.login">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>admin tablet server</title>
+<link rel="icon" href="favicon.ico"/>
+<link href="/admin/vendor/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="/admin/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body ng-controller="loginController" ng-cloak>
+<div class="loginContent">
+  <div class="loginBox ">
+    <p>球迷巢后台管理平台</p>
+     <div class="red">{{admin.error}}</div>
+    <ul >
+      <li class="text" style="{{style}}" ><span class="loginspan"><i  class="glyphicon glyphicon-user"></i></span>
+      <input  type="text" placeholder="Username" ng-model="admin.account" >
+      </li>
+      <li class="text" style="{{style}}"><span class="loginspan"><i class="  glyphicon glyphicon-lock"></i></span>
+	  <input  type="password" placeholder="Password"  ng-model="admin.password">
+	  </li>
+      <li class="btn" ng-click="login()">登录(login)</li>
+      
+       <li class="text" uib-collapse="!isCollapsed" style="position:relative">
+         <button class="btn btn-success" ng-click="sendMail()" style="position: absolute;  right: 0px; top: 60px;">reset password</button>
+         <span class="loginspan"><i class="glyphicon glyphicon-envelope"></i></span>
+         <input type="text" name="email" ng-model="email" placeholder="Email" />
+      </li>
+      <li><a ng-click="isCollapsed = !isCollapsed">忘记密码</a>
+     </li>
+    </ul>
+  </div>
+</div>
+</body>
+<div  ng-if="waiting">
+	<div class="back waiting"></div>
+	<div class="request-progress waiting">Sending Request...</div>
+</div>
+<script type="text/javascript" src="/admin/vendor/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="/vendor/layer/layer.js"></script>
+<script type="text/javascript" src="/admin/vendor/angular1.4.9/angular.min.js"></script>
+<script type="text/javascript" src="/admin/vendor/angular1.4.9/angular-cookies.min.js"></script>
+<script type="text/javascript" src="/admin/vendor/angular1.4.9/ui-bootstrap-tpls-1.1.2.min.js"></script>
+<script type="text/javascript" src="/admin/js/loginController.js"></script>
+</html>

@@ -1,0 +1,54 @@
+		<div class="modal-header">
+	           <h3 class="modal-title">{{(recruit.id?'EDIT':'ADD')|translate}}球队招人
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+	         <form name="form" novalidate>  
+			 <div class="form-group" >
+				<label class="col-sm-2 control-label">{{'TITLE'|translate}}：</label>
+				<div  class="col-sm-4">
+					 <input type="text"  name="title" ng-model ="recruit.title" class="form-control" placeholder=""
+					 required maxlength="50"  >
+				</div>
+				
+				<label class="col-xs-2 control-label">球队：</label>
+				<div class="col-xs-4" uib-popover="{{form.team.$error.required?'请选择招人球队！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input type="text" required  ng-model="recruit.team" name="team" placeholder="" class="form-control" ng-class="{'waiting':loadingTeam}" 
+					uib-typeahead="o as o.teamTitle for o in getTeam($viewValue)" typeahead-min-length=0  typeahead-loading="loadingTeam" typeahead-wait-ms='300'/>
+				</div>
+			</div>
+		   <div class="form-group" >
+				<label class="col-sm-2 control-label">发布至广场：</label>
+				<div  class="col-sm-4">
+					<select class="form-control" ng-model="recruit.isPublic" name='isPublic' ng-options="o[0] as o[1] for o in yesnoList" 	required >
+						<option value="">{{'SELECT'|translate}}</option>
+					</select>
+				</div>
+				<label class="col-sm-2 control-label">是否启用：</label>
+				<div  class="col-sm-4">
+					<select class="form-control" ng-model="recruit.isEnabled" name='isEnabled' ng-options="o[0] as o[1] for o in yesnoList" 	required >
+						<option value="">{{'SELECT'|translate}}</option>
+					</select>
+				</div>
+			</div>
+			 <div class="form-group" ng-if="recruit.isPublic == 2">
+					<label class="col-xs-2 control-label">球员：</label>
+					<div class="col-xs-4" uib-popover="{{form.player.$error.required?'请选择球员！':''}}" popover-placement="top" popover-trigger="mouseenter">
+						<input type="text" required  ng-model="recruit.player" name="player" placeholder="" class="form-control" ng-class="{'waiting':loadingPlayer}" 
+						uib-typeahead="o as o.name+(o.teamTitle?'&nbsp;&nbsp;&nbsp;['+o.teamTitle+']':'') for o in getPlayer($viewValue,false)" typeahead-min-length=0  typeahead-editable=false typeahead-loading="loadingPlayer" typeahead-wait-ms='300' />
+					</div>
+			 </div>
+			 <div class="form-group">
+				<label class="col-xs-2 control-label">内容：</label>
+				<div class="col-xs-10">
+					<textarea type="text" style="height:150px;resize:auto" class="form-control" name="content" required ng-model="recruit.content"   />
+				</div>
+		    </div>
+		  </form>
+		</div>
+		
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(recruit)" >{{'CONFIRM'|translate}}</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+	    </div>
+  

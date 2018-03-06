@@ -1,0 +1,244 @@
+  <div ng-controller="chiefController">
+  <div class="scrollImg" >
+    <uib-carousel interval="myInterval">
+      <uib-slide ng-repeat="slide in slides" active="slide.active">
+        <img ng-src="{{getImgUrl(slide.url,3)}}" style="margin:auto;">
+        <div class="carousel-caption">
+          <h4 style="display:none">Slide {{$index}}</h4>
+          <p>{{slide.title}}</p>
+        </div>
+      </uib-slide>
+    </uib-carousel>
+  </div>
+    <div class="extra" >
+       <uib-tabset id="mod-impnews" class="customTab" justified=true type="pills">
+       		    <uib-tab  heading="动态"  >
+		       		<div class="wrap">
+		                <ul ng-repeat="news in newsList">
+		                    <li>
+		                        <span class="num" >{{$index+1}}</span>
+		                        <a ng-href="#{{module}}/newsDetail?id={{news.id}}">{{news.title}}</a>
+		                        <div class="gray">{{news.startTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+		                        <div class="white-border1_2"></div>
+		                    </li>
+		                </ul>
+		                <a class="more" ng-href="#{{module}}/square?tab=5">更多></a>
+		            </div>
+		       	</uib-tab>
+		   <uib-tab  heading="招人">
+			   <div class="wrap">
+				   <ul ng-repeat="item in recruitList">
+					   <li>
+						   <span class="num" >{{$index+1}}</span>
+						   <a ng-href="#{{module}}/findDetail?id={{item.id}}">{{item.title}}</a>
+						   <div class="gray">{{item.opTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+						   <div class="white-border1_2"></div>
+					   </li>
+				   </ul>
+				   <a class="more" ng-href="#{{module}}/square?tab=3">更多></a>
+			   </div>
+		   </uib-tab>
+		   <uib-tab  heading="找队"  >
+			   <div class="wrap">
+				   <ul ng-repeat="item in applyList">
+					   <li>
+						   <span class="num" >{{$index+1}}</span>
+						   <a ng-href="#{{module}}/applyDetail?id={{item.id}}">{{item.title}}</a>
+						   <div class="gray">{{item.applyTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+						   <div class="white-border1_2"></div>
+					   </li>
+				   </ul>
+				   <a class="more" ng-href="#{{module}}/square?tab=2">更多></a>
+			   </div>
+		   </uib-tab>
+		   <uib-tab  heading="约战">
+			   <div class="wrap">
+				   <ul ng-repeat="item in dareList">
+					   <li>
+						   <span class="num" >{{$index+1}}</span>
+						   <a ng-href="#{{module}}/dareDetail?id={{item.id}}">{{item.teamA.teamTitle}}约战&nbsp;{{item.title}}</a>
+						   <div class="gray">{{item.beginTime|formatDate:'{yyyy}/{MM}/{dd} {HH}:{mm}'}}</div>
+						   <div class="white-border1_2"></div>
+					   </li>
+				   </ul>
+				   <a class="more" ng-href="#{{module}}/square?tab=4">更多></a>
+			   </div>
+		   </uib-tab>
+       </uib-tabset>
+    </div>
+    <div class="center-ad" ng-if="centerAd">
+        <img ng-src="{{getImgUrl(centerAd.url,3)}}">
+    </div>
+    <div class="left-grid mt10" id="index_left">
+        <div class="team">
+            <uib-tabset  class="customTab"  justified=true type="pills">
+	            <li class="tabHead blue" ><div>人气球队</div></li>
+       		   <uib-tab  heading="{{teamtab.name}}"  ng-repeat="teamtab in teamtabList track by $index">
+		       		   <div class="team-body grid">
+			                	<table cellpadding="0" cellspacing="0" >
+			                		<thead class="title">
+			                			<td>名次</td>
+					                    <td>队徽</td>
+					                    <td>队名</td>
+					                    <td>赛制</td>
+					                    <td>队员数</td>
+					                    <td>所在地</td>
+					                    <td>类型</td>
+					                    <td>人气指数</td>
+					                    <td>较上周</td>
+			                		</thead>
+			                		<tbody >
+			                		 <tr ng-repeat="team in teamtab.list">
+			                		 	<td><div style="width:60px;" ng-class="{num1:$index == 0,num2:$index==1,num3:$index == 2,num:$index>2}">{{$index+1}}</div></td>
+			                            <td><img class="img24" ng-src="{{getImgUrl(team.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+team.id)"></td>
+			                            <td><a ng-href="#/{{module}}/teamDetail?id={{team.id}}">{{team.teamTitle}}</a></td>
+			                            <td>{{team.teamType}}</td>
+			                            <td>{{team.playerNum}}</td>
+			                            <td>{{team.region}}</td>
+			                            <td>{{team.kind|keyToValue : teamKindList}}</td>
+			                            <td>{{team.likeNumLastWeek}}</td>
+			                            <td><img ng-if="upOrDown(team.likeNumLastWeek-team.likeNumWeekBefLast)" ng-src="{{upOrDown(team.likeNumLastWeek-team.likeNumWeekBefLast)}}">{{team.likeNumLastWeek-team.likeNumWeekBefLast}}</td>
+			                		 </tr>
+			                		</tbody>
+			                	</table>
+		           		</div>
+		       	</uib-tab>
+		       	 <li><a class="more" ng-href="#team" >更多></a></li>
+            </uib-tabset>
+        </div>
+        <div class="team mt10">
+        	 <uib-tabset  class="customTab"  justified=true type="pills">
+	            <li class="tabHead blue" ><div>人气球员</div></li>
+       		   <uib-tab  heading="{{playertab.name}}"  ng-repeat="playertab in playertabList track by $index">
+		       		   <div class="team-body grid">
+		       		      <table cellpadding="0" cellspacing="0">
+			                <thead class="title">
+			                    <td>名次</td>
+			                    <td>头像</td>
+			                    <td>姓名</td>
+			                    <td>所在球队</td>
+			                    <td>出生年月</td>
+			                    <td>擅长位置</td>
+			                    <td>所在地</td>
+			                    <td>人气指数</td>
+			                    <td>较上周</td>
+			                </thead>
+			                    <tbody >
+			                		 <tr ng-repeat="player in playertab.list">
+			                		 	<td><div style="width:60px;" ng-class="{num1:$index == 0,num2:$index==1,num3:$index == 2,num:$index>2}">{{$index+1}}</div></td>
+			                            <td><img class="img24" ng-src="{{getImgUrl(player.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+player.id)"></td>
+			                            <td><a ng-href="#/{{module}}/playerDetail?id={{player.id}}">{{player.name}}</a></td>
+			                            <td><img class="img24" ng-src="{{getImgUrl(player.team.iconUrl,3)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+player.team.id)"></td>
+			                            <td>{{player.birth|formatDate:'{yyyy}-{MM}'}}</td>
+			                            <td>{{player.position| keyToValue : playerPositionList}}</td>
+			                            <td>{{player.address}}</td>
+			                            <td>{{player.likeNumLastWeek}}</td>
+			                            <td><img ng-if="upOrDown(player.likeNumLastWeek-player.likeNumWeekBefLast)" ng-src="{{upOrDown(player.likeNumLastWeek-player.likeNumWeekBefLast)}}">{{player.likeNumLastWeek-player.likeNumWeekBefLast}}</td>
+			                		 </tr>
+			                		 </tbody>
+			                </table>
+		           		</div>
+		       	</uib-tab>
+		       	 <li><a class="more" href="#player">更多></a></li>
+            </uib-tabset>
+            </div>
+            <div class="team address mt10">
+        	 <uib-tabset  class="customTab"  justified=true type="pills">
+	             <li class="tabHead blue" ><div>比赛场地</div></li>
+		       	 <li style="text-align:right"><a class="more mr10" href="#field" >更多></a></li>
+            </uib-tabset>
+            <div class="team-body grid">
+	       		      <table cellpadding="0" cellspacing="0">
+		                <thead class="title">
+		                    <td style="width:60px;">序号</td>
+		                     <td style="width:80px;">球场照片</td>
+		                    <td style="width:100px;">球场名称</td>
+		                    <td style="width:270px;">地址</td>
+		                    <td style="width:150px;">联系方式</td>
+		                </thead>
+		                    <tbody >
+		                		 <tr ng-repeat="item in fields">
+		                		 	<td><div style="width:60px;" ng-class="{num1:$index == 0,num2:$index==1,num3:$index == 2,num:$index>2}">{{$index+1}}</div></td>
+		                            <td><img class="img24" ng-src="{{getImgUrl(item.url,1)}}" ng-click="gotoPage('/'+module+'/fieldDetail?id='+item.id)">
+		                            </td>
+		                            <td>
+		                              <a ng-href="#/{{module}}/fieldDetail?id={{item.id}}">{{item.name}}</a>
+		                            </td>
+		                            <td>{{item.address}}</td>
+		                            <td>{{item.mobile}}</td>
+		                		 </tr>
+		                		 </tbody>
+	                	</table>
+	           		</div>
+            </div>
+        </div>
+    <div class="right-grid mt10" >
+        <div class="game">
+            <h2 class="game-title white-border">
+                <div class="title blue">最新赛事</div>
+                <a class="more fr" href="#play?gameStatus=5" >更多></a>
+            </h2>
+            <div class="game-body">
+            	<uib-carousel interval="myInterval" ng-repeat="games in futureGames track by $index">
+			      <uib-slide ng-repeat="game in games  track by $index" active="game.active" class="game-row" ng-show="game.teamA.teamTitle" >
+			       	<div  >
+			        <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+				      <div class="game-info">
+				          <img ng-src="{{getTeamTypeIcon(game.teamType)}}">
+				          <div class="mt5">{{game.beginTime|formatDate:"{yyyy}/{MM}/{dd}"}}</div>
+				          <div class="gray text-ellipsis mt5">{{game.address}}</div>
+				      </div>
+						<ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+			    	  </div>
+			      </uib-slide>
+			    </uib-carousel>
+            </div>
+        </div>
+        <div class="game">
+            <h2 class="game-title white-border">
+                <div class="title blue">历史赛事</div>
+                <a class="more fr" href="#play?gameStatus=10" >更多></a>
+            </h2>
+            <div class="game-body">
+            	<uib-carousel interval="myInterval" ng-repeat="games in pastGames track by $index">
+			      <uib-slide ng-repeat="game in games  track by $index" active="game.active" class="game-row" ng-show="game.teamA.teamTitle" >
+			       	<div  >
+			        <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+				      <div class="game-info">
+				          <img ng-src="{{getTeamTypeIcon(game.teamType)}}">
+				          <div class="mt5">{{game.beginTime|formatDate:"{yyyy}/{MM}/{dd}"}}</div>
+				         <div class="score">{{game.scoreA+":"+game.scoreB}}</div>
+				      </div>
+						<ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+			    	  </div>
+			      </uib-slide>
+			    </uib-carousel>
+            </div>
+        </div>
+        <div class="game market">
+            <h2 class="game-title white-border">
+                <div class="title blue">转会市场</div>
+                <a class="more fr" href="#transfers" >更多></a>
+            </h2>
+            <div class="game-body">
+                 <uib-carousel interval="myInterval" ng-repeat="transfers in transfersList track by $index">
+				  <uib-slide ng-repeat="item in transfers.list  track by $index" active="item.active" class="game-row" ng-show="item.toTeam.teamTitle">
+				      <div  >
+				      <div class="left-team">
+				          <img class="team-logo" ng-src="{{getImgUrl(item.player.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)" >
+				          <div><a class="team-name text-ellipsis" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)" >{{item.player.name}}</a></div>
+				      </div>
+				      <div class="game-info">
+				          <img ng-src="{{getTeamTypeIcon(item.toTeam.teamType)}}">
+				            <div >{{item.toTime|formatDate:"{yyyy}/{MM}/{dd}"}}</div>
+				          	<div class="market-info">转会至</div>
+				      </div>
+				      	<ng-include src="'toTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+				 	</div>
+				  </uib-slide>
+				</uib-carousel>
+            </div>
+        </div>
+        <!-- <img class="develop-img" src="./img/banner_daikaifa.jpg"> -->
+    </div>
+</div>

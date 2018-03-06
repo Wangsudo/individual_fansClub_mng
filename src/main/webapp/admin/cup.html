@@ -1,0 +1,66 @@
+﻿<div class="navbar-form" ng-controller = 'cupController'>
+<h3 class="title bg-info">杯赛列表 </h3>
+		<div class="search  form-inline">
+				<div class="form-group mr5">
+					<label>名称</label>
+					<input type="text" ng-model="search.name" class="form-control" />
+				</div>
+				<div class="form-group mr5">
+					<label>是否公开</label>
+					<select class="form-control" ng-model="search.isPublic" ng-options="o[0] as o[1] for o in yesnoList">
+							<option value="">--请选择--</option>
+					</select>
+				</div>
+				<div class="form-group mr5">
+					<label>包含球队</label>
+					<input type="text"  ng-model="search.teamId" placeholder="" class="form-control" ng-class="{'waiting':loadingTeam}" 
+					uib-typeahead="o as o.teamTitle for o in getTeam($viewValue)" typeahead-min-length=0 typeahead-editable=false typeahead-loading="loadingTeam" typeahead-wait-ms='300' />
+					
+				</div>
+				<div class="form-group">
+					<label>添加时间</label>
+					<input class="form-control wdate" id="fromDate"  readOnly=true onchange="" 
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()||'%y-%M-%d'}&quot;})" ng-model="search.fromDate"></input>
+					<label>-</label>
+					<input class="form-control wdate" id="toDate"  readOnly=true onchange=""
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;,maxDate:'%y-%M-%d'})" ng-model="search.toDate"></input>
+				</div>
+				 <div class="form-group pull-right">
+					<button class="btn btn-primary" ng-click="find(1)">查询</button> 
+					<button class="btn btn-success" ng-click="showModal()" ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+				</div>
+	  </div>
+	   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <th class="text-center">NO</th>
+				 <th excel="none"><i class="glyphicon glyphicon-picture"></i></th>
+                <th>名称</th>
+				<th>规则</th>
+				<!-- <th>包含球队</th> -->
+				<th>添加时间</th>
+				<th excel="none">操作</th>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="100" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td class="text-center" excel="none" style="position:relative">
+					<img  class="wid32 hand" ng-src="{{getImgUrl(item.iconUrl,1)}}" ng-click="showPhoto(getImgUrl(item.iconUrl,3))">
+					<div class="greenTag" ng-if="item.isPublic==1">公开</div>
+					</td>
+					<td>{{item.name}}</td>
+					<td><a ng-click="openTip(item.content)" class="hand" ><div compile_text="item.content||''"
+							style="width:150px;white-space: nowrap;overflow:hidden; text-overflow:ellipsis; "></div></a></td>
+					<!--<td><a ng-click="copyModal(item)" class="hand" ng-if="item.isPublic == 2">{{item.teams.length==0?'添加球队':(item.teams[0].teamTitle+'...')}}</a></td>  -->
+					<td>{{item.opTime|formatDate:'{yyyy}/{MM}/{dd}'}}</td>
+					<td excel="none">
+					    <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+						<span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-include src="'/admin/pager.html'"></ng-include>
+</div>
+
+	

@@ -1,0 +1,79 @@
+		<div class="modal-header">
+	           <h3 class="modal-title">{{(ads.id?'EDIT':'ADD')|translate}} 广告
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+	          <form name="form" novalidate>  
+			 <div class="form-group" >
+					<label class="col-sm-2 control-label">{{'TITLE'|translate}}</label>
+					<div  class="col-sm-4">
+						 <input type="text"  name="title" ng-model ="ads.title" class="form-control" placeholder=""
+						 required maxlength="50"  >
+					</div>
+					<label class="col-sm-2 control-label">备注</label>
+					<div  class="col-sm-4">
+						 <input type="text"  name="content" ng-model ="ads.content" class="form-control" placeholder=""
+						 required maxlength="50"  >
+					</div>
+			</div>
+		 <div class="form-group" >
+				<label class="col-sm-2 control-label">{{'POSITION'|translate}}</label>
+				<div  class="col-sm-4">
+					<select class="form-control" ng-model="ads.position" ng-options="o[0] as o[1] for o in positionList"
+					required >
+						<option value="">{{'SELECT'|translate}}</option>
+					</select>
+				</div>
+				<!-- 
+				<label class="col-sm-2 control-label">{{'LinkType'|translate}}</label>
+				<div  class="col-sm-2">
+					<select class="form-control" ng-change="cleardata()" ng-model="ads.pointType" ng-options="o[0] as o[1] for o in pointTypeList" >
+						<option value="" >{{'SELECT'|translate}}</option>
+					</select>
+				</div>
+				<div  class="col-sm-2">
+					 <input type="hidden" ng-model ="ads.pointId" name="pointId"  class="form-control" >
+					<p class="input-group">
+					  <input type="text" ng-model ="ads.pointName" readonly="true" class="form-control" placeholder="" required>
+					  <span class="input-group-btn" ng-click="showModel(ads)">
+	                   <button style="height:34px;" class="btn btn-default" ><i class="glyphicon glyphicon-link"></i></button>
+	                 </span>
+					</p>
+				</div>
+				 -->
+			</div>
+			<div class="form-group" >
+				<label class="col-sm-2 control-label">上线时间</label>
+				<div class="col-xs-4">
+					<input type="datetime" class="form-control wdate" required ng-model="ads.startTime" text-date readonly="readonly" placeholder="上线时间" onchange=""
+					id="fromDate{{$index}}"	onclick="$.feng = $(event.target);WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:&quot;#F{$.feng.parent().next().find('input').val()}&quot;})">
+				</div>
+				<label class="col-sm-2 control-label">下线时间</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control wdate" ng-model="ads.stopTime" text-date readonly="readonly" placeholder="下线时间" onchange="" 
+						id="toDate{{$index}}"	onclick="$.feng = $(event.target); WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:&quot;#F{$.feng.parent().prev().find('input').val()}&quot;})">
+				</div>
+			</div>
+			<div class="contentDiv">
+		     	<div class="form-horizontal " >
+      				<div class="thumbnail imgBack col-sm-12 text-center" style="height:200px">
+      				  <div class="resolution"  >{{resolutionDemand("ads")}}</div>
+			 		  <img  alt="" style="height:100%" ng-src="{{getImgUrl(ads.url,2)}}" ng-click="showPhoto(getImgUrl(ads.url,3))"></img>
+ 			 		  <div class="caption">
+			             <p>
+			             <button class="btn btn-warning height34" ng-click="ads.url = null"><i class="glyphicon glyphicon-erase"></i></button>
+			             <button class="btn btn-default height34" ng-click="editImage()"><i class="glyphicon glyphicon-picture"></i></button>
+			            </p>
+			          </div>
+			       </div>
+	     	  </div>
+			</div>
+			  </form>
+		</div>
+		
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(ads)" >{{'SAVE_DRAFT'|translate}}</button>
+	        <button class="btn btn-success" ng-click="previewModal(ads)" ng-show="getAccess(curMenu,16)" >{{"PREVIEW_PUBLISH"|translate}}</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+	    </div>
+  

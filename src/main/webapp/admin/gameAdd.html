@@ -1,0 +1,154 @@
+	<div class="modal-header">
+        <h3 class="modal-title">{{(game.id?'EDIT':'ADD')|translate}}比赛</h3>
+    </div>
+    <form name="form" novalidate>
+   	 <div class="modal-body form-horizontal container-fluid">
+    	<div class="form-group">
+			<label class="col-xs-2 control-label">杯赛：</label>
+			<!-- <div class="col-xs-4" uib-popover="{{form.title.$error.required?'请输入比赛名称！':''}}" popover-placement="top" popover-trigger="mouseenter">
+				<input type="text" class="form-control" required ng-model="game.title" name="title"></input> 
+			</div> -->
+			<div class="col-xs-4" uib-popover="{{form.cup.$error.required?'请输入比赛名称！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input type="text" required  ng-model="game.cup" name="cup" placeholder="" class="form-control" ng-class="{'waiting':loadingCup}" typeahead-on-select ="getPhases($item, $model, $label, $event)"
+					uib-typeahead="o as o.name for o in getCup($viewValue)" typeahead-min-length=0  typeahead-editable=false typeahead-loading="loadingCup" typeahead-wait-ms='300' />
+			</div>
+			<div ng-if="phases.length">
+				<label class="col-xs-2 control-label" >赛段：</label>
+				<div class="col-xs-2">
+					<select class="form-control" required  ng-model="curPhase" ng-options="o as o.name for o in phases">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+				<div class="col-xs-2" >
+					<select class="form-control" required ng-model="game.group.id" ng-options="o.id as o.name for o in curPhase.groups">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+			</div>
+			
+			<!-- 
+			<label class="col-xs-2 control-label">比赛状态：</label>
+			<div class="col-xs-4">
+				<select class="form-control" disabled="disabled" ng-model="game.gameStatus" ng-options="o.key as o.value for o in gameStatusList">
+					<option value="">--请选择--</option>
+				</select>
+			</div>
+			 -->
+		</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">赛制：</label>
+				<div class="col-xs-4"  uib-popover="{{form.teamType.$error.required?'请输入赛制！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<select class="form-control" required ng-model="game.teamType" name="teamType" ng-options="o[0] as o[1]  for o in teamTypeList">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+				<label class="col-xs-2 control-label">地点：</label>
+				<div class="col-xs-4" uib-popover="{{form.address.$error.required?'请输入比赛地点！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input type="text" required  ng-model="game.address" name="address" placeholder="" class="form-control" ng-class="{'waiting':loadingLocations}" 
+					uib-typeahead="o as o for o in getLocation($viewValue)" typeahead-min-length=0  typeahead-loading="loadingLocations" typeahead-wait-ms='300'/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-2 control-label">开始时间：</label>
+				<div class="col-xs-4" uib-popover="{{form.beginTime.$error.required?'请输入开始时间！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input class="form-control wdate" ng-model="game.beginTime" text-date placeholder="开始时间" onchange="" name="beginTime"
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+				</div>
+				<label class="col-xs-2 control-label">比赛时间(分钟)：</label>
+				<div class="col-xs-4" >
+					<input class="form-control" ng-model="game.playingTime" placeholder="**分钟" type="number"></input>
+				</div>
+			</div>
+
+     		<div class="form-group">
+				<label class="col-xs-2 control-label">参赛队伍A：</label>
+				<div class="col-xs-4" uib-popover="{{form.teamA.$error.required?'请选择参赛队伍A！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input type="text" required  ng-model="game.teamA" name="teamA" placeholder="" class="form-control" ng-class="{'waiting':loadingTeamA}" 
+					uib-typeahead="o as o.teamTitle for o in getTeam($viewValue,game.teamType,game.cup.id)" typeahead-min-length=0 typeahead-editable=false typeahead-loading="loadingTeamA" typeahead-wait-ms='300' />
+				</div>
+				<label class="col-xs-2 control-label">广场挑战：</label>
+				<div class="col-xs-4">
+					<select class="form-control" ng-model="game.isPublic"  ng-options="o[0] as o[1] for o in yesnoList">
+					</select>
+				</div>
+				<!-- 
+				<label class="col-xs-2 control-label">是否关闭：</label>
+				<div class="col-xs-4">
+					<select class="form-control" ng-model="game.teamAOperation" ng-disabled="!game.teamA.id"  ng-options="o.key as o.value for o in yesnoList">
+					</select>
+				</div>
+				 -->
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-2 control-label">参赛队伍B：</label>
+				<div class="col-xs-4" >
+					<input type="text"   ng-model="game.teamB" name="teamB" placeholder="" class="form-control" ng-class="{'waiting':loadingTeamB}"
+					uib-typeahead="o as o.teamTitle for o in getTeam($viewValue,game.teamType,game.cup.id)" typeahead-min-length=0 typeahead-editable=false typeahead-loading="loadingTeamB" typeahead-wait-ms='300'/>
+				</div>
+				<label class="col-xs-2 control-label">是否应战：</label>
+				<div class="col-xs-4">
+				    <select class="form-control" ng-model="game.teamBOperation" ng-disabled="!game.teamB.id || game.teamAOperation==1" ng-options="o[0] as o[1] for o in yesnoList">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+			</div>
+
+			<div ng-show="beforeNow(game)" >
+				<div class="form-group" ng-show="game.teamB.id">
+				<label class="col-xs-2 control-label">(A版)比分A：B</label>
+				<div class="col-xs-4">
+					<input type="number" class="form-control" style="width:40%;display:inline-block" ng-model="game.scoreA1">
+					：
+					<input type="number" class="form-control" style="width:40%;display:inline-block" ng-model="game.scoreB1">
+				</div>
+				<label class="col-xs-2 control-label">(B版)比分A：B</label>
+				<div class="col-xs-4">
+					<input type="number" class="form-control" style="width:40%;display:inline-block" ng-model="game.scoreA2">
+					：
+					<input type="number" class="form-control" style="width:40%;display:inline-block" ng-model="game.scoreB2">
+				</div>
+				
+			</div>
+
+			<div class="form-group" ng-show="game.teamB.id">
+				
+				<label class="col-xs-2 control-label">审核状态：</label>
+				<div class="col-xs-4">
+					<select class="form-control" ng-model="game.auditStatus" ng-change="auditChange()"
+						ng-options="o[0] as o[1] for o in auditStatusList">
+						<option value="">--请选择--</option>
+					</select> 
+				</div>
+					<label class="col-xs-2 control-label">核定比分A：B</label>
+				<div class="col-xs-4"  uib-popover="{{(game.auditStatus==1&&(!(game.scoreA>=0) || !(game.scoreB>=0)))?'请确认审核后比分！':''}}" popover-placement="top" popover-trigger="mouseenter">
+					<input type="number" class="form-control" ng-class="{error:(game.auditStatus==1 &&!(game.scoreA>=0))}"
+					 style="width:40%;display:inline-block"
+					 ng-disabled="game.auditStatus == 2 "
+					  ng-model="game.scoreA">
+					：
+					<input type="number" class="form-control" ng-class="{error:(game.auditStatus==1 &&!(game.scoreB>=0))}"
+					 style="width:40%;display:inline-block" 
+					  ng-disabled="game.auditStatus == 2"
+					 ng-model="game.scoreB">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">备注：</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control" name="comment" ng-model="game.comment"></input> 
+				</div>
+			</div>
+			<div class="col-xs-12" >
+				<h4 >赛况：</h4>
+				<div class="ueditor" ng-model="game.content" style="width:100%"></div>
+			</div>
+		</div>
+    
+     </div>
+     </form>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="save(game)">{{'CONFIRM'|translate}}</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+    </div>

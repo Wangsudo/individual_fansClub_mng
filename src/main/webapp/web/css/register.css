@@ -1,0 +1,122 @@
+
+body{
+    background: url(../img/bg_home.jpg);
+    background-size: 100% 2582px;
+}
+#main{
+    padding-bottom: 100px;
+}
+.header {
+    height: 80px;
+    width: 100%;
+}
+.wrap {
+    width: 980px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.header .title{
+    border-left: 1px solid #ffffff;
+    color: #ffffff;
+    font-size: 20px;
+    display: inline-block;
+    line-height: 60px;
+    margin-left: 20px;
+    padding-left: 20px;
+    top: 10px;
+    position: relative;
+}
+.header .login {
+    position: absolute;
+    right: 0;
+    top: 29px;
+}
+.header .login .green{
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.form{
+    padding: 30px 50px 60px;
+    margin: 0 auto;
+    background: url(../img/bg_notice.png);
+    background-size: 100% 100%;
+    min-height: 400px;
+}
+ input,select{
+    position: relative;
+    top: 0;
+    right: 0;
+    padding-right: 0;
+    display: inline-block;
+    vertical-align: middle;
+    width: 342px;
+    height: 40px;
+    line-height: 40px;
+    font-size:14px;
+}
+
+.submit-btn{
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    margin: 30px auto;
+    width: 50%;
+    height: 40px;
+    color:white;
+}
+.protocol{
+    display: block;
+    font-size: 14px;
+    text-align: center;
+}
+
+
+.text{
+    padding: 30px;
+    background: url(../img/bg_notice.png);
+    background-size: 100% 100%;
+}
+.text .title{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.text .body{
+    margin: 30px;
+    font-size: 14px;
+}
+.flooder{
+    height: 100px;
+    margin-top: 40px;
+}
+.flooder-text{
+    text-align: center;
+    line-height: 24px;
+}
+.flooder-text span{
+    margin:  0 10px;
+}
+.flooder-text:nth-child(2){
+    margin-top: 24px;
+}
+.flooder-text:nth-child(3){
+    margin-bottom: 24px;
+}
+.code-btn{
+    text-align: center;
+    width: 128px;
+    height: 40px;
+    line-height: 40px;
+    vertical-align: top;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+   
+.pwd-form .msg{
+    position: absolute;
+    top: -40px;
+    left: 31%;
+    color: #ff7878;
+}

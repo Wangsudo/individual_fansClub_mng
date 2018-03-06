@@ -1,0 +1,48 @@
+<div class="main" id="player" ng-controller = 'playerController'>
+    <div class="list grid">
+		  <uib-tabset  class="customTab"  justified=false type="pills">
+		      <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList">
+		   <table cellpadding="0" cellspacing="0" >
+			<thead class="title">
+				<td>头像</td>
+                 <td>姓名</td>
+                 <td>昵称</td>
+                 <td>年龄</td>
+                 <td>身高</td>
+                 <td>位置</td>
+                 <td>赛制</td>
+                 <td>战绩</td>
+                 <td>球队</td>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in items.list">
+					<td><img  class="img24" ng-src="{{getImgUrl(item.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.id)"></td>
+					<td><a ng-href="#/{{module}}/playerDetail?id={{item.id}}">{{item.name}}</a></td>
+					<td>{{item.nickname}}</a></td>
+					<td>{{item.birth|getAge}}</td>
+					<td>{{item.height}}</td>
+					<td>{{item.position| keyToValue : playerPositionList}}</td>
+					<td>{{item.team.teamType| keyToValue : teamTypeList}}</td>
+					<td>{{item.win?item.win:0}}胜 / {{item.lost?item.lost:0}}负</td>
+					<td>{{item.team.teamTitle}}</td>
+				</tr>
+				<tr></tr>
+			</tbody>
+		</table>
+
+		         <div class="page-footer">
+							 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+							   ng-change="pageChanged(items.teamType)" items-per-page="20"
+							 previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		          </div>
+            </uib-tab>
+         	<li class="pull-right">
+                 <div class="find">
+        			 <i class="find-btn" ng-click="find()"></i>
+        		     <input type="text" placeholder="请输入球员名称" ng-model="search.snippet" ng-keyup="find($event)" >
+        	   </div>
+           </li>
+	    </uib-tabset>
+	</div>
+</div>
+

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html ng-app="jcrop">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="//cdn.bootcss.com/jquery-jcrop/0.9.12/css/jquery.Jcrop.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- controller 的方式 -->
+<div ng-controller="demoCtrl " class="col-sm-3 col-sm-offset-3">
+	<div >
+	    <img ng-src="{{picUrl}}" id="target" alt="[Jcrop Example]" image-load="initJcrop()" />
+	    <img ng-src="{{headIcon}}"  alt="[headIcon]"  />
+	</div>
+	<div >
+	   <button class="btn btn-primary btn-block" ng-click="uploadFile()">uploadFile</button> 
+	</div>
+	<div >
+	   <button class="btn btn-primary btn-block" ng-click="sendCrop()">send php post</button> 
+	</div>
+    
+</div>
+<script src="/admin/vendor/jquery.min.js"></script>
+<script src="/admin/vendor/layer2.1/layer.js"></script>
+<script src="//cdn.bootcss.com/jquery-jcrop/0.9.12/js/jquery.Jcrop.min.js"></script>
+<!-- <script src="//cdn.bootcss.com/jquery-jcrop/2.0.4/js/Jcrop.min.js"></script> -->
+<script type="text/javascript" src="web/vender/angular/angular.min.js"></script>
+<script src="/admin/vendor/ajaxfileupload.js"></script>
+	
+<script>
+  
+    var myApp = angular.module('jcrop',[]);
+
+    myApp.directive('imageLoad', function () {
+	    return {
+	        restrict: 'A', link: function (scope, element, attrs) {
+	            element.bind('load', function () { 
+	                //call the function that was passed 
+	                scope.$apply(attrs.imageLoad);
+	            });
+	        }
+	    };
+	})
+    // controller 的方式
+    myApp.controller('demoCtrl', function($scope,$http) {
+    	function upload(options,fn) {
+			if(typeof(options.params)!="object"){
+				options.params = {};
+			}
+			if(!options.url){
+				options.url = '/common/uploadImg';
+			}
+			var index;
+			options.onSubmit = function(){
+				 index = layer.load(1, {
+					  shade: [0.2,'#000'] //0.1透明度的白色背景
+				 });
+			};
+			options.onComplate = function(data) {
+				layer.close(index);
+				if(data.success){
+					fn&&fn(data);
+				}else{
+					layer.alert(data.error,{btn: ['ok'],title:false});
+				}
+			};
+			// 上传方法
+			$.upload(options);
+		};
+		  var jcrop_api;
+		 $scope.initJcrop = function(){
+			 $(event.target).Jcrop({aspectRatio: 1,
+	         	 maxSize: [ 640, 640 ],minSize: [ 160, 160 ],
+	         	boxWidth: 450, boxHeight: 400,
+		        onSelect: updateCoords},function(){
+		          jcrop_api = this;
+		          jcrop_api.animateTo([100,100,400,300]);
+		        });
+		 }
+         // 动态设置默认颜色
+	         $scope.test = function(){
+				  $http.post("interface/checkVersion",{currentVersionID:1}).success(function(data){
+					  console.log(data);
+				  })
+			  }
+	         var coord = {};
+	        function updateCoords(c){
+	        /* 	$('#x').val(c.x);
+	            $('#y').val(c.y);
+	            $('#w').val(c.w);
+	            $('#h').val(c.h); */
+	            $scope.coord =c;
+	            $scope.coord.path = $scope.picUrl;
+	            console.log($scope.coord);
+	        }
+	      
+	         $scope.uploadFile = function(){
+	        	 jcrop_api && jcrop_api.destroy(); 
+	        	 upload({params:{original:true}},function(data){
+				    		$scope.picUrl = data.picPath;
+				    		$scope.$apply();
+				    	})
+			  };
+         
+	         $scope.sendCrop = function () {  
+	        	 $http.post("/common/cropImage",$scope.coord).success(function(resp){
+	        		 $scope.headIcon = resp.url;
+	        	 });
+	         };  
+     });
+
+</script>
+</body>
+</html>

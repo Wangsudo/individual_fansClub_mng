@@ -1,0 +1,306 @@
+.w815{
+	width:815px;
+}
+.title-child:nth-child(2){
+    margin-left: 30px;
+}
+.list .list-title .btn-s{
+    float: right;
+    margin-top: 16px;
+    margin-right: 20px;
+}
+.list .list-title .title{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 20px;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+}
+.list-btn{
+    margin-left: 37px;
+    margin-top: 20px;
+}
+.list-btn .btn-s{
+    margin-right: 20px;
+}
+#square div.list-box + #square div.list-box{
+	   margin-right: 20px;
+}
+#square .list-box{
+    width: 175px;
+    height: 102px;
+    display: inline-block;
+    float: left;
+    padding-bottom: 70px;
+    margin-right: 18px;
+    position: relative;
+    text-align: center;
+    box-sizing:content-box;
+    margin-bottom: 0;
+}
+#square .list-box a{
+     width: 175px;
+     height: 102px;
+     display: block;
+     text-align: center;
+}
+#square .list-box img{
+    max-width: 175px;
+    height: 102px;
+}
+.list-box .good-img{
+    display: inline-block;
+    width: 34px;
+    height: 16px;
+    line-height: 16px;
+    padding-left: 20px;
+    background: url(../img/icon_good_normal.png)  no-repeat;
+    background-size: 16px;
+}
+.list-box .good-img:hover{
+    background: url(../img/icon_good_hover.png)  no-repeat;
+}
+.list-box .eye-img{
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    padding-left: 20px;
+    background: url(../img/icon_eye_nomal.png)  no-repeat;
+    background-size: 16px;
+    cursor: default;
+    margin-right: 15px;
+    margin-top: 7px;
+}
+.list-box .eye-img:hover{
+    background: url(../img/icon_eye_hover.png)  no-repeat;
+    background-size: 16px;
+}
+.list-box .comment-img{
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    padding-left: 20px;
+    background: url(../img/icon_comment_nomal.png)  no-repeat;
+    background-size: 16px;
+    cursor: default;
+    margin-right: 15px;
+}
+.list-box .comment-img:hover{
+    background: url(../img/icon_comment_hover.png)  no-repeat;
+}
+.list-box-text{
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+.img-list .list-body{
+    height: 740px;
+}
+.img-list .list-box{
+    padding-bottom: 50px;
+}
+.team-list{
+    height: 1093px;
+}
+.team-list .list-body{
+    margin: 20px;
+    height: 882px;
+}
+.team-list .list-body .title tr{
+    height: 40px;
+}
+
+.team-list td:nth-child(3){
+    width: 433px;
+    text-align: center;
+}
+.team-list td:nth-child(3) > div{
+    width: 420px;
+    margin-left: 10px;
+}
+.team-list td:nth-child(4){
+    width: 200px;
+}
+.team-list .user-img{
+    width: 24px;
+    height:24px;
+}
+
+.bulletin-list{
+    height: 1093px;
+}
+.bulletin-list .list-body{
+    margin: 20px;
+    height: 882px;
+}
+.bulletin-list td:nth-child(1){
+    width: 633px;
+    text-align: center;
+}
+.bulletin-list td:nth-child(3) > div{
+    width: 420px;
+    margin-left: 10px;
+}
+.bulletin-list td:nth-child(2){
+    width: 200px;
+}
+
+.dare-list{
+    height: 1297px;
+}
+.dare-list .list-body{
+    margin: 20px;
+    height: 1091px;
+}
+.dare-list td:nth-child(1){
+    width: 100px;
+}
+.dare-list td:nth-child(2){
+    width: 473px;
+}
+.dare-list td:nth-child(3){
+    width: 100px;
+    text-align: center;
+}
+.dare-list td:nth-child(3) div{
+    display: inline-block;
+}
+.dare-list td:nth-child(4){
+    width: 100px;
+}
+.fl-bg{
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 175px;
+    height: 102px;
+    background: url(../img/icon_video_normal.png) 64px 31px no-repeat;
+}
+.fl-bg:hover{
+    background: url(../img/icon_video_hover01.png) no-repeat;
+}
+.left-menu{
+    float: left;
+    width: 145px;
+}
+.left-menu div{
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
+}
+.left-menu .selected{
+    background: url("../img/bg_list-title_blue.png");
+    background-size: auto 50px;
+}
+
+.yes-btn{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 20px;
+    color: #ffffff !important;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.yes-btn.green{
+    background-color: #00c55d ;
+}
+.yes-btn.green:hover{
+    background-color: #33d17d ;
+}
+.yes-btn.green:active{
+    background-color: #009e4a ;
+}
+
+
+.squareTab >ul.nav{
+    height: 39px;
+     width: 145px;
+    float: left;
+}
+.squareTab >.tab-content{
+	float: right;
+}
+.squareTab >.nav li{
+    font-size: 14px;
+    height: 50px;
+    width: 145px;
+    text-align:center;
+    background: url(../img/bg_notice.png);
+    background-size: 100%;
+}
+.squareTab >.nav li.active{
+    height: 50px;
+     background: url("../img/bg_list-title_blue.png");
+     background-size: auto 50px;
+    text-align:center;
+}
+
+.squareTab >.nav li a{
+    font-size: 14px;
+    line-height: 50px;
+    padding:0;
+    border-radius: 0;
+    background-color: inherit;
+}
+
+.squareTab >.nav > li > a:hover,.customTab >.nav > li > a:focus{
+	background-color: inherit;
+    color: white;
+}
+.squareTab >.nav > li.active >a {
+   background-color: inherit;
+}
+
+/**videoDetail  imgDetail*/
+#imgDetail #body,#bulletinDetail #body,#dareDetail #body,#playDetail #body{
+	padding: 30px 60px 0;
+}
+
+.white-border1_2 {
+    margin-top: 5px;
+}
+
+#imgDetail .media {
+    text-align: center;
+    margin: 30px 0;
+}
+#imgDetail .media > *:nth-child(n+2) {
+    margin-top: 20px;
+}
+
+#imgDetail .media > * {
+    max-width: 860px;
+}
+#imgDetail .text ,#bulletinDetail .text{
+    font-size: 14px;
+}
+#imgDetail .good-btn {
+    width: 80px;
+    height: 80px;
+    background: url(../img/icon_picture-detail_good_nomal.png) no-repeat;
+    background-size: 80px;
+    margin: 20px auto;
+    padding: 87px 0 30px;
+    text-align: center;
+}
+#imgDetail .good-btn:hover{
+    background: url(../img/icon_picture-detail_good_hover.png) no-repeat;
+    background-size: 80px;
+}
+#imgDetail .good-btn.active{
+    background: url(../img/icon_picture-detail_good_pressed.png) no-repeat;
+    background-size: 80px;
+}
+
+ .title{
+    font-size: 14px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+}
+
+#dareDetail .row{
+    margin: 10px 0;
+}

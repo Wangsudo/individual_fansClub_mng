@@ -1,0 +1,164 @@
+<div id="teamDetail" ng-controller="teamDetailController">
+    <div class="account">
+         <uib-tabset  class="customTab" justified=false type="pills">
+	         <uib-tab  heading="球队组成">
+					<div class="body">
+						<div class="inline relative">
+							<img class="user-img" ng-src="{{getImgUrl(team.iconUrl,2)}}">
+							<img class="top_right" ng-if="team.official==1" src="/images/official.png"/>
+						</div>
+						<div class="info inline">
+				<div class="name">{{team.teamTitle}}{{team.dismissed ==1?'(已解散)':''}}</div>
+				<div class="mt5">
+					赛制：<img ng-src={{getTeamTypeIcon(team.teamType)}}></img>
+				</div>
+				<div class="mt5">
+					<span class="star-text">信誉度：</span>{{(team.total-team.wrongNum)/team.total|toPercent}}
+				</div>
+				<div class="info-text">
+					<span>活动频率：{{team.acRate| keyToValue : acRateList}}</span>
+				</div>
+				<div class="mt5">
+					<span class="mr10">类型：{{team.kind|keyToValue:teamKindList}}</span> <span>球队价值：{{team.value|
+						currency : '￥'}}</span>
+				</div>
+				<div class="mt5" >
+                    <span class="star-text">球队级别：</span>
+                     <span class="mr10">
+	                    <img class="grade_icon" src="/web/img/grade_crown.png" ng-repeat="i in team.grade.crowns">
+	                    <img class="grade_icon" src="/web/img/grade_shield.png" ng-repeat="i in team.grade.shields">
+	                    <img class="grade_icon" src="/web/img/grade_medal.png" ng-repeat="i in team.grade.stars">
+                    </span>
+                    <span class="star-text ">综合积分：{{team.point}}</span> 
+                </div>
+			
+				<div class="mt5">
+					<span class="star-text mr10">比赛次数：{{team.total||0}}</span> <span class="star-text">胜率：{{(team.win/team.total)|toPercent}}</span>
+				</div>
+				<div class="record-div">
+								<span>胜：</span>
+								<div class="bg inline">
+									<div class="s" ng-style="getWidth(team.win,team)"></div>
+								</div>
+								<span class="red">{{team.win?team.win:0}}</span>
+							</div>
+							<div class="record-div">
+								<span>平：</span>
+								<div class="bg inline">
+									<div class="p" ng-style="getWidth(team.even,team)"></div>
+								</div>
+								<span class="blue">{{team.even?team.even:0}}</span>
+							</div>
+							<div class="record-div">
+								<span>负：</span>
+								<div class="bg inline">
+									<div class="f" ng-style="getWidth(team.lost,team)"></div>
+								</div>
+								<span class="green">{{team.lost?team.lost:0}}</span>
+							</div>
+							<div class="btnGroup" ng-if="user.auditStatus==1 ">
+							    <div ng-if="captain.id!=user.id && team.dismissed!=1">
+										<button class="btn big-btn good-btn" ng-disabled="existTeamLike(team)" ng-click="saveTeamLike(team)" >{{team.likeNum||0}}</button>
+						                <!-- 约战按钮-->
+			                               <a  ng-click = "dareTeam()" ng-if="user.isCaptain==1 && team.id!=user.team.id && team.teamType == user.team.teamType"><div class="add-play-btn"></div></a>
+						                <div ng-if="user.isCaptain!=1 && user.team.id!=team.id ">
+						                   <button class="btn btn-success big-btn mt5" ng-disabled="tank"  ng-click="apply(team,user)">{{tank?'已申请':'申请加入'}}</button>
+						                </div>
+						               
+				                </div>
+				                <div ng-if="team.dismissed==1 && team.dismisser == user.id && !user.team&& false">
+				                	   <button class="btn big-btn btn-success" ng-click="restoreTeam(user,team)" >恢复球队</button>
+				                </div>
+							</div>
+						</div>
+						<div class="member" style="position: absolute;  top:258px;">
+								<div class="title">球队成员({{players.length}})</div>
+								<div>
+									<div class="box" ng-repeat="player in players|limitTo:6">
+										<a href="#{{module}}/playerDetail?id={{player.id}}"> <img class="member-img" ng-src="{{getImgUrl(player.iconUrl,1)}}">
+										</a>
+										<div class="member-name">{{player.name}}</div>
+									</div>
+									<div class="box">
+										<a class="member-img-more" ng-href="#/{{module}}/myPlayer?id={{team.id}}" >更多&gt;&gt;</a>
+									</div>
+								</div>
+						</div>
+					</div>
+		      </uib-tab>
+		    
+			  </uib-tabset>
+			</div>
+	<div class="play">
+		<uib-tabset class="customTab" justified=false type="pills"> <uib-tab heading="球队详情">
+		<div class="body pad20" style="height: 420px;">
+			<img style="max-height:110px;max-width:260px;" ng-src="{{getImgUrl(team.coverUrl,2)}}">
+			<div class="title text-ellipsis">
+				<span>球队信息</span><hr class="title-line"/>
+			</div>
+			<div class="text">
+				<div ng-if="captain">
+				<div class="mt5">
+					荣誉：<img ng-repeat="t in team.honors" ng-src="{{getImgUrl(t.honor.url,1)}}" class="img24 mr10" title="{{t.honor.name}}" />
+				</div>
+				<div>现任队长：{{captain.name}}</div>
+				<div ng-if="captain.team.id == user.team.id||user.isCaptain==1">
+					<div>电话：{{captain.mobile}}</div>
+					<div>qq：{{captain.qq}}</div>
+					<div>微信号：{{captain.wechat}}</div>
+				</div >
+				</div>
+				<div>加入日期：{{team.createTime|getDate}}</div>
+			</div>
+			<div class="title text-ellipsis">
+				<span>球队简介</span><hr class="title-line"/>
+			</div>
+			<div class="text">
+				<div compile="team.introduce" style="height: 72px;overflow-y: hidden;"></div>
+				<a class="more fr" style="right: 20px;    position: absolute;    bottom: 20px;" ng-href="#/{{module}}/teamInfo?id={{team.id}}">更多&gt;</a>
+			</div>
+		</div>
+		</uib-tab>
+		 <li class="pull-right"><button ng-show = "user.team.id==team.id && user.isCaptain==1" class="btn btn-sm btn-success fabu" ng-click="gotoPage('/'+module+'/teamInfoEdit?id='+user.team.id)"> 编辑</button>
+		      </li>
+		</uib-tabset>
+	</div>
+   <div style="clear: both"></div>
+    <div class="list grid" style="margin-top:30px;">
+			<uib-tabset  class="customTab"  justified=false type="pills">
+      		 <uib-tab  heading="最近战绩" >
+                <table cellpadding="0" cellspacing="0">
+                    <thead class="title">
+                        <td>胜负</td>
+                        <td><div style=" display: inline-block; margin-left: 70px;">比赛结果</div></td>
+                        <td>时间</td>
+                        <td>查看</td>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="game in items.list">
+                        <td style="height:96px;"><div ng-class="{'win-img':getWin(game)==1,'even-img':getWin(game)==0,'lost-img':getWin(game)==-1}"></div></td>
+                        <td>
+                             <div class="game-row">
+	                               <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+	                                <div class="game-info">
+	                                    <div class="score yellow">{{getScore(game)}}</div>
+	                                    <div class="gray">{{getType(game)}}</div>
+	                                </div>
+	                                <ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+	                          </div>
+                        </td>
+                        <td >
+                            {{game.beginTime|getDate}}
+                        </td>
+                        <td><a ng-href="#/{{module}}/playDetail?id={{game.id}}"><div class="look-btn"></div></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                  <div class="page-footer">
+						 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+						  ng-change="pageChanged()"
+						previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		         </div>
+            </div>
+</div>
+

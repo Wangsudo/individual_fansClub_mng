@@ -1,0 +1,26 @@
+	 <form name="form" novalidate>  
+		<div class="modal-header">
+	           <h3 class="modal-title">球员身价公式
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+		    	<div class="form-inline" style="font-size:18px">
+		    		<div>球员身价=<input type="number" name="beginer" required ng-model="weight.beginer" class="form-control" style="width:90px"/>+
+					       		 参赛次数&times;<input type="number" name="total" required ng-model="weight.total" class="form-control" style="width:90px"/>+</div>
+					<div class="mt5" style="padding-left:83px;">
+						胜一场&times;<input type="number" name="win" required  ng-model="weight.win" class="form-control" style="width:90px"/>+
+			                       平一场&times;<input type="number"  name="even" required ng-model="weight.even" class="form-control" style="width:90px"/>+
+				               负一场&times;<input type="number"  name="lost" required ng-model="weight.lost" class="form-control" style="width:90px"/>
+					</div>       		 
+						</div>
+						<b ng-show="formularError" class="red"><imgsrc="/images/alarm.png"></img>{{formularError}}</b>
+						<h4>提示:</h4>
+				  <ul>
+					<li>注册即得10000身价，球队约战并完成比分发布加500，胜另加300，平另加200，负另加100</li>
+				</ul>
+		</div>
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(form)" >确定</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+	    </div>
+  </form>

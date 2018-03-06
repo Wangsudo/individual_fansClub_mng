@@ -1,0 +1,41 @@
+		<div class="modal-header">
+	           <h3 class="modal-title">{{(news.id?'EDIT':'ADD')|translate}}公告
+	           </h3>
+	    </div>
+	    <div class="modal-body container-fluid form-horizontal">
+	          <form name="form" novalidate>  
+			 <div class="form-group" >
+					<label class="col-sm-2 control-label">{{'TITLE'|translate}}</label>
+					<div  class="col-sm-10">
+						 <input type="text"  name="title" ng-model ="news.title" class="form-control" placeholder=""
+						 required maxlength="50"  >
+					</div>
+			</div>
+			<div class="form-group" >
+				<label class="col-sm-2 control-label">上线时间</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control wdate" ng-model="news.startTime" text-date readonly="readonly" placeholder="上线时间" onchange=""
+						onclick="$.feng = $(event.target);WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',maxDate:&quot;#F{$.feng.parent().next().find('input').val()}&quot;})">
+				</div>
+				<label class="col-sm-2 control-label">下线时间</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control wdate" ng-model="news.stopTime" text-date readonly="readonly" placeholder="下线时间" onchange="" 
+						onclick="$.feng = $(event.target); WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:&quot;#F{$.feng.parent().prev().find('input').val()}&quot;})">
+				</div>
+			</div>
+			 <div class="form-group">
+				<label class="col-xs-2 control-label">内容：</label>
+				<div class="col-xs-10">
+					<!--<textarea type="text" style="height:150px;resize:auto" class="form-control" name="content" required ng-model="news.content"   />-->
+					<div class="ueditor" ng-model="news.content" ></div>
+				</div>
+		    </div>
+		 </form>
+		</div>
+		
+	    <div class="modal-footer">
+	        <button class="btn btn-primary" type="button" ng-click="save(news)" >{{'SAVE_DRAFT'|translate}}</button>
+	        <button class="btn btn-success" ng-click="release(news)" ng-show="getAccess(curMenu,16)" >{{"PUBLISH"|translate}}</button>
+	        <button class="btn btn-warning" type="button" ng-click="cancel()">{{'CANCEL'|translate}}</button>
+	    </div>
+  

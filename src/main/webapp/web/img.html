@@ -1,0 +1,15 @@
+<div id="imgDetail" ng-controller="imgController">
+    <div id="body" class="list">
+        <div class=" time"><span class="mr5">{{curPhoto.player.name}}  上传于：</span> <span class="gray">{{curPhoto.createTime|formatDate:"{yyyy}年{M}月{d}日 {HH}:{mm}"}}</span> </div>
+        <div class="white-border1_2"></div>
+        <div class="media">
+        	<div ng-repeat ="photo in curPhoto.pics">
+           		 <img  ng-src="{{getImgUrl(photo.url,3)}}" />
+            </div>
+        </div>
+        <div class="text" compile="curPhoto.comment" >
+        </div>
+        <div class="good-btn" ng-click='like(curPhoto)' ng-class="{active:existLike(user)}">{{likeList.length}}</div>
+    </div>
+   	<ng-include src="'comments.html'"></ng-include>
+</div>

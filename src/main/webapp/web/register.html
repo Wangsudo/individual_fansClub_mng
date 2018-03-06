@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="football">
+<head lang="en">
+    <meta charset="UTF-8">
+    <META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+    <title>注册</title>
+     <link rel="stylesheet" type="text/css" href="/web/vender/bootstrap/css/bootstrap.css" />
+     <link rel="stylesheet" type="text/css" href="/web/vender/jcrop/jquery.Jcrop.min.css" />
+    <link href="css/common.css" rel="stylesheet" type="text/css">
+    <link href="css/grid.css" rel="stylesheet" type="text/css">
+	<!--[if lte IE 9]>
+	<script src="/vender\bootstrap\js\html5shiv.min.js"></script>
+	<script src="/vender/bootstrap/js/respond.min.js"></script>
+	<![endif]-->
+    <link href="css/header.css?t=20151212" rel="stylesheet" type="text/css">
+    <link href="css/register.css" rel="stylesheet" type="text/css">
+</head>
+<body ng-controller="registerController"  ng-cloak>
+<div id="main">
+    <div class="header">
+        <div class="wrap header-main">
+            <div class="logo">
+                 <div class="logo-img">
+                     <div style="font-size:38px;margin-top: 10px;float: left">
+                         <a ng-href="/web/main.html" >
+                             <!--<img src="img/logo-final.png" style="margin-top:10px"></img>-->
+                             <strong style="margin-top: 20px">球&nbsp;迷&nbsp;巢</strong>
+                         </a>
+                     </div>
+                     <div class="title">注册</div>
+      			  </div>
+            </div>
+            <div class="login">
+                <a class="green" ng-click="showLoginModal()">登录</a>
+            </div>
+            <div class="login" ng-show="showProtocol" ng-click="showProtocol=!showProtocol">
+                <span class="green ">&lt;&lt;返回</span>
+            </div>
+        </div>
+    </div>
+    <div ng-view class="wrap" >  </div>
+      <div class="flooder gray">
+        <div class="white-border1_2"></div>
+        <div class="flooder-text">
+            <!--<span>邮箱：footballonline@163.com</span>-->
+	       <!-- <span>地址：上海市黄兴路217号A座409-411室</span>
+	        <span>联系电话：021-65390122</span>-->
+        </div>
+        <div class="flooder-text">
+			<span>邮箱：footballonline@163.com</span><span>草根足球版权所有Copyright© 2014-2016 All right reserved</span>
+        </div>
+    </div>
+    
+</div>
+
+</body>
+    <div class="back waiting"></div>
+	<div class="request-progress waiting">Sending Request...</div>
+    <!-- <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/sugar/1.4.1/sugar.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery-jcrop/0.9.12/js/jquery.Jcrop.min.js"></script> -->
+	<script type="text/javascript" src="vender/sugar.min.js"></script>
+	<script type="text/javascript" src="vender/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="/vendor/layer\layer.js"></script>
+	<script type="text/javascript" src="vender/jcrop/jquery.Jcrop.min.js"></script>
+	
+<!-- 	<script type="text/javascript" src="vender/angular/angular.js"></script>
+	<script type="text/javascript" src="vender/angular/angular-cookies.min.js"></script>
+	<script type="text/javascript" src="vender/ui-bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script>
+	<script type="text/javascript" src="vender/angular/angular-route.js"></script> -->
+	
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular-route.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular-animate.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/angular-cookies.min.js"></script>
+	<script type="text/javascript" src="/vendor/angular1.4.9/ui-bootstrap-tpls-1.1.2.min.js"></script> 
+	
+	<script src="vender/plugin/ajaxfileupload.js"></script>
+	<script src="vender/IDNOvalidator.js"></script>
+
+	<script type="text/javascript" src="js/registerController.js"></script>
+	<script type="text/javascript" src="js/dataService.js"></script>
+	<script type="text/javascript" src="js/directive.js"></script>
+	  <script> 
+//document.write( " <script src='js/registerController.js?rnd= " + Math.random() + " '></s"+"cript> " )
+document.write( " <script src='js/loginController.js?rnd= " + Math.random() + " '></s"+"cript> " )
+		</script>
+		
+</html>

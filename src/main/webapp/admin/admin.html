@@ -1,0 +1,57 @@
+<div class="navbar-form" ng-controller = 'adminController'>
+<h3 class="title bg-info">{{'ADMIN_LIST'|translate}}</h3>
+	<div class="search  form-inline">
+		<div class="form-group mr5">
+			<label>{{'ACCOUNT'|translate}}</label>
+			<input type="text" ng-model="search.account" class="form-control" />
+		</div>
+		<div class="form-group mr5">
+			<label>{{'NICKNAME'|translate}}</label>
+			<input type="text" ng-model="search.name" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label>{{'ROLE'|translate}}</label>
+			<select class="form-control" ng-model="search.dictId"  ng-options="o[0] as o[1] for o in roleList" >
+				<option value="">{{'SELECT'|translate}}</option>
+			</select>
+		</div>
+		 <div class="form-group pull-right">
+			<button class="btn btn-primary" ng-click="find(1)" >查询</button> 
+			<button class="btn btn-success" ng-click="showModal()"  ng-show="getAccess(curMenu,2)"><i class="glyphicon glyphicon-plus mr5"></i>新增</button>
+		</div>
+	</div>
+		   <table class="table table-bordered table-striped table-hover" >
+			<thead class="title">
+				 <td class="text-center">NO</td>
+				 <td><i class="glyphicon glyphicon-picture"></i></td>
+                 <td>{{'ACCOUNT'|translate}}</td>
+                 <td>{{'ROLE'|translate}}</td>
+                 <td>{{'NICKNAME'|translate}}</td>
+                 <td>{{'EMAIL'|translate}}</td>
+                 <td>手机</td>
+                 <td>{{'SET'|translate}}</td>
+			</thead>
+			<tbody>
+			    <tr ng-if="items.totalPage == 0"><td colspan="9" class="text-center">{{'EMPTY_LIST'|translate}}</td></tr>
+				<tr ng-repeat="item in items.list">
+					<td class="text-center">{{$index + 1+items.pageSize*(items.currentPage-1)}}</td>
+					<td class="text-center"><img  class="wid64 hand" ng-src="{{getImgUrl(item.headpic,1)}}" ng-click="showPhoto(getImgUrl(item.headpic,3))"></td>
+					<td>{{item.account}}</td>
+					<td>{{item.role.roleName}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.email}}</td>
+					<td>{{item.teleNum}}</td>
+					<td>
+						<div ng-hide="item.account=='superadmin'">
+						 <span class="icon edit" ng-click="showModal(item.id)" ng-show="getAccess(curMenu,4)"></span> 
+						 <span class="icon delete" ng-click="del(item.id)" ng-show="getAccess(curMenu,8)"></span> 
+						</div>
+					</td>
+				</tr>
+				<tr></tr>
+			</tbody>
+		</table>
+        <div class="page-footer">
+				<ng-include src="'/admin/pager.html'"></ng-include>
+        </div>
+</div>

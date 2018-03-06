@@ -1,0 +1,42 @@
+<div id="playerInfo" ng-controller="playerInfoController">
+    <div class="list">
+    <uib-tabset class="customTab" justified=false type="pills" >
+       	 <uib-tab  heading="球员档案" >
+       	 	<div class="body">
+	            <div class="title text-ellipsis">
+	                <span>基本信息</span><hr class="title-line"/>
+	            </div>
+	            <div class="text">
+	                <div>姓名：{{player.name}}</div>
+	                <div>昵称：{{player.nickname}}</div>
+	                <div >年龄：{{player.birth|getAge}}岁</div>
+	                <div>性别：{{player.gender|keyToValue:genderList}}</div>
+	                <div>身高（cm）：{{player.height}}</div>
+	                <div>体重（kg）：{{player.weight}}</div>
+	                <div>场上号码：{{player.uniformNumber}}</div>
+	                <div ng-if="player.team.id==user.team.id||(user.isCaptain==1 && player.isCaptain==1)">
+				        <div>电话：{{player.mobile}}</div>
+				        <div>qq：{{player.qq}}</div>
+				        <div>微信号：{{player.wechat}}</div>
+			        </div>
+	            </div>
+	            <div class="title text-ellipsis">
+	                <span>所在球队</span><hr class="title-line"/>
+	            </div>
+	            <div  ng-if="player.team.id">
+					<img class="img24 mr10" ng-src="{{getImgUrl(player.team.iconUrl,1)}}" 
+	                ng-click="gotoPage('/'+module+'/teamDetail?id='+player.team.id)" >{{player.team.teamTitle}}
+	            </div>
+	            <div class="title text-ellipsis">
+	                <span>草根征途</span><hr class="title-line"/>
+	            </div>
+	            <div class="text">
+	                <div ng-repeat="rec in history">
+	            		<div>{{rec.beginTime|getDate}} ~ {{rec.endTime|getDate}}<span class="ml10">{{rec.teamTitle}}</span></div>
+	            	</div>
+	            </div>
+            </div>
+       </uib-tab>
+    </uib-tabset>
+    </div>
+</div>

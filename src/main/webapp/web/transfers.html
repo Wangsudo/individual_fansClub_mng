@@ -1,0 +1,59 @@
+<div class="main" id="transfers" ng-controller="transfersController">
+    <div class="grid list">
+    	 <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList">
+        	 	<div class="search-div">
+		            <span>时间：</span>
+		                <input type="text" class="date-input"  id="fromDate" ng-model="items.fromDate" onchange=""
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:&quot;#F{$('#toDate').val()}&quot;})" ></input>
+						
+		            <span style="margin: 0 5px;">至</span>
+		                <input type="text" class="date-input" id="toDate" ng-model="items.toDate" onchange=""
+						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:&quot;#F{$('#fromDate').val()}&quot;})" ></input>
+		            <button class="btn btn-success" ng-click="getTranfers($index)">查询</button>
+	             	<div class="find">
+	        			 <i class="find-btn" ng-click="find($index)"></i>
+	        		     <input type="text" placeholder="球员或球队名称" ng-model="items.snippet" ng-keyup="find($index,$event)" >
+	        		</div>
+		        </div>
+		        <table cellpadding="0" cellspacing="0">
+                    <thead class="title">
+                   	     <td ></td>
+                         <td >原球队</td>
+                         <td>转出时间</td>
+                         <td>球员</td>
+                         <td>新球队</td>
+                        <td>转入时间</td>
+                         <td ></td>
+                    </thead>
+                  <tbody >
+				<tr ng-repeat="item in items.list" >
+					<td></td>
+					<td>
+					      <ng-include src="'fromTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+					</td>
+					   <td>{{item.fromTime|getDate}}</td>
+					<td>
+                           <img class="team-logo" ng-src="{{getImgUrl(item.player.iconUrl,2)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)" />
+                           <div class="team-name" ng-click="gotoPage('/'+module+'/playerDetail?id='+item.player.id)" >{{item.player.name}}<!-- <div class="vip gold">V6</div> --></div>
+					</td>
+                        <td>
+                           <ng-include src="'toTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+                        </td>
+                        <td >
+                            {{item.toTime|getDate}}
+                        </td>
+                   <td></td>
+				</tr>
+			</tbody>
+                </table>
+                    <div class="page-footer">
+								 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+								  ng-change="pageChanged(items.teamType)" items-per-page="10"
+								previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		          </div>
+        	 </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
+

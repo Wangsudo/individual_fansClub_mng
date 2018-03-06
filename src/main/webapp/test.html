@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html ng-app="colorpickerDemo">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="lenovo/vendor/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="lenovo/vendor/color-picker/color-picker.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+<!-- directive 的方式 -->
+<font-color style="width:20px;height:20px;"></font-color>
+
+<!-- controller 的方式 -->
+<div ng-controller="demoCtrl " class="col-sm-3 col-sm-offset-3">
+	<div >
+       <div color-picker set-color="dynamicSetColor()" class="font-color" style="width:200px;height:20px;" ng-style="{'background-color': selectedForeColor}"></div>
+	</div>
+	<div >
+	   <button class="btn btn-primary btn-block" ng-click="test()">checkVersion</button> 
+	</div>
+	<div >
+	   <button class="btn btn-primary btn-block" ng-click="phpPost()">send php post</button> 
+	</div>
+    
+</div>
+
+
+<script type="text/javascript" src="lenovo/vendor/angular1.4.9/angular.min.js"></script>
+<script type="text/javascript" src="lenovo/vendor/color-picker/color-picker.min.js"></script>
+<script>
+    var myApp = angular.module('colorpickerDemo', ['ui.colorpicker']);
+
+    // directive 的方式
+    myApp.directive('fontColor', function() {
+         return {
+             restrict: 'E',
+             scope:{},
+             replace: false,
+             template: '<div color-picker default-color="#ff0000" class="font-color" ng-style="{\'background-color\': selectedFontColor}"></div>',
+             link: function(scope) {
+                 scope.selectedFontColor = '#f00';
+
+                 scope.$on('colorPicked', function(event, color) {
+                     scope.selectedFontColor = color;
+                 });
+             }
+         }
+    })
+
+
+    // controller 的方式
+    myApp.controller('demoCtrl', function($scope,$http) {
+         $scope.selectedForeColor = dynamicSetColor();
+
+         $scope.$on('colorPicked', function(event, color) {
+             $scope.selectedForeColor = color;
+         });
+
+         // 动态设置默认颜色
+         $scope.dynamicSetColor = dynamicSetColor;
+
+         function dynamicSetColor() {
+             return '#0f0';
+         }
+
+         $scope.test = function(){
+			  $http.post("interface/checkVersion",{currentVersionID:1}).success(function(data){
+				  console.log(data);
+			  })
+		  }
+         
+         $scope.phpPost = function(){
+        	 var data = {
+        				"agencyId" : "626614",
+        				"act" : "partner",
+        				"op" : "commit",
+        				"token" : "80e9783f83303d8059393766c4462fec",
+        				"payment" : "alipay",
+        				"orderinfo" : {
+        					"idname" : "夏雨",
+        					"address" : "北京省北京市海淀区55路14号",
+        					"consignee" : "夏雨",
+        					"zipcode" : "100192",
+        					"tel" : "18600033201",
+        					"province" : 1,
+        					"district" : "",
+        					"idno" : "13070319334343434302",
+        					"agencyId" : "626614",
+        					"mobile" : "13911332301",
+        					"city" : "",
+        					"goods" : [{
+        							"nums" : 2,
+        							"sku" : "3000038019",
+        							"size" : ""
+        						}, {
+        							"nums" : 2,
+        							"sku" : "4000000061-CYN",
+        							"size" : ""
+        						}, {
+        							"nums" : 2,
+        							"sku" : "4000000827",
+        							"size" : ""
+        						}
+        					]
+        				}
+        			};
+        	 $http({method:'POST',url:'/test',params:data}).success(function(ret){
+        		 console.log(ret);
+        	 });
+         }
+     });
+
+</script>
+</body>
+</html>

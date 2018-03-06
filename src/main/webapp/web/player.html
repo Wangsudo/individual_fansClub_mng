@@ -1,0 +1,64 @@
+<div class="main" id="player" ng-controller = 'playerController'>
+    <div class="list">
+        <uib-tabset  class="customTab"  justified=false type="pills">
+		    <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList ">
+		    	<div class="img-list" ng-if="large">
+		            <div class="team-box" ng-repeat="player in items.list" >
+				        <img class="head" ng-src="{{getImgUrl(player.iconUrl,2)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+player.id)" />
+				        <div class="mt16 text-center">
+				        	<span class="pull-left name"> &nbsp;{{player.uniformNumber>-1?(player.uniformNumber+"号"):""}}
+				        	    <a  ng-href="#/{{module}}/playerDetail?id={{player.id}}">{{player.name}}</a>
+				        	</span>
+				           
+				            <img class="team-num pull-right" ng-src="{{getTeamTypeIcon(player.team.teamType)}}"  />
+				        </div>
+				        <img class="top_right" ng-if="player.isCaptain ==1" src="/web/img/captain.png"/>
+				        <img class="bottom_left img36"  ng-click="gotoPage('/'+module+'/teamDetail?id='+player.team.id)" ng-src="{{getImgUrl(player.team.iconUrl,1)}}" />
+				     </div>
+				</div>
+					<div class="team-body grid" ng-if="!large">
+						<table cellpadding="0" cellspacing="0">
+							<thead class="title">
+							<td style="width:40px;">名次</td>
+							<td>头像</td>
+							<td>姓名</td>
+							<td style="width:80px">所在球队</td>
+							<td>出生年月</td>
+							<td>擅长位置</td>
+							<td>所在地</td>
+							<td>人气指数</td>
+							<td>较上周</td>
+							</thead>
+							<tbody >
+							<tr ng-repeat="player in items.list">
+								<td style="width:40px;"><div style="width:60px;" ng-class="{num1:$index == 0,num2:$index==1,num3:$index == 2,num:$index>2}">{{$index+1}}</div></td>
+								<td><img class="img24" ng-src="{{getImgUrl(player.iconUrl,1)}}" ng-click="gotoPage('/'+module+'/playerDetail?id='+player.id)"></td>
+								<td><a ng-href="#/{{module}}/playerDetail?id={{player.id}}">{{player.name}}</a></td>
+								<td style="width:80px"><img class="img24" ng-src="{{getImgUrl(player.team.iconUrl,3)}}" ng-click="gotoPage('/'+module+'/teamDetail?id='+player.team.id)"></td>
+								<td>{{player.birth|formatDate:'{yyyy}-{MM}'}}</td>
+								<td>{{player.position| keyToValue : playerPositionList}}</td>
+								<td>{{player.address}}</td>
+								<td>{{player.likeNumLastWeek}}</td>
+								<td><img ng-if="upOrDown(player.likeNumLastWeek-player.likeNumWeekBefLast)" ng-src="{{upOrDown(player.likeNumLastWeek-player.likeNumWeekBefLast)}}">{{player.likeNumLastWeek-player.likeNumWeekBefLast}}</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+                <div class="page-footer">
+					 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+					   ng-change="pageChanged(items.teamType)" items-per-page="20"
+					 previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+                </div>
+       	  </uib-tab>
+         	<li class="pull-right">
+				<button class="btn btn-sm btn-primary pull-right" style="margin-top: 5px" ng-click="large=!large"><i class="glyphicon " ng-class="{'glyphicon-th-large':large,'glyphicon-th-list':!large}"></i></button>
+				<div class="find">
+				   <i class="find-btn" ng-click="find()"></i>
+				   <input type="text" placeholder="请输入球员姓名" ng-model="search.snippet" ng-keyup="find($event)" >
+			   </div>
+			</li>
+		</uib-tabset>
+    </div>
+</div>
+

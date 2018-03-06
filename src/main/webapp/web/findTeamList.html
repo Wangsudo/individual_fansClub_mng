@@ -1,0 +1,42 @@
+<div id="findTeamList" class="list" ng-controller="findTeamListController">
+        <div class="list-title">
+            <div class="white-border2_3"></div>
+            <div class="search" >
+                <input type="text" placeholder="请输入球队名称">
+                <div class="search-btn"></div>
+            </div>
+        </div>
+        <div class="list-body grid">
+            <div class="title team-table">
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>队徽</td>
+                        <td>球队名称</td>
+                        <td>成员</td>
+                        <td>赛制</td>
+                        <td>战绩</td>
+                        <td>点赞数</td>
+                        <td>操作</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="body team-table">
+                <table cellpadding="0" cellspacing="0">
+                    <tbody class="js-team-table-list">
+					    <tr>
+					        <td><img class="team-logo" src="./img/icon_team_logo_01_24.png"></td>
+					        <td><a ng-href="#/{{module}}/teamDetail?id={{item.id}}">广州恒大</a></td>
+					        <td>15</td>
+					        <td><img  src="img/icon_teamgroup_3person.png"></td>
+					        <td>20胜 / 2负</td>
+					        <td>150</td>
+					        <td><div class="btn green">加入</div></td>
+					    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="page-footer">
+        </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="main" id="myPlay" ng-controller="myPlayController">
+    <div class="list grid">
+         <uib-tabset class="customTab" justified=false type="pills" >
+        	 <uib-tab  heading="{{items.name}}"  ng-repeat="items in itemsList" ng-if="items.list.length">
+        	 	<table cellpadding="0" cellspacing="0">
+        	 		<thead class="title">
+        	 			<td style="width:143px">时间</td>
+                        <td style="width:418px"><div style=" display: inline-block; margin-left: -32px;">比赛</div></td>
+                        <td style="width:140px">地点</td>
+                        <td style="width:170px">来源</td>
+                        <td style="width:68px">查看</td>
+        	 		</thead>
+        	 		<tbody>
+	        	 		<tr ng-repeat = "game in items.list">
+	                        <td style="height:96px;">{{game.beginTime|formatDate:"{yyyy}/{MM}/{dd} {HH}:{mm}"}}</td>
+	                        <td>
+	                            <div class="game-row">
+	                                <ng-include src="'leftTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+	                                <div class="game-info">
+	                                    <div class="score yellow">{{getScore(game)}}</div>
+	                                    <div class="gray">{{getType(game)}}</div>
+	                                </div>
+	                               <ng-include src="'rightTeam.html'" style="border:none;display: inline-block;vertical-align: middle;"></ng-include>
+	                            </div>
+	                        </td>
+	                        <td >{{game.address}}</td>
+	                        <td class="gray">{{getOri(game)}}</td>
+	                        <td><a ng-href="#/{{module}}/playDetail?id={{game.id}}" class="look-btn"></a>
+	                        </td>
+	                    </tr>
+        	 		</tbody>
+        	 	</table>
+        	 	   <div class="page-footer">
+								 <uib-pagination total-items="items.total" ng-model="items.curPage"  class = "pagination-sm" max-size="10" boundary-links = "true"
+								  ng-change="pageChanged(items)"
+								previous-text="&lt;上一页" next-text="下一页&gt;" first-text="首页" last-text ="尾页"></uib-pagination>
+		        </div>
+		     </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
